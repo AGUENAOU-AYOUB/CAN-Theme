@@ -1,0 +1,202 @@
+<section
+  class="ring-sizing-tips"
+  style="
+    background-color: {{ section.settings.background_color }};
+    margin-top: {{ section.settings.margin_top }}px;
+    margin-bottom: {{ section.settings.margin_bottom }}px;
+    padding: {{ section.settings.padding_vertical }}px {{ section.settings.padding_horizontal }}px;
+  "
+>
+  <style>
+    .ring-sizing-tips .tips-heading {
+      color: {{ section.settings.heading_color }};
+      font-size: {{ section.settings.heading_font_size }}px;
+      text-align: {{ section.settings.text_alignment }};
+      margin-bottom: 40px;
+      font-weight: 600;
+    }
+    .ring-sizing-tips .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .ring-sizing-tips .tip {
+      background: transparent;
+      border: none;
+      padding: 0;
+      text-align: {{ section.settings.text_alignment }};
+    }
+    .ring-sizing-tips .tip-icon {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 20px;
+    }
+    .ring-sizing-tips .tip h3 {
+      color: {{ section.settings.heading_color }};
+      font-size: 20px;
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+    .ring-sizing-tips .tip p {
+      color: {{ section.settings.content_color }};
+      font-size: {{ section.settings.content_font_size }}px;
+      line-height: 1.6;
+    }
+  </style>
+
+  <h2 class="tips-heading">{{ section.settings.main_heading }}</h2>
+  <div class="tips-grid">
+    {% for block in section.blocks %}
+      <div class="tip">
+        {% if block.settings.tip_icon != blank %}
+          <img
+            class="tip-icon"
+            src="{{ block.settings.tip_icon | image_url }}"
+            alt="Icon"
+          >
+        {% endif %}
+        <h3>{{ block.settings.tip_title }}</h3>
+        <p>{{ block.settings.tip_description }}</p>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ring Sizing Tips",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "main_heading",
+      "label": "Main Heading",
+      "default": "Ring Sizing Tips"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#FAF7F2"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "content_color",
+      "label": "Content text color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading Font Size (px)",
+      "min": 16,
+      "max": 48,
+      "step": 1,
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "content_font_size",
+      "label": "Content Font Size (px)",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "label": "Vertical Padding (px)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "label": "Horizontal Padding (px)",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "Top Margin (px)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "Bottom Margin (px)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 20
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tip_block",
+      "name": "Tip",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "tip_icon",
+          "label": "Tip Icon"
+        },
+        {
+          "type": "text",
+          "id": "tip_title",
+          "label": "Tip Title",
+          "default": "Measure at the End of the Day"
+        },
+        {
+          "type": "textarea",
+          "id": "tip_description",
+          "label": "Tip Description",
+          "default": "Your fingers tend to swell throughout the day. Measure when they’re at their largest to get the most accurate size."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Ring Sizing Tips",
+      "category": "Custom",
+      "blocks": [
+        {"type": "tip_block"},
+        {"type": "tip_block"},
+        {"type": "tip_block"},
+        {"type": "tip_block"}
+      ]
+    }
+  ]
+}
+{% endschema %}

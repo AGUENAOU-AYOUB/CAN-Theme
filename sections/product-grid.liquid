@@ -1,0 +1,518 @@
+{% comment %}
+  Missoma-style Product Grid Section
+  - Image hover switching
+  - Instant cart functionality
+  - Touch-based carousel scrolling
+{% endcomment %}
+
+{%- style -%}
+  .missoma-grid {
+    padding: 40px 0;
+    overflow: hidden;
+  }
+
+  .missoma-grid__inner {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .missoma-grid__products {
+    display: flex;
+    gap: 24px;
+    scroll-snap-type: x mandatory;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    cursor: grab;
+  }
+
+  .missoma-grid__products::-webkit-scrollbar {
+    display: none;
+  }
+
+  .missoma-grid__products.dragging {
+    cursor: grabbing;
+    scroll-snap-type: none;
+  }
+
+  .missoma-product-card {
+    flex: 0 0 calc((100% - {{ section.settings.columns_desktop | minus: 1 | times: 24 }}px) / {{ section.settings.columns_desktop }});
+    scroll-snap-align: start;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media screen and (max-width: 768px) {
+    .missoma-product-card {
+      flex: 0 0 calc((100% - {{ section.settings.columns_mobile | minus: 1 | times: 24 }}px) / {{ section.settings.columns_mobile }});
+    }
+  }
+
+  .missoma-product-card__image-wrapper {
+    position: relative;
+    padding-bottom: 100%;
+    overflow: hidden;
+    background: #fff;
+    margin-bottom: 16px;
+  }
+
+  .missoma-product-card__image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+  }
+
+  .missoma-product-card__image--hover {
+    opacity: 0;
+  }
+
+  .missoma-product-card:hover .missoma-product-card__image--main {
+    opacity: 0;
+  }
+
+  .missoma-product-card:hover .missoma-product-card__image--hover {
+    opacity: 1;
+  }
+
+  .missoma-product-card__icons {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    display: flex;
+    justify-content: space-between;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
+
+  .missoma-product-card:hover .missoma-product-card__icons {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .missoma-product-card__icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+    border: none;
+    padding: 0;
+  }
+
+  .missoma-product-card__icon:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  .missoma-product-card__icon:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .missoma-product-card__info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .missoma-product-card__title {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0;
+    color: #000;
+    text-decoration: none;
+  }
+
+  .missoma-product-card__metal {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+  }
+
+  .missoma-product-card__price {
+    font-size: 16px;
+    font-weight: 500;
+    color: #000;
+    margin: 0;
+    direction: rtl;
+  }
+
+  .missoma-product-card__variants {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .missoma-product-card__variant {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 1px solid #e5e5e5;
+    padding: 2px;
+    cursor: pointer;
+  }
+
+  .missoma-product-card__variant-dot {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: none;
+  }
+
+  .variant-gold .missoma-product-card__variant-dot {
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+  }
+
+  .variant-silver .missoma-product-card__variant-dot {
+    background: linear-gradient(45deg, #C0C0C0, #E8E8E8);
+  }
+
+  .variant-mixed .missoma-product-card__variant-dot {
+    background: linear-gradient(45deg, #FFD700 50%, #C0C0C0 50%);
+  }
+
+  .notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #000;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 4px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+  }
+
+  .notification.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+{%- endstyle -%}
+
+<div class="missoma-grid">
+  <div class="missoma-grid__inner">
+    <div class="missoma-grid__products">
+      {%- for product in collections[section.settings.collection].products limit: section.settings.products_to_show -%}
+        <div class="missoma-product-card">
+          <div class="missoma-product-card__image-wrapper">
+            <img
+              src="{{ product.featured_image | img_url: '800x' }}"
+              alt="{{ product.featured_image.alt | escape }}"
+              class="missoma-product-card__image missoma-product-card__image--main"
+              loading="lazy"
+              width="800"
+              height="800"
+            >
+            {% if product.images[1] %}
+              <img
+                src="{{ product.images[1] | img_url: '800x' }}"
+                alt="{{ product.images[1].alt | escape }}"
+                class="missoma-product-card__image missoma-product-card__image--hover"
+                loading="lazy"
+                width="800"
+                height="800"
+              >
+            {% endif %}
+            {% if section.settings.show_icons %}
+              <div class="missoma-product-card__icons">
+                {% if section.settings.show_cart_icon %}
+                  <button
+                    type="button"
+                    class="missoma-product-card__icon js-add-to-cart"
+                    data-product-id="{{ product.id }}"
+                    aria-label="Add to cart"
+                  >
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                    >
+                      <path d="M20 22H4a2 2 0 0 1-2-2V8h20v12a2 2 0 0 1-2 2zM3 4h18v4H3V4zm15-2H6v2h12V2z"/>
+                    </svg>
+                  </button>
+                {% endif %}
+                {% if section.settings.show_wishlist_icon %}
+                  <button
+                    type="button"
+                    class="missoma-product-card__icon js-add-to-wishlist"
+                    data-product-id="{{ product.id }}"
+                    aria-label="Add to wishlist"
+                  >
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                    >
+                      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                  </button>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+          <div class="missoma-product-card__info">
+            <h3 class="missoma-product-card__title">{{ product.title }}</h3>
+            <p class="missoma-product-card__metal">
+              {{ product.metafields.custom.metal_type | default: 'Mixed Metal' }}
+            </p>
+            <p class="missoma-product-card__price">{{ product.price | money_without_currency }}د.إ</p>
+
+            <div class="missoma-product-card__variants">
+              {% if product.variants.size > 1 %}
+                {% for variant in product.variants %}
+                  {% assign metal_type = variant.title | downcase %}
+                  <button
+                    type="button"
+                    class="missoma-product-card__variant variant-{{ metal_type }}"
+                    data-variant-id="{{ variant.id }}"
+                    aria-label="Select {{ variant.title }} variant"
+                  >
+                    <span class="missoma-product-card__variant-dot"></span>
+                  </button>
+                {% endfor %}
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<div class="notification" role="alert"></div>
+
+<script>
+  class MissomaProductGrid {
+    constructor() {
+      this.productGrid = document.querySelector('.missoma-grid__products');
+      this.notification = document.querySelector('.notification');
+      this.isDragging = false;
+      this.startX = 0;
+      this.scrollLeft = 0;
+
+      this.init();
+    }
+
+    init() {
+      this.setupEventListeners();
+      this.setupDragScroll();
+    }
+
+    setupEventListeners() {
+      document.querySelectorAll('.js-add-to-cart').forEach(button => {
+        button.addEventListener('click', this.handleAddToCart.bind(this));
+      });
+
+      document.querySelectorAll('.js-add-to-wishlist').forEach(button => {
+        button.addEventListener('click', this.handleAddToWishlist.bind(this));
+      });
+
+      document.querySelectorAll('.missoma-product-card__variant').forEach(button => {
+        button.addEventListener('click', this.handleVariantChange.bind(this));
+      });
+    }
+
+    setupDragScroll() {
+      this.productGrid.addEventListener('mousedown', this.startDragging.bind(this));
+      this.productGrid.addEventListener('mousemove', this.drag.bind(this));
+      this.productGrid.addEventListener('mouseup', this.stopDragging.bind(this));
+      this.productGrid.addEventListener('mouseleave', this.stopDragging.bind(this));
+
+      // Touch events
+      this.productGrid.addEventListener('touchstart', this.startDragging.bind(this));
+      this.productGrid.addEventListener('touchmove', this.drag.bind(this));
+      this.productGrid.addEventListener('touchend', this.stopDragging.bind(this));
+    }
+
+    startDragging(e) {
+      this.isDragging = true;
+      this.productGrid.classList.add('dragging');
+      this.startX = e.type === 'mousedown' ? e.pageX : e.touches[0].pageX;
+      this.scrollLeft = this.productGrid.scrollLeft;
+    }
+
+    drag(e) {
+      if (!this.isDragging) return;
+      e.preventDefault();
+      const x = e.type === 'mousemove' ? e.pageX : e.touches[0].pageX;
+      const distance = (this.startX - x);
+      this.productGrid.scrollLeft = this.scrollLeft + distance;
+    }
+
+    stopDragging() {
+      this.isDragging = false;
+      this.productGrid.classList.remove('dragging');
+    }
+
+    async handleAddToCart(event) {
+      const button = event.currentTarget;
+      const productId = button.dataset.productId;
+
+      try {
+        button.disabled = true;
+
+        const formData = {
+          items: [{
+            id: productId,
+            quantity: 1
+          }]
+        };
+
+        const response = await fetch('/cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        });
+
+        if (!response.ok) throw new Error('Failed to add to cart');
+
+        this.showNotification('Product added to cart');
+
+        // Optional: Update cart count in header
+        if (window.updateCartCount) {
+          window.updateCartCount();
+        }
+      } catch (error) {
+        console.error('Error adding to cart:', error);
+        this.showNotification('Failed to add to cart', 'error');
+      } finally {
+        button.disabled = false;
+      }
+    }
+
+    handleAddToWishlist(event) {
+      const button = event.currentTarget;
+      const productId = button.dataset.productId;
+
+      // Implementation depends on theme's wishlist functionality
+      this.showNotification('Added to wishlist');
+    }
+
+    handleVariantChange(event) {
+      const button = event.currentTarget;
+      const variantId = button.dataset.variantId;
+      const card = button.closest('.missoma-product-card');
+
+      // Update active state
+      card.querySelectorAll('.missoma-product-card__variant').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      button.classList.add('active');
+
+      // Update price and image if needed
+      // Implementation depends on variant data structure
+    }
+
+    showNotification(message, type = 'success') {
+      this.notification.textContent = message;
+      this.notification.classList.add('show');
+
+      setTimeout(() => {
+        this.notification.classList.remove('show');
+      }, 3000);
+    }
+  }
+
+  // Initialize the product grid functionality
+  new MissomaProductGrid();
+</script>
+
+{% schema %}
+{
+  "name": "Missoma Product Grid",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 3,
+      "max": 12,
+      "step": 3,
+      "default": 6,
+      "label": "Products to show"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label": "Number of columns on desktop"
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2,
+      "label": "Number of columns on mobile"
+    },
+    {
+      "type": "header",
+      "content": "Product Card Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icons",
+      "label": "Show action icons",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart_icon",
+      "label": "Show add to cart icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wishlist_icon",
+      "label": "Show wishlist icon",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Missoma Product Grid",
+      "settings": {
+        "collection": "",
+        "products_to_show": 6,
+        "columns_desktop": 3,
+        "columns_mobile": 2
+      }
+    }
+  ]
+}
+{% endschema %}

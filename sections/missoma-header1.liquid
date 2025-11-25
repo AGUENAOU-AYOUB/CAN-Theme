@@ -1,0 +1,389 @@
+<div class="search-header" id="searchHeader">
+  <div class="search-bar-container">
+    <div class="search-bar" id="searchBarTrigger">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <span id="searchPlaceholder">{{ section.settings.search_placeholder }}</span>
+    </div>
+  </div>
+</div>
+
+<div class="floating-search" id="floatingSearch">
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <circle cx="11" cy="11" r="8"></circle>
+    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+</div>
+
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-overlay-container">
+    <form class="search-form" id="searchForm" action="{{ routes.search_url }}" method="get">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input
+        type="text"
+        name="q"
+        class="search-input"
+        id="searchInput"
+        placeholder="{{ section.settings.search_placeholder }}"
+      >
+      <input type="hidden" name="type" value="product">
+      <button type="button" class="clear-button" id="clearButton" style="display: none;">
+        {{ section.settings.clear_button_text }}
+      </button>
+      <button type="button" class="close-button" id="closeButton">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </form>
+
+    <div class="popular-searches">
+      <h3>{{ section.settings.popular_searches_title }}</h3>
+      <div class="search-suggestions" id="searchSuggestions">
+        {% if section.settings.popular_search_1 != blank -%}
+          <button class="search-suggestion">{{ section.settings.popular_search_1 }}</button>
+        {%- endif %}
+        {% if section.settings.popular_search_2 != blank -%}
+          <button class="search-suggestion">{{ section.settings.popular_search_2 }}</button>
+        {%- endif %}
+        {% if section.settings.popular_search_3 != blank -%}
+          <button class="search-suggestion">{{ section.settings.popular_search_3 }}</button>
+        {%- endif %}
+        {% if section.settings.popular_search_4 != blank -%}
+          <button class="search-suggestion">{{ section.settings.popular_search_4 }}</button>
+        {%- endif %}
+        {% if section.settings.popular_search_5 != blank -%}
+          <button class="search-suggestion">{{ section.settings.popular_search_5 }}</button>
+        {%- endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .search-header {
+    position: relative; /* changed from fixed */
+    z-index: 1;
+    background-color: white;
+    padding: 15px 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+
+  .search-header.hidden {
+    display: none;
+  }
+
+  .search-bar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+  }
+
+  .search-bar span {
+    color: #8E9196;
+    font-size: 14px;
+  }
+
+  .floating-search {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 50;
+    background: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .floating-search.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .search-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: white;
+    transform: translateY(100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 0.4s ease, opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .search-overlay.open {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .search-overlay-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  .search-form {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .search-input {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    font-size: 18px;
+    padding: 5px 0;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .clear-button {
+    background: none;
+    border: none;
+    color: #8E9196;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 50%;
+  }
+
+  .close-button:hover {
+    background-color: #f0f0f0;
+  }
+
+  .popular-searches {
+    margin-top: 30px;
+  }
+
+  .popular-searches h3 {
+    font-size: 12px;
+    color: #8E9196;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+  }
+
+  .search-suggestions {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .search-suggestion {
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.2s ease;
+  }
+
+  .search-suggestion:hover {
+    color: #000;
+  }
+
+  body {
+    padding-top: 0 !important;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchHeader = document.getElementById('searchHeader');
+    const floatingSearch = document.getElementById('floatingSearch');
+    const searchOverlay = document.getElementById('searchOverlay');
+    const searchBarTrigger = document.getElementById('searchBarTrigger');
+    const searchInput = document.getElementById('searchInput');
+    const clearButton = document.getElementById('clearButton');
+    const closeButton = document.getElementById('closeButton');
+    const searchSuggestions = document.querySelectorAll('.search-suggestion');
+    const searchForm = document.getElementById('searchForm');
+    let lastScrollTop = 0;
+
+    searchSuggestions.forEach(button => {
+      button.addEventListener('click', () => {
+        searchInput.value = button.textContent;
+        searchForm.submit();
+      });
+    });
+
+    window.addEventListener('scroll', () => {
+      const st = window.scrollY;
+      if (st > lastScrollTop && st > 50) {
+        searchHeader.classList.add('hidden');
+        floatingSearch.classList.add('visible');
+      } else {
+        searchHeader.classList.remove('hidden');
+        floatingSearch.classList.remove('visible');
+      }
+      lastScrollTop = st;
+    }, { passive: true });
+
+    function openSearchOverlay() {
+      searchOverlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => searchInput.focus(), 300);
+    }
+
+    function closeSearchOverlay() {
+      searchOverlay.classList.remove('open');
+      document.body.style.overflow = '';
+      searchInput.value = '';
+      toggleClearButton();
+    }
+
+    function toggleClearButton() {
+      clearButton.style.display = searchInput.value ? 'block' : 'none';
+    }
+
+    searchBarTrigger.addEventListener('click', openSearchOverlay);
+    floatingSearch.addEventListener('click', openSearchOverlay);
+    closeButton.addEventListener('click', closeSearchOverlay);
+    clearButton.addEventListener('click', () => {
+      searchInput.value = '';
+      searchInput.focus();
+      toggleClearButton();
+    });
+    searchInput.addEventListener('input', toggleClearButton);
+
+    searchForm.addEventListener('submit', (e) => {
+      if (searchInput.value.trim() === '') {
+        e.preventDefault();
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Search Bar",
+  "settings": [
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search Placeholder",
+      "default": "Search Missoma..."
+    },
+    {
+      "type": "text",
+      "id": "clear_button_text",
+      "label": "Clear Button Text",
+      "default": "Clear"
+    },
+    {
+      "type": "text",
+      "id": "popular_searches_title",
+      "label": "Popular Searches Title",
+      "default": "POPULAR SEARCHES"
+    },
+    {
+      "type": "text",
+      "id": "popular_search_1",
+      "label": "Popular Search 1",
+      "default": "Pearl"
+    },
+    {
+      "type": "text",
+      "id": "popular_search_2",
+      "label": "Popular Search 2",
+      "default": "Earrings"
+    },
+    {
+      "type": "text",
+      "id": "popular_search_3",
+      "label": "Popular Search 3",
+      "default": "Bracelet"
+    },
+    {
+      "type": "text",
+      "id": "popular_search_4",
+      "label": "Popular Search 4",
+      "default": "Heart"
+    },
+    {
+      "type": "text",
+      "id": "popular_search_5",
+      "label": "Popular Search 5",
+      "default": "Initial"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Missoma Search Bar",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

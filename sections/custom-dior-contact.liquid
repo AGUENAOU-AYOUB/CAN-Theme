@@ -1,0 +1,319 @@
+{% comment %}
+  Contact Form Section for Shopify
+  Matches the design of Dior's contact page (https://www.dior.com/fr_fr/beauty/contact-parfum)
+{% endcomment %}
+
+<div class="contact-section">
+  <h1 class="main-title">{{ section.settings.title }}</h1>
+
+  <div class="contact-grid">
+    <!-- Left Column: Phone & Ambassador Text + WhatsApp (combined) -->
+    <div class="contact-info">
+      <p class="ambassador-text">
+        {{ section.settings.ambassador_text }}
+      </p>
+
+      <div class="phone-section">
+        <h2 class="section-title">
+          <span class="phone-icon">
+            <!-- Inline SVG phone icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+          </span>
+          {{ section.settings.phone_title }}
+        </h2>
+
+        <p class="phone-description">
+          {{ section.settings.phone_description }}
+        </p>
+
+        {% for block in section.blocks %}
+          {% if block.type == 'phone_number' %}
+            <div class="phone-block">
+              <p class="phone-label">{{ block.settings.label }}</p>
+              <a href="tel:{{ block.settings.phone | replace: ' ', '' | replace: '(', '' | replace: ')', '' }}" class="phone-number">
+                {{ block.settings.phone }}
+              </a>
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        <p class="service-hours">{{ section.settings.service_hours }}</p>
+      </div>
+      
+      <!-- WhatsApp (now inside contact-info) -->
+      <div class="whatsapp-section">
+        <h2 class="section-title">{{ section.settings.whatsapp_title }}</h2>
+        <p class="whatsapp-description">{{ section.settings.whatsapp_description_1 }}</p>
+        <p class="whatsapp-description">{{ section.settings.whatsapp_description_2 }}</p>
+        <a href="https://wa.me/{{ section.settings.whatsapp_number | replace: ' ', '' | replace: '(', '' | replace: ')', '' }}" class="whatsapp-link" style=" font-style: italic; font-size: 18px; display: inline-flex; align-items: center; ">
+          <span class="phone-icon" style=" margin-right: 10px; "> <!-- Inline SVG phone icon --> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"> <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path> </svg> </span>
+          {{ section.settings.whatsapp_button_text }}
+        </a>
+      </div>
+    </div>
+
+    <!-- Right Column: Contact Form -->
+    <div class="contact-form">
+      <h2 class="section-title">{{ section.settings.email_title }}</h2>
+      <p class="required-notice">{{ section.settings.required_fields_text }}</p>
+
+      {%- form 'contact', id: 'ContactForm' -%}
+        {% if form.posted_successfully? %}
+          <div class="form-success">{{ section.settings.success_message }}</div>
+        {% endif %}
+        {% if form.errors %}
+          <div class="form-error">{{ form.errors | default_errors }}</div>
+        {% endif %}
+
+        <div class="form-section">
+          <h3 class="form-subtitle">{{ section.settings.personal_info_title }}</h3>
+          <div class="form-grid">
+            <div class="form-field title-field">
+              <p class="title-label">{{ section.settings.title_label }}</p>
+              <div class="radio-group">
+                {% assign title_options = section.settings.title_options | split: ',' %}
+                {% for option in title_options %}
+                  <label class="radio-option">
+                    <input type="radio" name="contact[title]" value="{{ option | strip }}" {% if forloop.first %}checked{% endif %}> {{ option | strip }}
+                  </label>
+                {% endfor %}
+              </div>
+            </div>
+
+            <div class="form-field">
+              <div class="dior-input">
+                <input
+                  type="text"
+                  id="first_name"
+                  name="contact[first_name]"
+                  required
+                  placeholder=" "
+                >
+                <label for="first_name">{{ section.settings.first_name_label }}</label>
+              </div>
+            </div>
+            
+            <div class="form-field">
+              <div class="dior-input">
+                <input
+                  type="text"
+                  id="last_name"
+                  name="contact[last_name]"
+                  required
+                  placeholder=" "
+                >
+                <label for="last_name">{{ section.settings.last_name_label }}</label>
+              </div>
+            </div>
+            
+            <div class="form-field">
+              <div class="dior-input">
+                <input
+                  type="email"
+                  id="email"
+                  name="contact[email]"
+                  required
+                  placeholder=" "
+                >
+                <label for="email">{{ section.settings.email_label }}</label>
+              </div>
+            </div>
+            
+            <div class="form-field">
+              <div class="dior-input">
+                <input
+                  type="tel"
+                  id="phone"
+                  name="contact[phone]"
+                  required
+                  placeholder=" "
+                >
+                <label for="phone">{{ section.settings.phone_label }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3 class="form-subtitle">{{ section.settings.inquiry_title }}</h3>
+          <div class="form-grid">
+            <div class="form-field full-width">
+              <div class="dior-input">
+                <input type="text" id="subject" name="contact[subject]" required placeholder=" ">
+                <label for="subject">{{ section.settings.subject_label }}</label>
+              </div>
+            </div>
+            <div class="form-field full-width">
+              <div class="dior-input textarea-container">
+                <textarea id="message" name="contact[body]" rows="5" maxlength="{{ section.settings.message_max_length }}" required placeholder=" "></textarea>
+                <label for="message">{{ section.settings.message_label }}</label>
+              </div>
+              <div class="char-counter">
+                <span id="char-count">{{ section.settings.message_max_length }}</span> {{ section.settings.characters_remaining_text }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-button">{{ section.settings.submit_button_text }}</button>
+        <p class="privacy-notice">{{ section.settings.privacy_notice }}</p>
+      {%- endform -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  .contact-section { max-width: 1440px; margin: 0 auto; padding: 60px 40px; font-family: "Helvetica Neue", Arial, sans-serif; }
+  .main-title { font-size: 32px; text-align: center; margin-bottom: 60px; font-weight: 300; letter-spacing: 1px; text-transform: uppercase; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 60px; }
+  .contact-info { grid-column: 1; }
+  .contact-form { grid-column: 2; }
+
+  .whatsapp-section { border-top: 1px solid #e6e6e6; padding-top: 15px; margin-top: 15px; }
+  .ambassador-text { font-size: 16px; line-height: 1.6; margin-bottom: 30px; }
+  .section-title { font-size: 20px; font-weight: 300; text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; letter-spacing: 1px; }
+  .phone-icon { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
+  .phone-description { margin-bottom: 30px; line-height: 1.6; color: #666; }
+  .phone-block { margin-bottom: 20px; }
+  .phone-label { color: #666; margin-bottom: 5px; }
+  .phone-number { color: #000; font-weight: 500; text-decoration: none; padding-bottom: 5px; border-bottom: 1px solid #e6e6e6; display: block; }
+  .service-hours { font-style: italic; color: #666; margin-top: 30px; }
+
+  .dior-input { position: relative; width: 100%; }
+  .dior-input::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 1px; background-color: #000; transition: all 0.3s ease; }
+  .dior-input input, .dior-input textarea { width: 100%; padding: 10px 0; border: none; background: transparent; font-size: 16px; line-height: 1.5; transition: all 0.3s ease; }
+  .dior-input label { position: absolute; top: 10px; left: 0; color: #000; font-size: 16px; transition: all 0.3s ease; pointer-events: none; }
+  .dior-input input:focus ~ label, .dior-input textarea:focus ~ label,
+  .dior-input input:not(:placeholder-shown) ~ label, .dior-input textarea:not(:placeholder-shown) ~ label { transform: translateY(-20px); font-size: 14px; color: #666; }
+
+  .radio-group { display: flex; gap: 30px; }
+  .radio-option { display: flex; align-items: center; cursor: pointer; }
+  .radio-option input { margin-right: 8px; appearance: none; width: 18px; height: 18px; border: 1px solid #ccc; border-radius: 50%; position: relative; }
+  .radio-option input:checked::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; background-color: #000; border-radius: 50%; }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+  .form-field.full-width { grid-column: span 2; }
+  .title-field { grid-column: span 2; margin-bottom: 30px; }
+
+  .submit-button { background: #f5f5f5; border: none; padding: 15px 40px; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; margin: 40px 0; transition: background-color 0.2s ease; }
+  .submit-button:hover { background: #e5e5e5; }
+
+  .whatsapp-link { display: inline-block; margin-top: 12px; text-transform: uppercase; text-decoration: none; position: relative; font-size: 14px; letter-spacing: 1px; color: #000; }
+  .whatsapp-link::after { content: ''; position: absolute; left: 0; bottom: -2px; width: 100%; height: 1px; background: #000; transform: scaleX(0); transform-origin: right; transition: transform 0.3s ease; }
+  .whatsapp-link:hover::after { transform: scaleX(1); transform-origin: left; }
+
+  .whatsapp-description { margin-bottom: 8px; line-height: 1.6; color: #666; }
+  .char-counter { margin-top: 5px; text-align: right; font-size: 14px; color: #666; }
+  .form-success { background-color: #f0f9f0; color: #2c662d; padding: 15px; margin-bottom: 20px; border-left: 4px solid #2c662d; }
+  .form-error { background-color: #fff0f0; color: #c62828; padding: 15px; margin-bottom: 20px; border-left: 4px solid #c62828; }
+  .privacy-notice { font-size: 13px; line-height: 1.6; color: #666; margin-bottom: 60px; }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .contact-grid { grid-template-columns: 1fr; grid-template-rows: auto; gap: 40px; }
+    .contact-info, .contact-form { grid-column: auto; }
+    .whatsapp-section { padding-top: 15px; margin-top: 15px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .form-field.full-width { grid-column: span 1; }
+      .dior-input label { position: absolute; top: 10px; left: 0; color: #000; font-size: 14px; transition: all 0.3s ease; pointer-events: none; }
+  }
+  @keyframes underline {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Contact Form",
+  "settings": [
+    {"type":"text","id":"title","label":"Main Title","default":"NOUS CONTACTER"},
+    {"type":"textarea","id":"ambassador_text","label":"Ambassador Description","default":"Nos Ambassadeurs vous réservent un accueil personnalisé et auront le plaisir de vous accompagner dans votre découverte de la Maison Dior et de ses produits."},
+    {"type":"text","id":"phone_title","label":"Phone Section Title","default":"NOUS APPELER"},
+    {"type":"textarea","id":"phone_description","label":"Phone Description","default":"Nos Ambassadeurs sont à votre écoute et vous apportent un conseil personnalisé par téléphone."},
+    {"type":"text","id":"service_hours","label":"Service Hours Text","default":"Service disponible du lundi au samedi de 9h à 19h."},
+    {"type":"text","id":"email_title","label":"Email Form Title","default":"NOUS ADRESSER UN EMAIL"},
+    {"type":"text","id":"required_fields_text","label":"Required Fields Text","default":"(*) Les champs marqués d'un astérisque sont obligatoires."},
+    {"type":"text","id":"success_message","label":"Success Message","default":"Merci pour votre message. Nous vous répondrons dans les plus brefs délais."},
+    {"type":"text","id":"personal_info_title","label":"Personal Information Title","default":"Vos informations"},
+    {"type":"text","id":"title_label","label":"Title Field Label","default":"Civilité*"},
+    {"type":"text","id":"title_options","label":"Title Options (comma-separated)","default":"M.,Mme."},
+    {"type":"text","id":"first_name_label","label":"First Name Label","default":"Prénom*"},
+    {"type":"text","id":"last_name_label","label":"Last Name Label","default":"Nom*"},
+    {"type":"text","id":"email_label","label":"Email Label","default":"E-mail*"},
+    {"type":"text","id":"phone_label","label":"Phone Label","default":"Téléphone mobile*"},
+    {"type":"text","id":"inquiry_title","label":"Inquiry Title","default":"Votre demande"},
+    {"type":"text","id":"subject_label","label":"Subject Label","default":"Objet*"},
+    {"type":"text","id":"message_label","label":"Message Label","default":"Votre message*"},
+    {"type":"number","id":"message_max_length","label":"Message Maximum Length","default":360},
+    {"type":"text","id":"characters_remaining_text","label":"Characters Remaining Text","default":"caractères restants"},
+    {"type":"text","id":"submit_button_text","label":"Submit Button Text","default":"ENVOYER"},
+    {"type":"textarea","id":"privacy_notice","label":"Privacy Notice","default":"Parfums Christian Dior est le responsable du traitement de vos données. Les informations fournies ci-dessus sont nécessaires pour traiter votre demande et répondre à vos questions. Pour en savoir plus sur le traitement de vos données personnelles et pour connaître vos droits, veuillez consulter notre politique de confidentialité ou nous adresser un email via notre formulaire de contact."},
+    {"type":"text","id":"whatsapp_title","label":"WhatsApp Title","default":"ÉCHANGER AVEC NOUS PAR WHATSAPP"},
+    {"type":"text","id":"whatsapp_description_1","label":"WhatsApp Description 1","default":"Un ambassadeur Dior vous accompagne par messagerie WhatsApp."},
+    {"type":"text","id":"whatsapp_description_2","label":"WhatsApp Description 2","default":"Echangez à votre rythme tout au long de la journée."},
+    {"type":"text","id":"whatsapp_button_text","label":"WhatsApp Button Text","default":"LANCER UNE DISCUSSION"},
+    {"type":"text","id":"whatsapp_number","label":"WhatsApp Number","default":"33000000000"}
+  ],
+  "blocks": [
+    {
+      "type": "phone_number",
+      "name": "Phone Number",
+      "settings": [
+        {"type":"text","id":"label","label":"Label","default":"Parfums Christian Dior et ses collections de fragrances, maquillage et soins :"},
+        {"type":"text","id":"phone","label":"Phone Number","default":"+33 (0)1 49 53 88 88"}
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact Form",
+      "blocks": [
+        {"type": "phone_number"}
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var inputs = document.querySelectorAll('.dior-input input, .dior-input textarea');
+    var messageField = document.getElementById('message');
+    var charCount = document.getElementById('char-count');
+    
+    inputs.forEach(function(input) {
+      input.setAttribute('placeholder', ' ');
+      if (input.value) input.classList.add('has-value');
+      
+      input.addEventListener('focus', function() { 
+        this.parentElement.classList.add('focused'); 
+      });
+      
+      input.addEventListener('blur', function() { 
+        this.parentElement.classList.remove('focused'); 
+        this.classList.toggle('has-value', this.value.length > 0); 
+      });
+      
+      input.addEventListener('input', function() { 
+        this.classList.toggle('has-value', this.value.length > 0); 
+      });
+    });
+    
+    if (messageField && charCount) {
+      var maxLength = parseInt(charCount.textContent) || 360;
+      
+      messageField.addEventListener('input', function() {
+        var remaining = maxLength - this.value.length;
+        charCount.textContent = remaining;
+        charCount.style.color = remaining < 50 ? '#ff0000' : '#666';
+      });
+    }
+  });
+</script>

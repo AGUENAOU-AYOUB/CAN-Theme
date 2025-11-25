@@ -1,0 +1,233 @@
+{% schema %}
+{
+  "name": "Product Journey",
+  "settings": [
+    {
+      "type": "range",
+      "id": "vertical_padding",
+      "label": "Vertical Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "horizontal_padding_desktop",
+      "label": "Horizontal Padding (Desktop)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "horizontal_padding_mobile",
+      "label": "Horizontal Padding (Mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap Between Items",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "section_width",
+      "label": "Section Max Width (px)",
+      "min": 600,
+      "max": 2000,
+      "step": 20,
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "Top Margin",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "Bottom Margin",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "image_max_width",
+      "label": "Image Max Width (px)",
+      "min": 100,
+      "max": 1000,
+      "step": 20,
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading Font Size (px)",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "text_font_size",
+      "label": "Text Font Size (px)",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "default": 15
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Step Title"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Step Description"
+        },
+        {
+          "type": "url",
+          "id": "video",
+          "label": "Video (Shopify File URL)",
+          "info": "Add a video file uploaded to Shopify Files."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Product Journey",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+
+{% style %}
+  <style>
+  .product-journey-section {
+    padding-top: {{ section.settings.vertical_padding }}px;
+    padding-bottom: {{ section.settings.vertical_padding }}px;
+    margin-top: {{ section.settings.margin_top }}px;
+    margin-bottom: {{ section.settings.margin_bottom }}px;
+    padding-left: {{ section.settings.horizontal_padding_desktop }}px;
+    padding-right: {{ section.settings.horizontal_padding_desktop }}px;
+  }
+
+  .product-journey-container {
+    max-width: {{ section.settings.section_width }}px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: {{ section.settings.gap }}px;
+  }
+
+  .product-journey-item {
+    text-align: left;
+  }
+
+  .product-journey-image img,
+  .product-journey-image video {
+    width: 100%;
+    max-width: {{ section.settings.image_max_width }}px;
+    height: auto;
+    display: block;
+    border-radius: 0;
+  }
+
+  .product-journey-image video {
+    display: block;
+    width: 100%;
+    max-width: {{ section.settings.image_max_width }}px;
+    border-radius: 0;
+    object-fit: cover;
+    pointer-events: none;
+  }
+
+  .product-journey-title {
+    font-size: {{ section.settings.heading_font_size }}px;
+    font-weight: 700;
+    margin-top: 20px;
+    text-transform: uppercase;
+  }
+
+  .product-journey-description {
+    font-size: {{ section.settings.text_font_size }}px;
+    margin-top: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .product-journey-section {
+      padding-left: {{ section.settings.horizontal_padding_mobile }}px;
+      padding-right: {{ section.settings.horizontal_padding_mobile }}px;
+    }
+
+    .product-journey-title {
+      font-size: calc({{ section.settings.heading_font_size }}px * 0.9);
+    }
+
+    .product-journey-description {
+      font-size: calc({{ section.settings.text_font_size }}px * 0.9);
+    }
+  }
+  </style>
+{% endstyle %}
+
+<section class="product-journey-section">
+  <div class="product-journey-container">
+    {% for block in section.blocks %}
+      <div class="product-journey-item">
+        {% if block.settings.video != blank %}
+          <div class="product-journey-image">
+            <video autoplay muted loop playsinline>
+              <source src="{{ block.settings.video }}" type="video/mp4">
+            </video>
+          </div>
+        {% elsif block.settings.image %}
+          <div class="product-journey-image">
+            <img src="{{ block.settings.image | img_url: '800x' }}" alt="{{ block.settings.title }}">
+          </div>
+        {% endif %}
+        <div class="product-journey-title">{{ forloop.index }}. {{ block.settings.title }}</div>
+        <div class="product-journey-description">
+          {{ block.settings.description }}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>

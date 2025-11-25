@@ -1,0 +1,990 @@
+{% schema %}
+{
+  "name": "Luxury Bags Collection",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 1,
+      "max": 50,
+      "step": 1,
+      "label": "Products to show",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Header Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show heading",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "collection_title",
+      "label": "Heading",
+      "default": "Lady Dior"
+    },
+    {
+      "type": "textarea",
+      "id": "collection_description",
+      "label": "Description",
+      "default": "Discover our exclusive collection of luxury bags"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Spacing Settings"
+    },
+    {
+      "type": "range",
+      "id": "horizontal_padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Horizontal Padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "vertical_padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Vertical Padding",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "top_margin",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Margin",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "bottom_margin",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Margin",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        {
+          "value": "full",
+          "label": "Full Width"
+        },
+        {
+          "value": "large",
+          "label": "Large (1800px)"
+        },
+        {
+          "value": "medium",
+          "label": "Medium (1400px)"
+        },
+        {
+          "value": "small",
+          "label": "Small (1200px)"
+        }
+      ],
+      "default": "large"
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "select",
+      "id": "display_type",
+      "label": "Display type",
+      "options": [
+        {
+          "value": "grid",
+          "label": "Grid"
+        },
+        {
+          "value": "carousel",
+          "label": "Carousel"
+        }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "select",
+      "id": "products_per_row",
+      "label": "Products per row (Grid mode)",
+      "options": [
+        {
+          "value": "2",
+          "label": "2 products"
+        },
+        {
+          "value": "3",
+          "label": "3 products"
+        },
+        {
+          "value": "4",
+          "label": "4 products"
+        }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "select",
+      "id": "desktop_slides_to_show",
+      "label": "Products per view (Desktop carousel)",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 product"
+        },
+        {
+          "value": "2",
+          "label": "2 products"
+        },
+        {
+          "value": "3",
+          "label": "3 products"
+        },
+        {
+          "value": "4",
+          "label": "4 products"
+        }
+      ],
+      "default": "3",
+      "info": "Only applies when display type is carousel"
+    },
+    {
+      "type": "select",
+      "id": "mobile_slides_to_show",
+      "label": "Products per view (Mobile carousel)",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 product"
+        },
+        {
+          "value": "2",
+          "label": "2 products"
+        }
+      ],
+      "default": "1",
+      "info": "Only applies when display type is carousel"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show carousel arrows",
+      "default": true,
+      "info": "Only applies when display type is carousel"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show carousel dots",
+      "default": true,
+      "info": "Only applies when display type is carousel"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image aspect ratio",
+      "options": [
+        {
+          "value": "square",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait (4:5)"
+        }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "header",
+      "content": "Product Card Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "label": "Show second image on hover",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Quick View Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_quick_view",
+      "label": "Enable quick view",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "quick_view_text",
+      "label": "Quick view button text",
+      "default": "Quick View"
+    },
+    {
+      "type": "color",
+      "id": "quick_view_bg_color",
+      "label": "Quick view button background",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "quick_view_text_color",
+      "label": "Quick view button text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "select",
+      "id": "quick_view_font_family",
+      "label": "Quick view button font family",
+      "options": [
+        {
+          "value": "helvetica",
+          "label": "Helvetica Neue"
+        },
+        {
+          "value": "futura",
+          "label": "Futura"
+        },
+        {
+          "value": "garamond",
+          "label": "Garamond"
+        }
+      ],
+      "default": "helvetica"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury Collection",
+      "category": "Collection"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  .luxury-collection {
+    padding: {{ section.settings.vertical_padding }}px {{ section.settings.horizontal_padding }}px;
+    background-color: #fff;
+    margin: {{ section.settings.top_margin }}px auto {{ section.settings.bottom_margin }}px;
+    {% if section.settings.section_width == 'full' %}
+      max-width: 100%;
+    {% elsif section.settings.section_width == 'large' %}
+      max-width: 1800px;
+    {% elsif section.settings.section_width == 'medium' %}
+      max-width: 1400px;
+    {% elsif section.settings.section_width == 'small' %}
+      max-width: 1200px;
+    {% endif %}
+  }
+
+  .luxury-collection__header {
+    text-align: {{ section.settings.heading_alignment }};
+    margin-bottom: 2rem;
+    padding: 0 2rem;
+  }
+
+  .luxury-collection__title {
+    font-size: {% if section.settings.heading_size == 'small' %}1.5rem{% elsif section.settings.heading_size == 'large' %}2.5rem{% else %}2rem{% endif %};
+    font-weight: 300;
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+    font-family: "Helvetica Neue", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .luxury-collection__description {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 {% if section.settings.heading_alignment == 'center' %}auto{% elsif section.settings.heading_alignment == 'right' %}0 0 auto{% else %}0 auto 0 0{% endif %};
+  }
+
+  .luxury-collection__grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.products_per_row }}, 1fr);
+    gap: 1rem;
+    padding: 0 2rem;
+  }
+
+  /* Carousel Styles */
+  .luxury-collection__carousel {
+    position: relative;
+    padding: 0 2rem;
+  }
+
+  .luxury-collection__carousel .slick-track {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .luxury-collection__carousel .slick-slide {
+    height: auto;
+    padding: 0 0.5rem;
+  }
+
+  .luxury-collection__carousel .slick-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #e8e8e8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .luxury-collection__carousel .slick-arrow:hover {
+    background: #f5f5f5;
+  }
+
+  .luxury-collection__carousel .slick-prev {
+    left: 0;
+  }
+
+  .luxury-collection__carousel .slick-next {
+    right: 0;
+  }
+
+  .luxury-collection__carousel .slick-dots {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0 0;
+  }
+
+  .luxury-collection__carousel .slick-dots li {
+    margin: 0 5px;
+  }
+
+  .luxury-collection__carousel .slick-dots button {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #e8e8e8;
+    border: none;
+    font-size: 0;
+    padding: 0;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .luxury-collection__carousel .slick-dots li.slick-active button {
+    background: #1a1a1a;
+  }
+
+  .product-card {
+    position: relative;
+    text-align: center;
+    background: #fff;
+  }
+
+  .product-card__image-wrapper {
+    position: relative;
+    padding-bottom: {% if section.settings.image_ratio == 'portrait' %}125%{% else %}100%{% endif %};
+    overflow: hidden;
+    background-color: #f8f8f8;
+    cursor: pointer;
+  }
+
+  .product-card__image,
+  .product-card__image-secondary {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.4s ease;
+  }
+
+  .product-card__image-secondary {
+    opacity: 0;
+  }
+
+  {% if section.settings.show_secondary_image %}
+  .product-card:hover .product-card__image-secondary {
+    opacity: 1;
+  }
+
+  .product-card:hover .product-card__image-primary {
+    opacity: 0;
+  }
+  {% endif %}
+
+  .product-card__info {
+    padding: 1.5rem 1rem;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+  }
+
+  .product-card__title {
+    font-size: 1.3rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    color: #1a1a1a;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .product-card__vendor {
+    font-size: 0.875rem;
+    color: #666;
+    margin: 0.5rem 0;
+    font-style: italic;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .product-card:hover .product-card__vendor {
+    opacity: 1;
+    max-height: 20px;
+    margin: 0.5rem 0;
+  }
+
+  .product-card__subtitle {
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+    font-weight: 300;
+  }
+
+  .product-card__price {
+    font-size: 1.4rem;
+    color: #1a1a1a;
+    font-weight: 400;
+  }
+
+  .filters-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 1rem 2rem;
+    border-bottom: 1px solid #e8e8e8;
+    margin-bottom: 2rem;
+  }
+
+  .filters-toolbar__button {
+    background: none;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #1a1a1a;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: color 0.3s ease;
+  }
+
+  .filters-toolbar__button:hover {
+    color: #666;
+  }
+
+  .quick-view {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 1rem;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .product-card:hover .quick-view {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .quick-view__button {
+    background: {{ section.settings.quick_view_bg_color }};
+    color: {{ section.settings.quick_view_text_color }};
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    font-family: {% case section.settings.quick_view_font_family %}
+      {% when 'helvetica' %}
+        "Helvetica Neue", sans-serif
+      {% when 'futura' %}
+        "Futura", sans-serif
+      {% when 'garamond' %}
+        "Garamond", serif
+    {% endcase %};
+  }
+
+  .quick-view__button:hover {
+    background-color: {{ section.settings.quick_view_bg_color | color_modify: 'alpha', 0.9 }};
+  }
+
+  /* Heart icon styles */
+  .wishlist-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 15;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.2s ease;
+    border: none;
+  }
+
+  .product-card:hover .wishlist-button {
+    opacity: 1;
+  }
+
+  .wishlist-button:hover {
+    transform: scale(1.1);
+  }
+
+  .wishlist-button svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: #1a1a1a;
+    stroke-width: 2;
+    transition: fill 0.2s ease;
+  }
+
+  .wishlist-button:hover svg {
+    fill: rgba(255, 0, 0, 0.1);
+  }
+
+  .wishlist-button.active svg {
+    fill: #ff0000;
+    stroke: #ff0000;
+  }
+
+  @media screen and (max-width: 1024px) {
+    .luxury-collection__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .luxury-collection__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      padding: 0 1rem;
+    }
+
+    .luxury-collection__title {
+      font-size: {% if section.settings.heading_size == 'small' %}1.25rem{% elsif section.settings.heading_size == 'large' %}2rem{% else %}1.75rem{% endif %};
+    }
+
+    .product-card__info {
+      padding: 1rem 0.75rem;
+    }
+
+    .filters-toolbar {
+      padding: 1rem;
+    }
+
+    .luxury-collection__carousel {
+      padding: 0 1rem;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    .luxury-collection__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      padding: 0 0.75rem;
+    }
+
+    .luxury-collection__title {
+      font-size: {% if section.settings.heading_size == 'small' %}1.125rem{% elsif section.settings.heading_size == 'large' %}1.75rem{% else %}1.5rem{% endif %};
+    }
+
+    .product-card__info {
+      padding: 0.75rem 0.5rem;
+    }
+
+    .product-card__title {
+      font-size: 0.875rem;
+    }
+
+    .product-card__price {
+      font-size: 0.875rem;
+    }
+
+    .quick-view__button {
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+    }
+
+    .luxury-collection__carousel {
+      padding: 0 0.75rem;
+    }
+  }
+</style>
+
+<div class="luxury-collection">
+  {% if section.settings.show_title %}
+    <div class="luxury-collection__header">
+      <h2 class="luxury-collection__title">{{ section.settings.collection_title }}</h2>
+      {% if section.settings.collection_description != blank %}
+        <div class="luxury-collection__description">{{ section.settings.collection_description }}</div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {% if section.settings.display_type == 'carousel' %}
+    <div
+      class="luxury-collection__carousel"
+      data-desktop-slides="{{ section.settings.desktop_slides_to_show }}"
+      data-mobile-slides="{{ section.settings.mobile_slides_to_show }}"
+      data-show-arrows="{{ section.settings.show_arrows }}"
+      data-show-dots="{{ section.settings.show_dots }}"
+    >
+      {% for product in section.settings.collection.products limit: section.settings.products_to_show %}
+        <div class="product-card">
+          <div class="product-card__image-wrapper" data-product-url="{{ product.url }}">
+            <img
+              src="{{ product.featured_image | img_url: '800x' }}"
+              alt="{{ product.title }}"
+              class="product-card__image product-card__image-primary"
+              loading="lazy"
+            >
+            {% if section.settings.show_secondary_image and product.images[1] %}
+              <img
+                src="{{ product.images[1] | img_url: '800x' }}"
+                alt="{{ product.title }}"
+                class="product-card__image product-card__image-secondary"
+                loading="lazy"
+              >
+            {% endif %}
+
+            <!-- Heart icon for adding to cart -->
+            
+            <button class="wishlist-button" data-product-id="{{ product.variants.first.id }}" aria-label="Add to cart">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+              </svg>
+            </button>
+          
+            {% if section.settings.enable_quick_view %}
+              <div class="quick-view">
+                <form method="post" action="/cart/add" class="quick-buy-form">
+                  <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                  <input type="hidden" name="quantity" value="1">
+                  <input type="hidden" name="return_to" value="/checkout">
+                  <button type="submit" class="quick-view__button" data-product-id="{{ product.id }}">
+                    {{ section.settings.quick_view_text }}
+                  </button>
+                </form>
+              </div>
+            {% endif %}
+          </div>
+          <div class="product-card__info" data-product-url="{{ product.url }}">
+            <h2 class="product-card__title">{{ product.title }}</h2>
+            {% if section.settings.show_vendor %}
+              <div class="product-card__vendor">{{ product.vendor }}</div>
+            {% endif %}
+            {% if product.metafields.custom.subtitle %}
+              <div class="product-card__subtitle">{{ product.metafields.custom.subtitle }}</div>
+            {% endif %}
+            <div class="product-card__price">
+              {{ product.price | money }}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="luxury-collection__grid">
+      {% for product in section.settings.collection.products limit: section.settings.products_to_show %}
+        <div class="product-card">
+          <div class="product-card__image-wrapper" data-product-url="{{ product.url }}">
+            <img
+              src="{{ product.featured_image | img_url: '800x' }}"
+              alt="{{ product.title }}"
+              class="product-card__image product-card__image-primary"
+              loading="lazy"
+            >
+            {% if section.settings.show_secondary_image and product.images[1] %}
+              <img
+                src="{{ product.images[1] | img_url: '800x' }}"
+                alt="{{ product.title }}"
+                class="product-card__image product-card__image-secondary"
+                loading="lazy"
+              >
+            {% endif %}
+
+            <!-- Heart icon for adding to cart -->
+            <button class="wishlist-button" data-product-id="{{ product.variants.first.id }}" aria-label="Add to cart">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+              </svg>
+            </button>
+
+            {% if section.settings.enable_quick_view %}
+              <div class="quick-view">
+                <form method="post" action="/cart/add" class="quick-buy-form">
+                  <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                  <input type="hidden" name="quantity" value="1">
+                  <input type="hidden" name="return_to" value="/checkout">
+                  <button type="submit" class="quick-view__button" data-product-id="{{ product.id }}">
+                    {{ section.settings.quick_view_text }}
+                  </button>
+                </form>
+              </div>
+            {% endif %}
+          </div>
+          <div class="product-card__info" data-product-url="{{ product.url }}">
+            <h2 class="product-card__title">{{ product.title }}</h2>
+            {% if section.settings.show_vendor %}
+              <div class="product-card__vendor">{{ product.vendor }}</div>
+            {% endif %}
+            {% if product.metafields.custom.subtitle %}
+              <div class="product-card__subtitle">{{ product.metafields.custom.subtitle }}</div>
+            {% endif %}
+            <div class="product-card__price">
+              {{ product.price | money }}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Product image and info click - go to product page
+    const productImages = document.querySelectorAll('.product-card__image-wrapper');
+    const productInfos = document.querySelectorAll('.product-card__info');
+
+    function handleProductClick(element) {
+      element.addEventListener('click', function(e) {
+        // Only navigate if the click wasn't on a button or form element
+        if (!e.target.closest('button') && !e.target.closest('form')) {
+          const productUrl = this.dataset.productUrl;
+          if (productUrl) {
+            window.location.href = productUrl;
+          }
+        }
+      });
+    }
+
+    productImages.forEach(handleProductClick);
+    productInfos.forEach(handleProductClick);
+
+    // Heart icon buttons - add to cart
+    const wishlistButtons = document.querySelectorAll('.wishlist-button');
+
+    wishlistButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const productId = this.dataset.productId;
+        this.classList.add('active');
+
+        // Add the product to cart using Shopify AJAX API
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            id: productId,
+            quantity: 1
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Visual feedback that product was added
+          const button = this;
+
+          // Show confirmation message
+          const confirmMessage = document.createElement('div');
+          confirmMessage.textContent = 'Added to cart';
+          confirmMessage.style.position = 'absolute';
+          confirmMessage.style.top = '-30px';
+          confirmMessage.style.left = '50%';
+          confirmMessage.style.transform = 'translateX(-50%)';
+          confirmMessage.style.background = '#1a1a1a';
+          confirmMessage.style.color = '#fff';
+          confirmMessage.style.padding = '5px 10px';
+          confirmMessage.style.borderRadius = '3px';
+          confirmMessage.style.fontSize = '12px';
+          confirmMessage.style.zIndex = '20';
+
+          button.appendChild(confirmMessage);
+
+          // Update cart count if a function exists
+          if (typeof updateCartCount === 'function') {
+            updateCartCount();
+          } else {
+            // Try to refresh cart drawer if it exists
+            if (typeof refreshCart === 'function') {
+              refreshCart();
+            }
+          }
+
+          setTimeout(() => {
+            confirmMessage.remove();
+            button.classList.remove('active');
+          }, 2000);
+        })
+        .catch(error => {
+          console.error('Error adding product to cart:', error);
+          this.classList.remove('active');
+        });
+      });
+    });
+
+    // Initialize carousel if needed
+    const carouselContainer = document.querySelector('.luxury-collection__carousel');
+    if (carouselContainer && typeof $.fn.slick === 'function') {
+      const desktopSlides = parseInt(carouselContainer.dataset.desktopSlides) || 3;
+      const mobileSlides = parseInt(carouselContainer.dataset.mobileSlides) || 1;
+      const showArrows = carouselContainer.dataset.showArrows === 'true';
+      const showDots = carouselContainer.dataset.showDots === 'true';
+
+      $(carouselContainer).slick({
+        slidesToShow: desktopSlides,
+        slidesToScroll: 1,
+        arrows: showArrows,
+        dots: showDots,
+        infinite: true,
+        speed: 500,
+        cssEase: 'ease',
+        prevArrow: '<button type="button" class="slick-prev"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 18L9 12L15 6" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>',
+        nextArrow: '<button type="button" class="slick-next"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 6L15 12L9 18" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>',
+        responsive: [
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: Math.min(desktopSlides, 3),
+            }
+          },
+          {
+            breakpoint: 768,
+            settings: {
+              slidesToShow: Math.min(desktopSlides, 2),
+            }
+          },
+          {
+            breakpoint: 480,
+            settings: {
+              slidesToShow: mobileSlides,
+              arrows: false,
+              dots: true
+            }
+          }
+        ]
+      });
+    }
+  });
+  document.addEventListener('DOMContentLoaded', function() {
+  const buttons = document.querySelectorAll('button');
+  buttons.forEach(button => {
+    if (button.textContent.trim().toLowerCase() === 'achetez') {
+      button.style.display = 'none';
+    }
+  });
+});
+
+</script>

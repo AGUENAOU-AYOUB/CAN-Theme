@@ -1,0 +1,455 @@
+{% schema %}
+{
+  "name": "PDPAOLA I Product Grid",
+  "tag": "section",
+  "class": "pdpaola-inspired-grid",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading Text",
+      "default": "Shop the Collection"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading Alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "default": "full",
+      "options": [
+        { "value": "full", "label": "Full Width" },
+        { "value": "wide", "label": "Wide" },
+        { "value": "boxed", "label": "Boxed" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "horizontal_padding",
+      "label": "Horizontal Padding (px)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button Background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "add_to_cart_text",
+      "label": "Add to Cart Button Text",
+      "default": "Add to Cart"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading Font Size (px)",
+      "min": 14,
+      "max": 48,
+      "step": 1,
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "label": "Product Title Font Size (px)",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "price_font_size",
+      "label": "Product Price Font Size (px)",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Product Image Height (px)",
+      "min": 200,
+      "max": 600,
+      "step": 10,
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "add_to_cart_height",
+      "label": "Add to Cart Button Height (px)",
+      "min": 30,
+      "max": 80,
+      "step": 2,
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "PDPAOLA Product Grid",
+      "category": "Products"
+    }
+  ]
+}
+{% endschema %}
+
+{% assign section_classes = '' %}
+{% if section.settings.section_width == 'wide' %}
+  {% assign section_classes = 'max-w-screen-xl mx-auto' %}
+{% elsif section.settings.section_width == 'boxed' %}
+  {% assign section_classes = 'max-w-screen-lg mx-auto' %}
+{% endif %}
+
+{% if section.settings.collection != blank %}
+  <div
+    class="pdpaola-grid {{ section_classes }}"
+    style="background-color: {{ section.settings.background_color }}; color: {{ section.settings.text_color }}; padding-left: {{ section.settings.horizontal_padding }}px; padding-right: {{ section.settings.horizontal_padding }}px;"
+  >
+    <h2
+      class="pdpaola-heading"
+      style="font-size: {{ section.settings.heading_font_size }}px; text-align: {{ section.settings.heading_alignment }};"
+    >
+      {{ section.settings.heading }}
+    </h2>
+    <div class="carousel-wrapper no-scrollbar">
+      <div class="product-carousel" id="product-carousel">
+        {% assign products = collections[section.settings.collection].products %}
+        {% for product in products %}
+          <div class="carousel-item" data-product-id="{{ product.id }}">
+            <div class="product-card">
+              <div class="product-image">
+                <a href="{{ product.url }}">
+                  <img
+                    src="{{ product.featured_image | img_url: '600x' }}"
+                    alt="{{ product.title }}"
+                    style="height: {{ section.settings.image_height }}px; object-fit: cover;"
+                  >
+                </a>
+                <!-- Heart icon -->
+                <button
+                  class="heart-icon"
+                  data-product-id="{{ product.id }}"
+                  data-variant-id="{{ product.variants.first.id }}"
+                  aria-label="Add to cart and checkout"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="heart-svg"
+                  >
+                    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                  </svg>
+                </button>
+                <form method="post" action="/cart/add" class="product-form">
+                  <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+                  <button
+                    type="submit"
+                    class="add-to-cart"
+                    data-product-id="{{ product.id }}"
+                    style="background-color: {{ section.settings.button_background }}; color: {{ section.settings.button_text_color }}; height: {{ section.settings.add_to_cart_height }}px; line-height: {{ section.settings.add_to_cart_height }}px;"
+                  >
+                    {{ section.settings.add_to_cart_text }}
+                  </button>
+                </form>
+              </div>
+              <div class="product-info">
+                <p class="product-title" style="font-size: {{ section.settings.title_font_size }}px;">
+                  {{ product.title }}
+                </p>
+                <p class="product-price" style="font-size: {{ section.settings.price_font_size }}px;">
+                  {{ product.price | money }}
+                </p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% else %}
+  <p style="padding: 20px; color: red;">Please select a collection in the section settings.</p>
+{% endif %}
+
+<style>
+  .pdpaola-heading {
+    margin-bottom: 30px;
+    font-weight: 600;
+  }
+  .carousel-wrapper {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    display: flex;
+    gap: 20px;
+    padding-bottom: 20px;
+  }
+  .carousel-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+  .carousel-wrapper {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .product-carousel {
+    display: flex;
+    gap: 20px;
+    scroll-snap-type: x mandatory;
+    width: max-content;
+    padding-bottom: 30px;
+  }
+  .carousel-item {
+    scroll-snap-align: start;
+    flex: 0 0 auto;
+    width: 280px;
+  }
+  .product-card {
+    position: relative;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .product-image {
+    position: relative;
+    overflow: hidden;
+  }
+  .product-image img {
+    width: 100%;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+  .product-image:hover img {
+    transform: scale(1.05);
+  }
+  /* Heart icon styles */
+  .heart-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+    border: none;
+    cursor: pointer;
+  }
+  .product-image:hover .heart-icon {
+    opacity: 1;
+  }
+  .heart-svg {
+    width: 24px;
+    height: 24px;
+    transition: all 0.3s ease;
+  }
+  .heart-icon.active .heart-svg {
+    fill: #ff4d4d;
+    stroke: #ff4d4d;
+  }
+  .add-to-cart {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    border: none;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .product-image:hover .add-to-cart {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .product-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 4px;
+  }
+  .product-title {
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .product-price {
+    font-weight: 400;
+  }
+  @media (max-width: 768px) {
+    .carousel-item {
+      width: 220px;
+    }
+    .pdpaola-heading {
+      font-size: 20px !important;
+    }
+    .product-title,
+    .product-price {
+      text-align: left;
+    }
+    /* Make heart icon visible on mobile */
+    .heart-icon {
+      opacity: 1;
+    }
+  }
+</style>
+
+<script>
+  // Track which products are in cart
+  const productsInCart = {};
+
+  // Function to add product to cart and update UI
+  function addToCart(productId, variantId, goToCheckout = false) {
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        id: variantId,
+        quantity: 1
+      })
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to add to cart');
+      }
+      return response.json();
+    })
+    .then(data => {
+      // Mark product as in cart
+      productsInCart[productId] = true;
+      
+      // Update UI
+      updateProductUI(productId);
+      
+      // Redirect to checkout if requested
+      if (goToCheckout) {
+        window.location.href = '/checkout';
+      } else {
+        // Otherwise refresh cart drawer
+        fetch('/cart.js')
+          .then(cartRes => cartRes.json())
+          .then(cart => {
+            document.dispatchEvent(new CustomEvent('cart:refresh', { detail: cart }));
+            const drawerToggle = document.querySelector('[data-cart-drawer-toggle], button[aria-controls="CartDrawer"]');
+            if (drawerToggle) {
+              drawerToggle.click();
+            }
+          });
+      }
+    })
+    .catch(error => {
+      console.error('Error adding to cart:', error);
+    });
+  }
+
+  // Update product UI based on cart status
+  function updateProductUI(productId) {
+    const isInCart = productsInCart[productId];
+    
+    // Update heart icon
+    const heartIcon = document.querySelector(`.heart-icon[data-product-id="${productId}"]`);
+    if (heartIcon) {
+      if (isInCart) {
+        heartIcon.classList.add('active');
+      } else {
+        heartIcon.classList.remove('active');
+      }
+    }
+    
+    // Update add to cart button
+    const addToCartBtn = document.querySelector(`.add-to-cart[data-product-id="${productId}"]`);
+    if (addToCartBtn) {
+      if (isInCart) {
+        addToCartBtn.textContent = 'Achetez';
+      } else {
+        addToCartBtn.textContent = '{{ section.settings.add_to_cart_text }}';
+      }
+    }
+  }
+
+  // Set up event listeners
+  document.addEventListener('DOMContentLoaded', function() {
+    // Heart icon click event
+    document.querySelectorAll('.heart-icon').forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const productId = this.getAttribute('data-product-id');
+        const variantId = this.getAttribute('data-variant-id');
+        
+        // Add to cart and go to checkout
+        addToCart(productId, variantId, true);
+      });
+    });
+
+    // Add to cart button click event
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const productId = this.getAttribute('data-product-id');
+        const form = this.closest('form');
+        const variantId = form.querySelector('input[name="id"]').value;
+        
+        if (productsInCart[productId]) {
+          // If already in cart, go to checkout
+          window.location.href = '/checkout';
+        } else {
+          // Otherwise add to cart
+          addToCart(productId, variantId);
+        }
+      });
+    });
+  });
+</script>

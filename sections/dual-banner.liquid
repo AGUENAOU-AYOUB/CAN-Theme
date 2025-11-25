@@ -1,0 +1,422 @@
+<div
+  class="dual-banner-container"
+  style="max-width: {{ section.settings.section_max_width }}px; gap: {{ section.settings.banners_gap }}px;"
+>
+  <!-- Left Banner -->
+  <div
+    class="banner-panel left-panel"
+    style="background-image: url('{{ section.settings.left_image | img_url: 'master' }}');"
+  >
+    <div class="banner-overlay"></div>
+    <div class="banner-content">
+      <h2 style="color: {{ section.settings.left_heading_color }};">{{ section.settings.left_heading }}</h2>
+      <p style="color: {{ section.settings.left_text_color }};">{{ section.settings.left_text }}</p>
+      <a
+        href="{{ section.settings.left_button_link }}"
+        class="banner-button"
+        style="border-color: {{ section.settings.left_button_color }}; color: {{ section.settings.left_button_text_color }};"
+      >
+        {{ section.settings.left_button_text }}
+      </a>
+    </div>
+  </div>
+
+  <!-- Right Banner -->
+  <div class="banner-panel right-panel" style="background-color: {{ section.settings.right_bg_color }};">
+    {% if section.settings.show_necklaces %}
+      <div class="necklace-container">
+        <div class="necklace">
+          <div class="chain"></div>
+          <div class="pendant">{{ section.settings.pendant_text | slice: 0 }}</div>
+        </div>
+        <div class="necklace">
+          <div class="chain"></div>
+          <div class="pendant">{{ section.settings.pendant_text | slice: 1 }}</div>
+        </div>
+        <div class="necklace">
+          <div class="chain"></div>
+          <div class="pendant">{{ section.settings.pendant_text | slice: 2 }}</div>
+        </div>
+      </div>
+    {% else %}
+      <div class="right-image-container">
+        <img src="{{ section.settings.right_image | img_url: 'master' }}" alt="{{ section.settings.right_heading }}">
+      </div>
+    {% endif %}
+    <div
+      class="banner-overlay"
+      style="background: linear-gradient(to top, {{ section.settings.right_bg_color }}CC, {{ section.settings.right_bg_color }}40, transparent);"
+    ></div>
+    <div class="banner-content">
+      <h2 style="color: {{ section.settings.right_heading_color }};">{{ section.settings.right_heading }}</h2>
+      <p style="color: {{ section.settings.right_text_color }};">{{ section.settings.right_text }}</p>
+      <a
+        href="{{ section.settings.right_button_link }}"
+        class="banner-button"
+        style="border-color: {{ section.settings.right_button_color }}; color: {{ section.settings.right_button_text_color }};"
+      >
+        {{ section.settings.right_button_text }}
+      </a>
+    </div>
+  </div>
+
+  <!-- Chat Button -->
+  {% if section.settings.show_chat_button %}
+    <div class="chat-button">
+      <button id="chatButton" aria-label="Chat with us">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+        </svg>
+      </button>
+    </div>
+  {% endif %}
+</div>
+
+<style>
+  .dual-banner-container {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (min-width: 768px) {
+    .dual-banner-container {
+      flex-direction: row;
+    }
+  }
+
+  .banner-panel {
+    position: relative;
+    height: 400px;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+  }
+
+  @media (min-width: 768px) {
+    .banner-panel {
+      height: 500px;
+      width: 50%;
+    }
+  }
+
+  .banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), rgba(0,0,0,0.2), transparent);
+  }
+
+  .banner-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem;
+    z-index: 2;
+  }
+
+  .banner-content h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+
+  .banner-content p {
+    font-size: 1.125rem;
+    margin-bottom: 1rem;
+  }
+
+  .banner-button {
+    display: inline-block;
+    font-size: 1.125rem;
+    font-weight: 500;
+    border-bottom: 1px solid;
+    text-decoration: none;
+    transition: opacity 0.3s;
+  }
+
+  .banner-button:hover {
+    opacity: 0.8;
+  }
+
+  /* Right panel specific styles */
+  .necklace-container {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-top: -3rem;
+  }
+
+  .necklace {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .chain {
+    height: 150px;
+    width: 1px;
+    background: linear-gradient(to bottom, #D4AF37, rgba(212, 175, 55, 0.8));
+  }
+
+  .pendant {
+    position: absolute;
+    bottom: -10px;
+    width: 24px;
+    height: 24px;
+    background-color: #D4AF37;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+  }
+
+  .right-image-container {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .right-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Chat button */
+  .chat-button {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 10;
+  }
+
+  .chat-button button {
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+  }
+
+  .chat-button button:hover {
+    background-color: #333;
+  }
+</style>
+
+<script>
+  document.getElementById('chatButton')?.addEventListener('click', function() {
+    // Add your chat functionality here
+    console.log('Chat button clicked');
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Dual Banner",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "range",
+      "id": "section_max_width",
+      "min": 800,
+      "max": 2000,
+      "step": 50,
+      "unit": "px",
+      "label": "Maximum Section Width",
+      "default": 1400
+    },
+    {
+      "type": "range",
+      "id": "banners_gap",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Space Between Banners",
+      "default": 0,
+      "info": "Only applies on desktop view"
+    },
+    {
+      "type": "header",
+      "content": "Left Banner"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "text",
+      "id": "left_heading",
+      "label": "Heading",
+      "default": "HIT REFRESH"
+    },
+    {
+      "type": "color",
+      "id": "left_heading_color",
+      "label": "Heading Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "textarea",
+      "id": "left_text",
+      "label": "Text",
+      "default": "All the spring jewellery staples, from oversized studs to meaningful gems."
+    },
+    {
+      "type": "color",
+      "id": "left_text_color",
+      "label": "Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "left_button_text",
+      "label": "Button Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "left_button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "left_button_color",
+      "label": "Button Border Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "left_button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Right Banner"
+    },
+    {
+      "type": "color",
+      "id": "right_bg_color",
+      "label": "Background Color",
+      "default": "#8B3E2F"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_necklaces",
+      "label": "Show Necklaces",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "pendant_text",
+      "label": "Pendant Text",
+      "default": "MUM",
+      "info": "3 characters maximum"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_image",
+      "label": "Background Image (if not using necklaces)"
+    },
+    {
+      "type": "text",
+      "id": "right_heading",
+      "label": "Heading",
+      "default": "MAKE HER DAY"
+    },
+    {
+      "type": "color",
+      "id": "right_heading_color",
+      "label": "Heading Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "textarea",
+      "id": "right_text",
+      "label": "Text",
+      "default": "For the mother figures in your life, featuring our most loved gifts."
+    },
+    {
+      "type": "color",
+      "id": "right_text_color",
+      "label": "Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "text",
+      "id": "right_button_text",
+      "label": "Button Text",
+      "default": "Shop Most Gifted"
+    },
+    {
+      "type": "url",
+      "id": "right_button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "right_button_color",
+      "label": "Button Border Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "right_button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Additional Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_chat_button",
+      "label": "Show Chat Button",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Dual Banner",
+      "category": "Promotional"
+    }
+  ]
+}
+{% endschema %}

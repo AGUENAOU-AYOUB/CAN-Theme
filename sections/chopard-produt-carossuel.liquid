@@ -1,0 +1,822 @@
+{% comment %}
+  Chopard-Style Product Carousel
+  - Exact replica of the Chopard website product carousel
+  - "ACHETER" button takes users directly to checkout
+  - Fully customizable with section settings
+{% endcomment %}
+
+{% schema %}
+{
+  "name": "Chopard Product Carousel",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Our Collections"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4,
+      "label": "Products to show"
+    },
+    {
+      "type": "header",
+      "content": "Image Settings"
+    },
+    {
+      "type": "range",
+      "id": "image_width",
+      "min": 200,
+      "max": 500,
+      "step": 10,
+      "default": 300,
+      "label": "Image Width (px)",
+      "info": "Height will be calculated automatically to maintain aspect ratio"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "options": [
+        {
+          "value": "square",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait (3:4)"
+        },
+        {
+          "value": "landscape",
+          "label": "Landscape (4:3)"
+        }
+      ],
+      "default": "square",
+      "label": "Image Ratio"
+    },
+    {
+      "type": "header",
+      "content": "Typography Settings"
+    },
+    {
+      "type": "range",
+      "id": "product_title_size",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "default": 16,
+      "label": "Product Title Font Size (px)"
+    },
+    {
+      "type": "range",
+      "id": "product_description_size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "default": 12,
+      "label": "Product Description Font Size (px)"
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "ACHETER"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "skip_to_checkout",
+      "label": "Skip to Checkout",
+      "default": true,
+      "info": "When enabled, the ACHETER button will take customers directly to the checkout page"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Chopard Product Carousel",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="chopard-carousel-section">
+  {% if section.settings.title != blank %}
+    <h2 class="chopard-section-title">{{ section.settings.title }}</h2>
+  {% endif %}
+
+  <div class="chopard-carousel-container">
+    <div class="chopard-carousel">
+      {% if section.settings.collection != blank %}
+        {% assign products = section.settings.collection.products | limit: section.settings.products_to_show %}
+        {% for product in products %}
+          <div class="chopard-product-item">
+            <div class="chopard-product-card">
+              <div
+                class="chopard-product-image-container"
+                style="padding-bottom: {% if section.settings.image_ratio == 'portrait' %}133.33%{% elsif section.settings.image_ratio == 'landscape' %}75%{% else %}100%{% endif %};"
+              >
+                <!-- Category indicator square -->
+                <div class="chopard-category-indicator">
+                  <div class="chopard-category-square"></div>
+                </div>
+
+                <!-- Wishlist heart icon -->
+                <div class="chopard-wishlist-icon">
+                  <button class="chopard-wishlist-button" data-product-id="{{ product.id }}">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3C9.24 3 10.91 3.81 12 5.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5C22 12.28 18.6 15.36 13.45 20.04L12 21.35Z" stroke="currentColor" fill="none" stroke-width="1.5"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <!-- Product images with pagination -->
+                <div class="chopard-product-images swiper-container">
+                  <div class="swiper-wrapper">
+                    {% if product.featured_image != blank %}
+                      <div class="swiper-slide">
+                        <img
+                          src="{{ product.featured_image | img_url: '1000x' }}"
+                          alt="{{ product.featured_image.alt | escape }}"
+                          loading="lazy"
+                          class="chopard-product-img"
+                          style="max-width: {{ section.settings.image_width }}px;"
+                        >
+                      </div>
+                    {% endif %}
+
+                    {% for image in product.images offset: 1 limit: 3 %}
+                      <div class="swiper-slide">
+                        <img
+                          src="{{ image | img_url: '1000x' }}"
+                          alt="{{ image.alt | escape }}"
+                          loading="lazy"
+                          class="chopard-product-img"
+                          style="max-width: {{ section.settings.image_width }}px;"
+                        >
+                      </div>
+                    {% endfor %}
+                  </div>
+
+                  <!-- Image pagination dots -->
+                  <div class="chopard-product-pagination"></div>
+                </div>
+
+                <!-- Buy button that appears on hover -->
+                <div class="chopard-product-hover">
+                  <form
+                    method="post"
+                    action="{% if section.settings.skip_to_checkout %}/cart/add{% else %}{{ routes.cart_add_url }}{% endif %}"
+                    class="chopard-buy-form"
+                  >
+                    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                    {% if section.settings.skip_to_checkout %}
+                      <input type="hidden" name="return_to" value="/checkout">
+                    {% endif %}
+                    <button
+                      type="submit"
+                      class="chopard-buy-button"
+                      style="background-color: {{ section.settings.button_bg_color }}; color: {{ section.settings.button_text_color }};"
+                    >
+                      {{ section.settings.button_text }}
+                    </button>
+                  </form>
+                </div>
+              </div>
+
+              <!-- Product information -->
+              <div class="chopard-product-info">
+                <h3 class="chopard-product-title" style="font-size: {{ section.settings.product_title_size }}px;">
+                  {{ product.title | upcase }}
+                </h3>
+
+                <div
+                  class="chopard-product-description"
+                  style="font-size: {{ section.settings.product_description_size }}px;"
+                >
+                  {{ product.description | strip_html | truncatewords: 10 | upcase }}
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <!-- Placeholder items if no collection is selected -->
+        {% for i in (1..4) %}
+          <div class="chopard-product-item">
+            <div class="chopard-product-card">
+              <div
+                class="chopard-product-image-container"
+                style="padding-bottom: {% if section.settings.image_ratio == 'portrait' %}133.33%{% elsif section.settings.image_ratio == 'landscape' %}75%{% else %}100%{% endif %};"
+              >
+                <!-- Category indicator square -->
+                <div class="chopard-category-indicator">
+                  <div class="chopard-category-square"></div>
+                </div>
+
+                <!-- Wishlist heart icon -->
+                <div class="chopard-wishlist-icon">
+                  <button class="chopard-wishlist-button">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3C9.24 3 10.91 3.81 12 5.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5C22 12.28 18.6 15.36 13.45 20.04L12 21.35Z" stroke="currentColor" fill="none" stroke-width="1.5"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <!-- Product images with pagination -->
+                <div class="chopard-product-images swiper-container">
+                  <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                      {{ 'product-' | append: i | placeholder_svg_tag: 'chopard-product-img placeholder-svg' }}
+                    </div>
+                  </div>
+
+                  <!-- Image pagination dots -->
+                  <div class="chopard-product-pagination"></div>
+                </div>
+
+                <!-- Buy button that appears on hover -->
+                <div class="chopard-product-hover">
+                  <form
+                    method="post"
+                    action="{% if section.settings.skip_to_checkout %}/cart/add{% else %}{{ routes.cart_add_url }}{% endif %}"
+                    class="chopard-buy-form"
+                  >
+                    <input type="hidden" name="id" value="123456789">
+                    {% if section.settings.skip_to_checkout %}
+                      <input type="hidden" name="return_to" value="/checkout">
+                    {% endif %}
+                    <button
+                      type="submit"
+                      class="chopard-buy-button"
+                      style="background-color: {{ section.settings.button_bg_color }}; color: {{ section.settings.button_text_color }};"
+                    >
+                      {{ section.settings.button_text }}
+                    </button>
+                  </form>
+                </div>
+              </div>
+
+              <!-- Product information -->
+              <div class="chopard-product-info">
+                <h3 class="chopard-product-title" style="font-size: {{ section.settings.product_title_size }}px;">
+                  HAPPY HEARTS
+                </h3>
+
+                <div
+                  class="chopard-product-description"
+                  style="font-size: {{ section.settings.product_description_size }}px;"
+                >
+                  BAGUE, OR ROSE ÉTHIQUE, DIAMANT, NACRE
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <!-- Carousel navigation arrows -->
+    <button class="chopard-carousel-prev">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+
+    <button class="chopard-carousel-next">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Main carousel pagination dots -->
+  <div class="chopard-main-pagination">
+    <div class="chopard-main-pagination-dots"></div>
+  </div>
+</div>
+
+<style>
+  /* Main container styles */
+  .chopard-carousel-section {
+    padding: 40px 0;
+    max-width: 1200px;
+    margin: 0 auto;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+
+  .chopard-section-title {
+    text-align: center;
+    margin-bottom: 40px;
+    font-weight: 300;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .chopard-carousel-container {
+    position: relative;
+    padding: 0 40px;
+  }
+
+  /* Carousel layout */
+  .chopard-carousel {
+    display: flex;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+  }
+
+  .chopard-product-item {
+    flex: 0 0 calc(100% / 4);
+    max-width: calc(100% / 4);
+    padding: 0 10px;
+    scroll-snap-align: start;
+  }
+
+  /* Product card styles */
+  .chopard-product-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .chopard-product-image-container {
+    position: relative;
+    overflow: hidden;
+    background-color: #f8f8f8;
+  }
+
+  /* Category indicator square in top left */
+  .chopard-category-indicator {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
+  }
+
+  .chopard-category-square {
+    width: 24px;
+    height: 24px;
+    background-color: #000;
+    border-radius: 4px;
+  }
+
+  /* Wishlist heart icon in top right */
+  .chopard-wishlist-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+  }
+
+  .chopard-wishlist-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    color: #888;
+    transition: color 0.3s ease;
+  }
+
+  .chopard-wishlist-button:hover {
+    color: #000;
+  }
+
+  .chopard-wishlist-button.active svg path {
+    fill: #000;
+  }
+
+  /* Product image carousel */
+  .chopard-product-images {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .swiper-wrapper {
+    height: 100%;
+  }
+
+  .swiper-slide {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .chopard-product-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  /* Image pagination dots */
+  .chopard-product-pagination {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+  }
+
+  .chopard-product-pagination .swiper-pagination-bullet {
+    width: 30px;
+    height: 2px;
+    background-color: #ccc;
+    border-radius: 0;
+    opacity: 0.5;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+  }
+
+  .chopard-product-pagination .swiper-pagination-bullet-active {
+    opacity: 1;
+    background-color: #000;
+  }
+
+  /* Buy button that appears on hover */
+  .chopard-product-hover {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    justify-content: center;
+    padding: 15px;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: all 0.3s ease;
+  }
+
+  .chopard-product-image-container:hover .chopard-product-hover {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .chopard-buy-form {
+    width: 100%;
+  }
+
+  .chopard-buy-button {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 1px;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+  }
+
+  .chopard-buy-button:hover {
+    opacity: 0.9;
+  }
+
+  /* Product information styles */
+  .chopard-product-info {
+    padding: 15px 0;
+    text-align: center;
+  }
+
+  .chopard-product-title {
+    margin: 0 0 5px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .chopard-product-description {
+    margin: 0;
+    color: #666;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    line-height: 1.4;
+  }
+
+  /* Carousel navigation arrows */
+  .chopard-carousel-prev,
+  .chopard-carousel-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #888;
+    padding: 10px;
+    z-index: 10;
+    transition: color 0.3s ease;
+  }
+
+  .chopard-carousel-prev {
+    left: 0;
+  }
+
+  .chopard-carousel-next {
+    right: 0;
+  }
+
+  .chopard-carousel-prev:hover,
+  .chopard-carousel-next:hover {
+    color: #000;
+  }
+
+  /* Main carousel pagination dots at bottom */
+  .chopard-main-pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .chopard-main-pagination-dots {
+    display: flex;
+    gap: 8px;
+  }
+
+  .chopard-main-pagination-dot {
+    width: 30px;
+    height: 2px;
+    background-color: #ccc;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .chopard-main-pagination-dot.active {
+    background-color: #000;
+  }
+
+  /* Responsive styles */
+  @media (max-width: 991px) {
+    .chopard-product-item {
+      flex: 0 0 calc(100% / 3);
+      max-width: calc(100% / 3);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .chopard-product-item {
+      flex: 0 0 calc(100% / 2);
+      max-width: calc(100% / 2);
+    }
+
+    .chopard-carousel-container {
+      padding: 0 30px;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .chopard-product-item {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+
+    .chopard-carousel-container {
+      padding: 0 20px;
+    }
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize product carousels
+  const productItems = document.querySelectorAll('.chopard-product-item');
+  const productSwipers = [];
+  
+  productItems.forEach((item, index) => {
+    const container = item.querySelector('.chopard-product-images');
+    const pagination = item.querySelector('.chopard-product-pagination');
+    
+    if (container) {
+      const swiper = new Swiper(container, {
+        loop: true,
+        pagination: {
+          el: pagination,
+          clickable: true,
+          bulletClass: 'swiper-pagination-bullet',
+          bulletActiveClass: 'swiper-pagination-bullet-active',
+          renderBullet: function(index, className) {
+            return '<span class="' + className + '"></span>';
+          }
+        }
+      });
+      
+      productSwipers.push(swiper);
+    }
+  });
+  
+  // Main carousel navigation
+  const carousel = document.querySelector('.chopard-carousel');
+  const prevButton = document.querySelector('.chopard-carousel-prev');
+  const nextButton = document.querySelector('.chopard-carousel-next');
+  const itemWidth = carousel.querySelector('.chopard-product-item').offsetWidth;
+  let currentIndex = 0;
+  
+  // Create main pagination dots
+  const mainPaginationContainer = document.querySelector('.chopard-main-pagination-dots');
+  const totalSlides = Math.ceil(productItems.length / getVisibleItemsCount());
+  
+  for (let i = 0; i < totalSlides; i++) {
+    const dot = document.createElement('span');
+    dot.classList.add('chopard-main-pagination-dot');
+    if (i === 0) dot.classList.add('active');
+    dot.dataset.index = i;
+    dot.addEventListener('click', function() {
+      goToSlide(parseInt(this.dataset.index));
+    });
+    mainPaginationContainer.appendChild(dot);
+  }
+  
+  function getVisibleItemsCount() {
+    if (window.innerWidth <= 479) return 1;
+    if (window.innerWidth <= 767) return 2;
+    if (window.innerWidth <= 991) return 3;
+    return 4;
+  }
+  
+  function goToSlide(index) {
+    const visibleItems = getVisibleItemsCount();
+    const maxIndex = Math.ceil(productItems.length / visibleItems) - 1;
+    currentIndex = Math.max(0, Math.min(index, maxIndex));
+    
+    const scrollPosition = currentIndex * visibleItems * itemWidth;
+    carousel.scrollTo({
+      left: scrollPosition,
+      behavior: 'smooth'
+    });
+    
+    updatePagination();
+  }
+  
+  function updatePagination() {
+    const dots = mainPaginationContainer.querySelectorAll('.chopard-main-pagination-dot');
+    dots.forEach((dot, index) => {
+      dot.classList.toggle('active', index === currentIndex);
+    });
+  }
+  
+  prevButton.addEventListener('click', function() {
+    goToSlide(currentIndex - 1);
+  });
+  
+  nextButton.addEventListener('click', function() {
+    goToSlide(currentIndex + 1);
+  });
+  
+  // Handle wishlist functionality
+  const wishlistButtons = document.querySelectorAll('.chopard-wishlist-button');
+  
+  wishlistButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      
+      // Toggle active class for visual feedback
+      this.classList.toggle('active');
+      
+      // Get product ID
+      const productId = this.dataset.productId;
+      
+      if (productId) {
+        // Add to cart via AJAX
+        fetch('/cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            id: productId,
+            quantity: 1
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Update cart count or show notification
+          if (typeof theme !== 'undefined' && theme.updateCartCount) {
+            theme.updateCartCount();
+          }
+          
+          // Show notification
+          const notification = document.createElement('div');
+          notification.classList.add('chopard-notification');
+          notification.textContent = 'Product added to cart';
+          document.body.appendChild(notification);
+          
+          setTimeout(() => {
+            notification.classList.add('show');
+          }, 10);
+          
+          setTimeout(() => {
+            notification.classList.remove('show');
+            setTimeout(() => {
+              notification.remove();
+            }, 300);
+          }, 3000);
+        })
+        .catch(error => {
+          console.error('Error adding product to cart:', error);
+        });
+      }
+    });
+  });
+  
+  // Handle window resize
+  let resizeTimeout;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(function() {
+      // Recalculate item width
+      const newItemWidth = carousel.querySelector('.chopard-product-item').offsetWidth;
+      
+      // Update pagination
+      const mainPaginationContainer = document.querySelector('.chopard-main-pagination-dots');
+      mainPaginationContainer.innerHTML = '';
+      
+      const totalSlides = Math.ceil(productItems.length / getVisibleItemsCount());
+      
+      for (let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement('span');
+        dot.classList.add('chopard-main-pagination-dot');
+        if (i === 0) dot.classList.add('active');
+        dot.dataset.index = i;
+        dot.addEventListener('click', function() {
+          goToSlide(parseInt(this.dataset.index));
+        });
+        mainPaginationContainer.appendChild(dot);
+      }
+      
+      // Reset to first slide
+      currentIndex = 0;
+      carousel.scrollTo({
+        left: 0,
+        behavior: 'auto'
+      });
+      
+      updatePagination();
+    }, 200);
+  });
+  
+  // Add notification styles
+  const style = document.createElement('style');
+  style.textContent = `
+    .chopard-notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #000;
+      color: #fff;
+      padding: 15px 20px;
+      border-radius: 4px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 1000;
+    }
+    
+    .chopard-notification.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  `;
+  document.head.appendChild(style);
+});
+</script>
+
+{% comment %}
+  Note: This section requires Swiper.js to be loaded in your theme.
+  If your theme doesn't include Swiper.js, add this to your theme.liquid file:
+
+  {{ 'https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css' | stylesheet_tag }}
+  {{ 'https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js' | script_tag }}
+{% endcomment %}

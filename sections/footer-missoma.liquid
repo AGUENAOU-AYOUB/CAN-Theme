@@ -1,0 +1,837 @@
+{% comment %}
+  Missoma Footer Section
+  - Newsletter signup with 10% off
+  - Help, About Us, and More Info sections
+  - Country/region selector
+  - Social media links
+{% endcomment %}
+
+<footer class="missoma-footer">
+  <div class="missoma-footer__container">
+    <!-- Newsletter Signup -->
+    <div class="missoma-footer__newsletter">
+      <h2 class="missoma-footer__newsletter-title">INSCRIVEZ-VOUS ET AYEZ TOUJOURS UN COUP D'AVANCE
+</h2>
+
+      {%- form 'customer', id: 'newsletter-form', class: 'missoma-footer__form' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+
+        <div class="missoma-footer__form-field">
+          <input
+            type="email"
+            name="contact[email]"
+            id="newsletter-email"
+            class="missoma-footer__form-input"
+            value="{{ form.email }}"
+            placeholder="Entrez votre adresse e-mail"
+            required
+          >
+          <button type="submit" class="missoma-footer__form-submit" aria-label="{{ 'general.newsletter.submit' | t }}">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="missoma-footer__form-consent">
+          <div class="missoma-footer__form-checkbox">
+            <input
+              type="checkbox"
+              id="newsletter-consent"
+              name="contact[accepts_marketing]"
+              class="missoma-footer__checkbox"
+              required
+            >
+            <label for="newsletter-consent" class="missoma-footer__checkbox-label">
+              En vous inscrivant, vous acceptez nos
+              <a
+                href="https://www.azorjewelry.com/pages/politique-de-confidentialite"
+                class="missoma-footer__link"
+                >politique de confidentialité.</a
+              >*
+            </label>
+          </div>
+        </div>
+      {%- endform -%}
+    </div>
+
+    <!-- Footer Columns -->
+    <div class="missoma-footer__columns">
+      <!-- Help Section -->
+      <div class="missoma-footer__column">
+        <h3 class="missoma-footer__column-title">NOUS</h3>
+        <ul class="missoma-footer__menu">
+          {% for link in section.settings.help_menu.links %}
+            <li class="missoma-footer__menu-item">
+              <a href="{{ link.url }}" class="missoma-footer__menu-link">{{ link.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- About Us Section -->
+      <div class="missoma-footer__column">
+        <h3 class="missoma-footer__column-title">AIDE</h3>
+        <ul class="missoma-footer__menu">
+          {% for link in section.settings.about_menu.links %}
+            <li class="missoma-footer__menu-item">
+              <a href="{{ link.url }}" class="missoma-footer__menu-link">{{ link.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- More Info Section -->
+      <div class="missoma-footer__column">
+        <h3 class="missoma-footer__column-title">RESSOURCES</h3>
+        <ul class="missoma-footer__menu">
+          {% for link in section.settings.info_menu.links %}
+            <li class="missoma-footer__menu-item">
+              <a href="{{ link.url }}" class="missoma-footer__menu-link">{{ link.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Mobile Accordions (only visible on mobile) -->
+    <div class="missoma-footer__accordions">
+      <!-- Help Section -->
+      <div class="missoma-footer__accordion">
+        <button class="missoma-footer__accordion-toggle" aria-expanded="false" aria-controls="help-content">
+          <span>NOUS</span>
+          <svg
+            class="missoma-footer__accordion-icon"
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M6 0L6 12" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M12 6L0 6" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </button>
+
+        <div class="missoma-footer__accordion-content" id="help-content">
+          <ul class="missoma-footer__menu">
+            {% for link in section.settings.help_menu.links %}
+              <li class="missoma-footer__menu-item">
+                <a href="{{ link.url }}" class="missoma-footer__menu-link">{{ link.title }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- About Us Section -->
+      <div class="missoma-footer__accordion">
+        <button class="missoma-footer__accordion-toggle" aria-expanded="false" aria-controls="about-content">
+          <span>AIDE</span>
+          <svg
+            class="missoma-footer__accordion-icon"
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M6 0L6 12" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M12 6L0 6" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </button>
+
+        <div class="missoma-footer__accordion-content" id="about-content">
+          <ul class="missoma-footer__menu">
+            {% for link in section.settings.about_menu.links %}
+              <li class="missoma-footer__menu-item">
+                <a href="{{ link.url }}" class="missoma-footer__menu-link">{{ link.title }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+      <!-- More Info Section -->
+      <div class="missoma-footer__accordion">
+        <button class="missoma-footer__accordion-toggle" aria-expanded="false" aria-controls="info-content">
+          <span>RESSOURCES</span>
+          <svg
+            class="missoma-footer__accordion-icon"
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M6 0L6 12" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M12 6L0 6" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </button>
+
+        <div class="missoma-footer__accordion-content" id="info-content">
+          <ul class="missoma-footer__menu">
+            {% for link in section.settings.info_menu.links %}
+              <li class="missoma-footer__menu-item">
+                <a href="{{ link.url }}" class="missoma-footer__menu-link">{{ link.title }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Country Selector -->
+    <div class="bottom-footer">
+      <div class="missoma-footer__locale">
+        <button class="missoma-footer__locale-toggle" aria-expanded="false" aria-controls="locale-dropdown">
+          <span class="missoma-footer__locale-flag">
+            {% if request.locale.iso_code == 'ma' %}
+              <span class="missoma-footer__flag-icon">🇲🇦</span>
+            {% else %}
+              <span class="missoma-footer__flag-icon">{{ localization.country.flag_emoji }}</span>
+            {% endif %}
+          </span>
+          <span class="missoma-footer__locale-name">
+            {% if request.locale.iso_code == 'ma' %}
+              Morocco (MAD د.م.)
+            {% else %}
+              {{ localization.country.name }} ({{ localization.country.currency.iso_code }}
+              {{ localization.country.currency.symbol }})
+            {% endif %}
+          </span>
+          <svg
+            class="missoma-footer__locale-arrow"
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M6 0L6 12" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M12 6L0 6" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+        </button>
+
+        <div class="missoma-footer__locale-dropdown" id="locale-dropdown">
+          <div class="missoma-footer__locale-dropdown-container">
+            {%- form 'localization', id: 'FooterCountryForm', class: 'missoma-footer__locale-form' -%}
+              <h3 class="missoma-footer__locale-title">Select your country</h3>
+              <div class="missoma-footer__locale-select-wrapper">
+                <select name="country_code" id="FooterCountrySelect" class="missoma-footer__locale-select">
+                  {%- for country in localization.available_countries -%}
+                    <option
+                      value="{{ country.iso_code }}"
+                      {%- if country.iso_code == localization.country.iso_code %}
+                        selected
+                      {% endif %}
+                    >
+                      {{ country.name }} ({{ country.currency.iso_code }}
+                      {{ country.currency.symbol }})
+                    </option>
+                  {%- endfor -%}
+                </select>
+              </div>
+              <button type="submit" class="missoma-footer__locale-submit">Update</button>
+            {%- endform -%}
+          </div>
+        </div>
+      </div>
+      <img src="https://cdn.shopify.com/s/files/1/0664/9085/9748/files/cmi.png?v=1754995401" alt="cmi" width="200px" height="auto"/>
+    </div>
+
+    <!-- Social Media Links -->
+    <div class="missoma-footer__social">
+      <ul class="missoma-footer__social-list">
+        <li class="missoma-footer__social-item">
+          <a
+            href="{{ section.settings.instagram_url }}"
+            class="missoma-footer__social-link"
+            target="_blank"
+            rel="noopener"
+            aria-label="Instagram"
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 1.8C12.67 1.8 13 1.8 14.07 1.87C15.07 1.93 15.6 2.07 15.93 2.2C16.4 2.33 16.73 2.53 17.07 2.87C17.4 3.2 17.6 3.53 17.73 4C17.87 4.33 18 4.87 18.07 5.87C18.13 6.93 18.13 7.27 18.13 9.93C18.13 12.6 18.13 12.93 18.07 14C18 15 17.87 15.53 17.73 15.87C17.6 16.33 17.4 16.67 17.07 17C16.73 17.33 16.4 17.53 15.93 17.67C15.6 17.8 15.07 17.93 14.07 18C13 18.07 12.67 18.07 10 18.07C7.33 18.07 7 18.07 5.93 18C4.93 17.93 4.4 17.8 4.07 17.67C3.6 17.53 3.27 17.33 2.93 17C2.6 16.67 2.4 16.33 2.27 15.87C2.13 15.53 2 15 1.93 14C1.87 12.93 1.87 12.6 1.87 9.93C1.87 7.27 1.87 6.93 1.93 5.87C2 4.87 2.13 4.33 2.27 4C2.4 3.53 2.6 3.2 2.93 2.87C3.27 2.53 3.6 2.33 4.07 2.2C4.4 2.07 4.93 1.93 5.93 1.87C7 1.8 7.33 1.8 10 1.8ZM10 0C7.27 0 6.93 0 5.87 0.07C4.8 0.13 4.07 0.33 3.47 0.6C2.8 0.87 2.27 1.27 1.73 1.8C1.2 2.33 0.87 2.87 0.6 3.47C0.33 4.07 0.13 4.8 0.07 5.87C0 6.93 0 7.27 0 10C0 12.73 0 13.07 0.07 14.13C0.13 15.2 0.33 15.93 0.6 16.53C0.87 17.2 1.2 17.73 1.73 18.27C2.27 18.8 2.8 19.13 3.47 19.4C4.07 19.67 4.8 19.87 5.87 19.93C6.93 20 7.27 20 10 20C12.73 20 13.07 20 14.13 19.93C15.2 19.87 15.93 19.67 16.53 19.4C17.2 19.13 17.73 18.8 18.27 18.27C18.8 17.73 19.13 17.2 19.4 16.53C19.67 15.93 19.87 15.2 19.93 14.13C20 13.07 20 12.73 20 10C20 7.27 20 6.93 19.93 5.87C19.87 4.8 19.67 4.07 19.4 3.47C19.13 2.8 18.8 2.27 18.27 1.73C17.73 1.2 17.2 0.87 16.53 0.6C15.93 0.33 15.2 0.13 14.13 0.07C13.07 0 12.73 0 10 0Z" fill="currentColor"/>
+              <path d="M10 4.87C7.17 4.87 4.87 7.17 4.87 10C4.87 12.83 7.17 15.13 10 15.13C12.83 15.13 15.13 12.83 15.13 10C15.13 7.17 12.83 4.87 10 4.87ZM10 13.33C8.17 13.33 6.67 11.83 6.67 10C6.67 8.17 8.17 6.67 10 6.67C11.83 6.67 13.33 8.17 13.33 10C13.33 11.83 11.83 13.33 10 13.33Z" fill="currentColor"/>
+              <path d="M15.33 5.87C16.0064 5.87 16.55 5.32635 16.55 4.65C16.55 3.97365 16.0064 3.43 15.33 3.43C14.6537 3.43 14.11 3.97365 14.11 4.65C14.11 5.32635 14.6537 5.87 15.33 5.87Z" fill="currentColor"/>
+            </svg>
+          </a>
+        </li>
+        <li class="missoma-footer__social-item">
+          <a
+            href="{{ section.settings.facebook_url }}"
+            class="missoma-footer__social-link"
+            target="_blank"
+            rel="noopener"
+            aria-label="Facebook"
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 10C20 4.48 15.52 0 10 0C4.48 0 0 4.48 0 10C0 14.84 3.44 18.87 8 19.8V13H6V10H8V7.5C8 5.57 9.57 4 11.5 4H14V7H12C11.45 7 11 7.45 11 8V10H14V13H11V19.95C16.05 19.45 20 15.19 20 10Z" fill="currentColor"/>
+            </svg>
+          </a>
+        </li>
+        <li class="missoma-footer__social-item">
+          <a
+            href="{{ section.settings.tiktok_url }}"
+            class="missoma-footer__social-link"
+            target="_blank"
+            rel="noopener"
+            aria-label="TikTok"
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10.07 0C11.32 0 12.55 0 13.8 0C13.89 0.54 13.93 1.09 14.11 1.6C14.71 3.19 16.23 4.3 17.89 4.3C18.03 4.3 18.17 4.32 18.33 4.33C18.33 5.6 18.33 6.85 18.33 8.13C17.84 8.13 17.35 8.15 16.87 8.12C15.39 8.04 14.04 7.5 12.87 6.54C12.6 6.32 12.36 6.07 12.07 5.78C12.07 9.37 12.07 12.91 12.07 16.48C12.05 16.83 12.01 17.18 11.93 17.52C11.5 19.28 10.06 20.5 8.25 20.5C7.69 20.5 7.12 20.4 6.59 20.19C4.81 19.49 3.67 17.97 3.67 16.05C3.67 14.04 4.9 12.38 6.85 11.77C7.3 11.63 7.77 11.58 8.25 11.58C8.25 12.88 8.25 14.15 8.25 15.45C7.98 15.52 7.7 15.57 7.44 15.66C6.71 15.91 6.3 16.6 6.48 17.35C6.64 18.04 7.3 18.53 8.02 18.48C8.9 18.42 9.5 17.77 9.51 16.87C9.52 13.82 9.51 10.77 9.51 7.72C9.51 7.63 9.51 7.54 9.51 7.42C9.51 4.95 9.51 2.48 9.51 0C9.7 0 9.88 0 10.07 0Z" fill="currentColor"/>
+            </svg>
+          </a>
+        </li>
+        <li class="missoma-footer__social-item">
+          <a
+            href="{{ section.settings.pinterest_url }}"
+            class="missoma-footer__social-link"
+            target="_blank"
+            rel="noopener"
+            aria-label="Pinterest"
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 0C4.48 0 0 4.48 0 10C0 14.25 2.67 17.87 6.44 19.17C6.35 18.42 6.27 17.27 6.47 16.41C6.64 15.65 7.63 11.49 7.63 11.49C7.63 11.49 7.33 10.87 7.33 9.93C7.33 8.48 8.14 7.39 9.14 7.39C10 7.39 10.41 8.04 10.41 8.81C10.41 9.67 9.86 10.98 9.58 12.19C9.34 13.2 10.09 14.02 11.08 14.02C12.88 14.02 14.31 12.14 14.31 9.39C14.31 7.04 12.65 5.35 9.96 5.35C6.9 5.35 5.07 7.56 5.07 9.8C5.07 10.65 5.39 11.61 5.82 12.13C5.92 12.25 5.93 12.36 5.9 12.48C5.82 12.81 5.64 13.59 5.61 13.73C5.56 13.91 5.44 13.95 5.25 13.86C3.96 13.21 3.22 11.28 3.22 9.72C3.22 6.65 5.61 3.57 10.24 3.57C13.98 3.57 16.78 6.15 16.78 9.33C16.78 13.04 14.35 15.79 11.29 15.79C10.27 15.79 9.31 15.25 8.98 14.62C8.98 14.62 8.47 16.61 8.34 17.07C8.08 17.97 7.46 19.07 7.04 19.77C7.98 20.04 8.98 20.2 10 20.2C15.52 20.2 20 15.72 20 10.2C20 4.68 15.52 0 10 0Z" fill="currentColor"/>
+            </svg>
+          </a>
+        </li>
+        <li class="missoma-footer__social-item">
+          <a
+            href="{{ section.settings.youtube_url }}"
+            class="missoma-footer__social-link"
+            target="_blank"
+            rel="noopener"
+            aria-label="YouTube"
+          >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19.58 5.17C19.37 4.33 18.7 3.67 17.87 3.46C16.32 3.07 10 3.07 10 3.07C10 3.07 3.68 3.07 2.13 3.46C1.3 3.67 0.63 4.33 0.42 5.17C0.03 6.72 0.03 10 0.03 10C0.03 10 0.03 13.28 0.42 14.83C0.63 15.67 1.3 16.33 2.13 16.54C3.68 16.93 10 16.93 10 16.93C10 16.93 16.32 16.93 17.87 16.54C18.7 16.33 19.37 15.67 19.58 14.83C19.97 13.28 19.97 10 19.97 10C19.97 10 19.97 6.72 19.58 5.17ZM8.03 13.03V6.97L13.13 10L8.03 13.03Z" fill="currentColor"/>
+            </svg>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Copyright -->
+    <div class="missoma-footer__copyright">
+      <p class="missoma-footer__copyright-text">
+        © {{ 'now' | date: '%Y' }}
+        {{ shop.name }}. réalisé par savee agency.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  /* Missoma Footer Styles */
+  .missoma-footer {
+    padding: 60px 0 40px;
+    background-color: #ffffff;
+    border-top: 1px solid #e5e5e5;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  .missoma-footer__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* Newsletter Styles */
+  .missoma-footer__newsletter {
+    margin-bottom: 60px;
+    max-width: 100%;
+  }
+
+  .missoma-footer__newsletter-title {
+    font-size: 32px;
+    font-weight: 600;
+    margin: 0 0 30px;
+    letter-spacing: 0.5px;
+    color: #000000;
+  }
+
+  .missoma-footer__form {
+    margin-bottom: 15px;
+  }
+
+  .missoma-footer__form-field {
+    display: flex;
+    border-bottom: 1px solid #000000;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .missoma-footer__form-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 12px 0;
+    font-size: 16px;
+    color: #000000;
+    outline: none;
+  }
+
+  .missoma-footer__form-input::placeholder {
+    color: #767676;
+  }
+
+  .missoma-footer__form-submit {
+    background: none;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .missoma-footer__form-consent {
+    margin-bottom: 20px;
+  }
+
+  .missoma-footer__form-checkbox {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .missoma-footer__checkbox {
+    margin-right: 10px;
+    margin-top: 3px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .missoma-footer__checkbox-label {
+    font-size: 14px;
+    color: #000000;
+    line-height: 1.4;
+  }
+
+  .missoma-footer__link {
+    color: #000000;
+    text-decoration: underline;
+  }
+
+  /* Footer Columns */
+  .missoma-footer__columns {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 60px;
+    gap: 40px;
+  }
+
+  .missoma-footer__column {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .missoma-footer__column-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 0 20px;
+    letter-spacing: 0.5px;
+    color: #000000;
+  }
+
+  .missoma-footer__menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .missoma-footer__menu-item {
+    margin-bottom: 15px;
+  }
+
+  .missoma-footer__menu-link {
+    color: #000000;
+    text-decoration: none;
+    font-size: 14px;
+    transition: opacity 0.2s ease;
+  }
+
+  .missoma-footer__menu-link:hover {
+    opacity: 0.7;
+  }
+
+  /* Accordion Styles (Mobile Only) */
+  .missoma-footer__accordions {
+    display: none;
+    margin-bottom: 30px;
+  }
+
+  .missoma-footer__accordion {
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .missoma-footer__accordion-toggle {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #000000;
+    letter-spacing: 0.5px;
+  }
+
+  .missoma-footer__accordion-icon {
+    transition: transform 0.3s ease;
+  }
+
+  .missoma-footer__accordion-toggle[aria-expanded="true"] .missoma-footer__accordion-icon {
+    transform: rotate(45deg);
+  }
+
+  .missoma-footer__accordion-content {
+    display: none;
+    padding: 0 0 15px;
+  }
+
+  .missoma-footer__accordion-toggle[aria-expanded="true"] + .missoma-footer__accordion-content {
+    display: block;
+  }
+
+  /* Locale Selector */
+  .bottom-footer {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 20px;
+    row-gap: 20px;
+    column-gap:100px;
+  }
+  .missoma-footer__locale {
+    position: relative; 
+    max-width: 400px;
+  }
+
+  .missoma-footer__locale-toggle {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #e5e5e5;
+    border-radius: 0;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+    color: #000000;
+  }
+
+  .missoma-footer__locale-flag {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+  }
+
+  .missoma-footer__flag-icon {
+    font-size: 16px;
+    margin-right: 8px;
+  }
+
+  .missoma-footer__locale-name {
+    flex: 1;
+  }
+
+  .missoma-footer__locale-arrow {
+    transform: rotate(45deg);
+    transition: transform 0.3s ease;
+  }
+
+  .missoma-footer__locale-toggle[aria-expanded="true"] .missoma-footer__locale-arrow {
+    transform: rotate(0deg);
+  }
+
+  .missoma-footer__locale-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-top: none;
+    z-index: 10;
+  }
+
+  .missoma-footer__locale-toggle[aria-expanded="true"] + .missoma-footer__locale-dropdown {
+    display: block;
+  }
+
+  .missoma-footer__locale-dropdown-container {
+    padding: 20px;
+  }
+
+  .missoma-footer__locale-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 15px;
+  }
+
+  .missoma-footer__locale-select-wrapper {
+    position: relative;
+    margin-bottom: 15px;
+  }
+
+  .missoma-footer__locale-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #e5e5e5;
+    border-radius: 0;
+    font-size: 14px;
+    appearance: none;
+    background-color: #ffffff;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2 4L6 8L10 4' stroke='%23000000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+  }
+
+  .missoma-footer__locale-submit {
+    width: 100%;
+    padding: 12px;
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .missoma-footer__locale-submit:hover {
+    background-color: #333333;
+  }
+
+  /* Social Media */
+  .missoma-footer__social {
+    margin-bottom: 30px;
+  }
+
+  .missoma-footer__social-list {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    justify-content: center;
+  }
+
+  .missoma-footer__social-item {
+    margin: 0 10px;
+  }
+
+  .missoma-footer__social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #e5e5e5;
+    color: #000000;
+    transition: all 0.2s ease;
+  }
+
+  .missoma-footer__social-link:hover {
+    background-color: #f5f5f5;
+  }
+
+  /* Copyright */
+  .missoma-footer__copyright {
+    text-align: center;
+  }
+
+  .missoma-footer__copyright-text {
+    font-size: 12px;
+    color: #767676;
+    margin: 0;
+  }
+
+  /* Responsive Styles */
+  @media screen and (min-width: 992px) { 
+    .bottom-footer { 
+      justify-content: space-between; 
+    }
+    .missoma-footer__container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .missoma-footer__newsletter {
+      width: 100%;
+    }
+
+    .missoma-footer__columns {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .missoma-footer__column {
+      flex: 0 1 auto;
+      margin-right: 40px;
+    }
+
+    .missoma-footer__column:last-child {
+      margin-right: 0;
+    }
+
+    .missoma-footer__locale {
+      align-self: flex-start;
+    }
+  }
+
+  @media screen and (max-width: 991px) {
+    .missoma-footer__columns {
+      display: none;
+    }
+
+    .missoma-footer__accordions {
+      display: block;
+    }
+
+    .missoma-footer__newsletter-title {
+      font-size: 24px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Accordion functionality (mobile only)
+    const accordionToggles = document.querySelectorAll('.missoma-footer__accordion-toggle');
+
+    accordionToggles.forEach(toggle => {
+      toggle.addEventListener('click', function() {
+        const expanded = this.getAttribute('aria-expanded') === 'true';
+        this.setAttribute('aria-expanded', !expanded);
+      });
+    });
+
+    // Country selector functionality
+    const localeToggle = document.querySelector('.missoma-footer__locale-toggle');
+
+    if (localeToggle) {
+      localeToggle.addEventListener('click', function() {
+        const expanded = this.getAttribute('aria-expanded') === 'true';
+        this.setAttribute('aria-expanded', !expanded);
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function(event) {
+        if (!event.target.closest('.missoma-footer__locale') &&
+            localeToggle.getAttribute('aria-expanded') === 'true') {
+          localeToggle.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    // Newsletter form validation
+    const newsletterForm = document.getElementById('newsletter-form');
+
+    if (newsletterForm) {
+      newsletterForm.addEventListener('submit', function(event) {
+        const emailInput = this.querySelector('input[type="email"]');
+        const consentCheckbox = this.querySelector('input[type="checkbox"]');
+
+        if (!emailInput.value || !consentCheckbox.checked) {
+          event.preventDefault();
+
+          if (!emailInput.value) {
+            emailInput.focus();
+          } else if (!consentCheckbox.checked) {
+            consentCheckbox.focus();
+          }
+        }
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Missoma Footer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_title",
+      "label": "Newsletter title",
+      "default": "SIGN UP FOR 10% OFF"
+    },
+    {
+      "type": "header",
+      "content": "Footer Menus"
+    },
+    {
+      "type": "link_list",
+      "id": "help_menu",
+      "label": "Help menu",
+      "default": "footer"
+    },
+    {
+      "type": "link_list",
+      "id": "about_menu",
+      "label": "About Us menu"
+    },
+    {
+      "type": "link_list",
+      "id": "info_menu",
+      "label": "More Info menu"
+    },
+    {
+      "type": "header",
+      "content": "Social Media"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "facebook_url",
+      "label": "Facebook URL"
+    },
+    {
+      "type": "url",
+      "id": "tiktok_url",
+      "label": "TikTok URL"
+    },
+    {
+      "type": "url",
+      "id": "pinterest_url",
+      "label": "Pinterest URL"
+    },
+    {
+      "type": "url",
+      "id": "youtube_url",
+      "label": "YouTube URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Missoma Footer",
+      "category": "Footer"
+    }
+  ]
+}
+{% endschema %}

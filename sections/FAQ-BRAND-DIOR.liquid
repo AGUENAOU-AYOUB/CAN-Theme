@@ -1,0 +1,482 @@
+{% schema %}
+{
+  "name": "FAQ Section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Section Padding Top",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Section Padding Bottom",
+      "default": 60
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Number of Columns (Desktop)",
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "Title Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show Title",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "font_picker",
+      "id": "title_font",
+      "label": "Title Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Title Size",
+      "default": 40
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Title Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "title_alignment",
+      "label": "Title Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "title_spacing",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Title Bottom Spacing",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "font_picker",
+      "id": "content_font",
+      "label": "Content Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider Color",
+      "default": "#E5E5E5"
+    },
+    {
+      "type": "color",
+      "id": "question_hover_color",
+      "label": "Question Hover Background",
+      "default": "#F5F5F5"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "FAQ Category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "category_title",
+          "label": "Category Title",
+          "default": "Category"
+        },
+        {
+          "type": "color",
+          "id": "category_color",
+          "label": "Category Color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "category_size",
+          "min": 16,
+          "max": 40,
+          "step": 1,
+          "unit": "px",
+          "label": "Category Font Size",
+          "default": 24
+        },
+        {
+          "type": "range",
+          "id": "category_spacing",
+          "min": 10,
+          "max": 60,
+          "step": 5,
+          "unit": "px",
+          "label": "Category Bottom Spacing",
+          "default": 30
+        },
+        {
+          "type": "textarea",
+          "id": "questions",
+          "label": "Questions (One per line)",
+          "default": "What is your question?\nHow can we help?"
+        },
+        {
+          "type": "textarea",
+          "id": "answers",
+          "label": "Answers (One per line)",
+          "default": "Here is your answer.\nWe are here to help."
+        },
+        {
+          "type": "color",
+          "id": "question_color",
+          "label": "Question Color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "question_size",
+          "min": 14,
+          "max": 24,
+          "step": 1,
+          "unit": "px",
+          "label": "Question Font Size",
+          "default": 16
+        },
+        {
+          "type": "color",
+          "id": "answer_color",
+          "label": "Answer Color",
+          "default": "#666666"
+        },
+        {
+          "type": "range",
+          "id": "answer_size",
+          "min": 12,
+          "max": 20,
+          "step": 1,
+          "unit": "px",
+          "label": "Answer Font Size",
+          "default": 14
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Section",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "category_title": "About Our Brand",
+            "questions": "What makes our jewelry special?\nWhere are your pieces made?\nWhat materials do you use?",
+            "answers": "Our jewelry is crafted with attention to detail and premium materials.\nAll our pieces are made in our artisan workshops with care and precision.\nWe use 925 Sterling Silver and 18k Gold plating for our jewelry."
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "category_title": "Shipping & Returns",
+            "questions": "What are your shipping times?\nDo you offer free shipping?\nWhat is your return policy?",
+            "answers": "Orders typically ship within 1-2 business days.\nYes, we offer free shipping on orders over $100.\nWe accept returns within 30 days of purchase."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<div
+  class="faq-section page-width"
+  style="
+    padding-top: {{ section.settings.section_padding_top }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom }}px;
+    background-color: {{ section.settings.background_color }};
+  "
+>
+  {% if section.settings.show_title %}
+    <h2
+      class="faq-title"
+      style="
+        color: {{ section.settings.title_color }};
+        font-size: {{ section.settings.title_size }}px;
+        text-align: {{ section.settings.title_alignment }};
+        margin-bottom: {{ section.settings.title_spacing }}px;
+        font-family: {{ section.settings.title_font.family }};
+        font-weight: {{ section.settings.title_weight }};
+      "
+    >
+      {{ section.settings.title }}
+    </h2>
+  {% endif %}
+
+  <div class="faq-grid">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'category' %}
+          <div class="faq-category" {{ block.shopify_attributes }}>
+            <h3
+              class="faq-category-title"
+              style="
+                color: {{ block.settings.category_color }};
+                font-size: {{ block.settings.category_size }}px;
+                margin-bottom: {{ block.settings.category_spacing }}px;
+                font-family: {{ section.settings.content_font.family }};
+              "
+            >
+              {{ block.settings.category_title }}
+            </h3>
+
+            <div class="faq-items">
+              {% assign questions = block.settings.questions | split: '\n' %}
+              {% assign answers = block.settings.answers | split: '\n' %}
+              {% for question in questions %}
+                <div class="faq-item">
+                  <button class="faq-question" aria-expanded="false">
+                    <span
+                      style="
+                        color: {{ block.settings.question_color }};
+                        font-size: {{ block.settings.question_size }}px;
+                      "
+                    >
+                      {{- question -}}
+                    </span>
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div
+                    class="faq-answer"
+                    style="
+                      color: {{ block.settings.answer_color }};
+                      font-size: {{ block.settings.answer_size }}px;
+                    "
+                  >
+                    {{ answers[forloop.index0] }}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+      {% endcase %}
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  .faq-section {
+    margin: 0 auto;
+  }
+
+  .faq-grid {
+    display: grid;
+    gap: 40px;
+  }
+
+  .faq-category {
+    border-bottom: 1px solid {{ section.settings.divider_color }};
+    padding-bottom: 0px;
+  }
+
+  .faq-category:last-child {
+    border-bottom: none;
+  }
+
+  .faq-items {
+    display: grid;
+    gap: 20px;
+  }
+
+  .faq-item {
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .faq-question {
+    width: 100%;
+    text-align: left;
+    padding: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease;
+  }
+
+  .faq-question:hover {
+    background-color: {{ section.settings.question_hover_color }};
+  }
+
+  .faq-icon {
+    font-size: 20px;
+    transition: transform 0.3s ease;
+  }
+
+  .faq-question[aria-expanded="true"] .faq-icon {
+    transform: rotate(45deg);
+  }
+
+  .faq-answer {
+    padding: 0;
+    line-height: 1.6;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .faq-answer.active {
+    max-height: 1000px;
+    opacity: 1;
+    padding: 20px ;
+  }
+
+  @media screen and (min-width: 990px) {
+    .faq-grid {
+      grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 989px) {
+    .faq-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .faq-category {
+      padding-bottom: 30px;
+    }
+  }
+</style>
+
+<script>
+  class FAQSection {
+    constructor() {
+      this.questions = document.querySelectorAll('.faq-question');
+      this.init();
+    }
+
+    init() {
+      this.questions.forEach(question => {
+        question.addEventListener('click', () => {
+          this.toggleQuestion(question);
+        });
+      });
+    }
+
+    toggleQuestion(question) {
+      const isExpanded = question.getAttribute('aria-expanded') === 'true';
+      const answer = question.nextElementSibling;
+
+      // Close all other questions
+      this.questions.forEach(q => {
+        if (q !== question && q.getAttribute('aria-expanded') === 'true') {
+          q.setAttribute('aria-expanded', 'false');
+          q.nextElementSibling.classList.remove('active');
+        }
+      });
+
+      // Toggle the clicked question
+      question.setAttribute('aria-expanded', !isExpanded);
+      answer.classList.toggle('active');
+    }
+  }
+
+  // Initialize the FAQ section
+  const initFAQSection = () => {
+    new FAQSection();
+  };
+
+  // Initialize on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFAQSection);
+  } else {
+    initFAQSection();
+  }
+
+  // Initialize when section is reloaded in theme editor
+  document.addEventListener('shopify:section:load', (event) => {
+    if (event.detail.sectionId.includes('faq')) {
+      initFAQSection();
+    }
+  });
+</script>

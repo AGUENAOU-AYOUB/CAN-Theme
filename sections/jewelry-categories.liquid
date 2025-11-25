@@ -1,0 +1,970 @@
+<div
+  class="jewelry-section"
+  style="margin-top: {{ section.settings.margin_top }}px; margin-bottom: {{ section.settings.margin_bottom }}px; padding-left: {{ section.settings.padding_horizontal }}px; padding-right: {{ section.settings.padding_horizontal }}px;"
+>
+  {% if section.settings.mobile_layout == 'carousel' and section.blocks.size > 1 %}
+    <div class="jewelry-mobile-carousel">
+      <div class="carousel-container">
+        {% if section.settings.show_arrows %}
+          <button class="carousel-arrow carousel-prev" aria-label="Previous">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        {% endif %}
+
+        <div class="carousel-track">
+          {% for block in section.blocks %}
+            {% if block.type == 'category' %}
+              <div class="carousel-slide" {{ block.shopify_attributes }} data-index="{{ forloop.index0 }}">
+                <div class="category-panel">
+                  <div class="image-container" style="border-radius: {{ section.settings.image_border_radius }}px;">
+                    {% if block.settings.background_image != blank %}
+                      {{
+                        block.settings.background_image
+                        | img_url: 'master'
+                        | img_tag: block.settings.category_title, 'panel-image'
+                      }}
+                    {% else %}
+                      <div
+                        class="placeholder-image"
+                        style="background-color: {{ block.settings.placeholder_color }}"
+                      ></div>
+                    {% endif %}
+                    <div
+                      class="overlay"
+                      style="background-color: rgba(0, 0, 0, {{ block.settings.overlay_opacity }})"
+                    ></div>
+                    <div class="category-content" style="padding: {{ section.settings.content_padding }}px;">
+                      <h2 style="color: {{ block.settings.text_color }}; font-size: {{ section.settings.heading_size_mobile }}px;">
+                        {{ block.settings.category_title }}
+                      </h2>
+                      <a
+                        href="{{ block.settings.button_link }}"
+                        class="shop-now"
+                        style="color: {{ block.settings.text_color }}; border-bottom-color: {{ block.settings.text_color }}; font-size: {{ section.settings.button_size_mobile }}px;"
+                      >
+                        {{ block.settings.button_text }}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        {% if section.settings.show_arrows %}
+          <button class="carousel-arrow carousel-next" aria-label="Next">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        {% endif %}
+      </div>
+
+      {% if section.settings.show_dots %}
+        <div class="carousel-dots">
+          {% for block in section.blocks %}
+            {% if block.type == 'category' %}
+              <button
+                class="carousel-dot{% if forloop.first %} active{% endif %}"
+                data-index="{{ forloop.index0 }}"
+                aria-label="Go to slide {{ forloop.index }}"
+              ></button>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="jewelry-desktop-grid" style="gap: {{ section.settings.grid_gap }}px;">
+    {% for block in section.blocks %}
+      {% if block.type == 'category' %}
+        <div class="category-panel" {{ block.shopify_attributes }}>
+          <div class="image-container" style="border-radius: {{ section.settings.image_border_radius }}px;">
+            {% if block.settings.background_image != blank %}
+              {{
+                block.settings.background_image
+                | img_url: 'master'
+                | img_tag: block.settings.category_title, 'panel-image'
+              }}
+            {% else %}
+              <div class="placeholder-image" style="background-color: {{ block.settings.placeholder_color }}"></div>
+            {% endif %}
+            <div class="overlay" style="background-color: rgba(0, 0, 0, {{ block.settings.overlay_opacity }})"></div>
+            <div class="category-content" style="padding: {{ section.settings.content_padding }}px;">
+              <h2 style="color: {{ block.settings.text_color }}; font-size: {{ section.settings.heading_size_desktop }}px;">
+                {{ block.settings.category_title }}
+              </h2>
+              <a
+                href="{{ block.settings.button_link }}"
+                class="shop-now"
+                style="color: {{ block.settings.text_color }}; border-bottom-color: {{ block.settings.text_color }}; font-size: {{ section.settings.button_size_desktop }}px;"
+              >
+                {{ block.settings.button_text }}
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="jewelry-mobile-grid" style="gap: {{ section.settings.grid_gap }}px;">
+    {% for block in section.blocks %}
+      {% if block.type == 'category' %}
+        <div class="category-panel" {{ block.shopify_attributes }}>
+          <div class="image-container" style="border-radius: {{ section.settings.image_border_radius }}px;">
+            {% if block.settings.background_image != blank %}
+              {{
+                block.settings.background_image
+                | img_url: 'master'
+                | img_tag: block.settings.category_title, 'panel-image'
+              }}
+            {% else %}
+              <div class="placeholder-image" style="background-color: {{ block.settings.placeholder_color }}"></div>
+            {% endif %}
+            <div class="overlay" style="background-color: rgba(0, 0, 0, {{ block.settings.overlay_opacity }})"></div>
+            <div class="category-content" style="padding: {{ section.settings.content_padding }}px;">
+              <h2 style="color: {{ block.settings.text_color }}; font-size: {{ section.settings.heading_size_mobile }}px;">
+                {{ block.settings.category_title }}
+              </h2>
+              <a
+                href="{{ block.settings.button_link }}"
+                class="shop-now"
+                style="color: {{ block.settings.text_color }}; border-bottom-color: {{ block.settings.text_color }}; font-size: {{ section.settings.button_size_mobile }}px;"
+              >
+                {{ block.settings.button_text }}
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+{% if section.settings.show_chat_button %}
+  <button
+    id="chat-button"
+    class="chat-button"
+    aria-label="{{ section.settings.chat_button_label }}"
+    style="background-color: {{ section.settings.chat_button_color }}; color: {{ section.settings.chat_button_text_color }}"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+    </svg>
+  </button>
+{% endif %}
+
+<style>
+  /* Base styles */
+  .jewelry-section {
+    width: 100%;
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  /* Category Panel Styles */
+  .category-panel {
+    position: relative;
+    overflow: hidden;
+    {% if section.settings.add_box_shadow %}
+    box-shadow: 0 {{ section.settings.shadow_vertical_offset }}px {{ section.settings.shadow_blur }}px rgba(0, 0, 0, {{ section.settings.shadow_opacity }});
+    {% endif %}
+  }
+
+  .image-container {
+    position: relative;
+    height: {{ section.settings.image_height_mobile }}px;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .panel-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .placeholder-image {
+    width: 100%;
+    height: 100%;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .category-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    {% if section.settings.text_alignment == 'center' %}
+    text-align: center;
+    width: 100%;
+    {% elsif section.settings.text_alignment == 'right' %}
+    text-align: right;
+    right: 0;
+    left: auto;
+    {% endif %}
+  }
+
+  .category-content h2 {
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    {% if section.settings.heading_font_weight %}
+    font-weight: {{ section.settings.heading_font_weight }};
+    {% endif %}
+    {% if section.settings.heading_letter_spacing != 0 %}
+    letter-spacing: {{ section.settings.heading_letter_spacing }}px;
+    {% endif %}
+  }
+
+  .shop-now {
+    display: inline-block;
+    text-decoration: none;
+    border-bottom: 1px solid;
+    transition: all 0.3s ease;
+    {% if section.settings.button_font_weight %}
+    font-weight: {{ section.settings.button_font_weight }};
+    {% endif %}
+    {% if section.settings.button_letter_spacing != 0 %}
+    letter-spacing: {{ section.settings.button_letter_spacing }}px;
+    {% endif %}
+  }
+
+  .shop-now:hover {
+    border-color: transparent;
+    opacity: 0.8;
+    transform: translateY(-2px);
+  }
+
+  /* Desktop Grid */
+  .jewelry-desktop-grid {
+    display: none;
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    margin-bottom: 20px;
+  }
+
+  /* Mobile Grid */
+  .jewelry-mobile-grid {
+    display: none;
+    grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
+    margin-bottom: 20px;
+  }
+
+  /* Mobile Carousel */
+  .jewelry-mobile-carousel {
+    display: none;
+    margin-bottom: 20px;
+  }
+
+  .carousel-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .carousel-track {
+    display: flex;
+    transition: transform 0.3s ease;
+  }
+
+  .carousel-slide {
+    flex: 0 0 100%;
+    width: 100%;
+  }
+
+  .carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background-color: {{ section.settings.arrow_background }};
+    color: {{ section.settings.arrow_color }};
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+  }
+
+  .carousel-arrow:hover {
+    opacity: 1;
+  }
+
+  .carousel-prev {
+    left: 10px;
+  }
+
+  .carousel-next {
+    right: 10px;
+  }
+
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .carousel-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: {{ section.settings.dot_color }};
+    opacity: 0.5;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+  }
+
+  .carousel-dot:hover {
+    opacity: 0.8;
+  }
+
+  .carousel-dot.active {
+    opacity: 1;
+  }
+
+  /* Chat Button */
+  .chat-button {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    border: none;
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .chat-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Media Queries */
+  @media screen and (min-width: 768px) {
+    .jewelry-desktop-grid {
+      display: grid;
+    }
+
+    .jewelry-mobile-carousel,
+    .jewelry-mobile-grid {
+      display: none;
+    }
+
+    .image-container {
+      height: {{ section.settings.image_height_desktop }}px;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .jewelry-desktop-grid {
+      display: none;
+    }
+
+    {% if section.settings.mobile_layout == 'carousel' %}
+    .jewelry-mobile-carousel {
+      display: block;
+    }
+
+    .jewelry-mobile-grid {
+      display: none;
+    }
+    {% else %}
+    .jewelry-mobile-carousel {
+      display: none;
+    }
+
+    .jewelry-mobile-grid {
+      display: grid;
+    }
+    {% endif %}
+
+    .image-container {
+      height: {{ section.settings.image_height_mobile }}px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Jewelry Categories",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 800,
+      "max": 2000,
+      "step": 50,
+      "default": 1600,
+      "label": "Maximum section width"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0,
+      "label": "Top margin"
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0,
+      "label": "Bottom margin"
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 15,
+      "label": "Horizontal padding"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 4,
+      "label": "Space between panels"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 4,
+      "label": "Number of columns on desktop"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        }
+      ],
+      "default": "2",
+      "label": "Number of columns on mobile"
+    },
+    {
+      "type": "header",
+      "content": "Image Settings"
+    },
+    {
+      "type": "range",
+      "id": "image_height_desktop",
+      "min": 200,
+      "max": 800,
+      "step": 10,
+      "default": 500,
+      "label": "Image height on desktop"
+    },
+    {
+      "type": "range",
+      "id": "image_height_mobile",
+      "min": 150,
+      "max": 500,
+      "step": 10,
+      "default": 250,
+      "label": "Image height on mobile"
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 0,
+      "label": "Image border radius"
+    },
+    {
+      "type": "checkbox",
+      "id": "add_box_shadow",
+      "default": false,
+      "label": "Add box shadow"
+    },
+    {
+      "type": "range",
+      "id": "shadow_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.2,
+      "label": "Shadow opacity"
+    },
+    {
+      "type": "range",
+      "id": "shadow_vertical_offset",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 4,
+      "label": "Shadow vertical offset"
+    },
+    {
+      "type": "range",
+      "id": "shadow_blur",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "default": 10,
+      "label": "Shadow blur"
+    },
+    {
+      "type": "header",
+      "content": "Text Settings"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "label": "Text alignment"
+    },
+    {
+      "type": "range",
+      "id": "content_padding",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "default": 20,
+      "label": "Content padding"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_desktop",
+      "min": 16,
+      "max": 60,
+      "step": 1,
+      "default": 30,
+      "label": "Heading size on desktop"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 14,
+      "max": 40,
+      "step": 1,
+      "default": 22,
+      "label": "Heading size on mobile"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "800",
+          "label": "Extra Bold"
+        }
+      ],
+      "default": "700",
+      "label": "Heading font weight"
+    },
+    {
+      "type": "range",
+      "id": "heading_letter_spacing",
+      "min": 0,
+      "max": 5,
+      "step": 0.5,
+      "default": 0,
+      "label": "Heading letter spacing"
+    },
+    {
+      "type": "range",
+      "id": "button_size_desktop",
+      "min": 12,
+      "max": 30,
+      "step": 1,
+      "default": 18,
+      "label": "Button text size on desktop"
+    },
+    {
+      "type": "range",
+      "id": "button_size_mobile",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "default": 14,
+      "label": "Button text size on mobile"
+    },
+    {
+      "type": "select",
+      "id": "button_font_weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "400",
+      "label": "Button font weight"
+    },
+    {
+      "type": "range",
+      "id": "button_letter_spacing",
+      "min": 0,
+      "max": 5,
+      "step": 0.5,
+      "default": 0,
+      "label": "Button letter spacing"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Layout"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "options": [
+        {
+          "value": "grid",
+          "label": "Grid (stacked)"
+        },
+        {
+          "value": "carousel",
+          "label": "Carousel (swipeable)"
+        }
+      ],
+      "default": "grid",
+      "label": "Mobile layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "default": true,
+      "label": "Show carousel arrows"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "default": true,
+      "label": "Show carousel dots"
+    },
+    {
+      "type": "color",
+      "id": "arrow_color",
+      "default": "#ffffff",
+      "label": "Arrow color"
+    },
+    {
+      "type": "color",
+      "id": "arrow_background",
+      "default": "#000000",
+      "label": "Arrow background"
+    },
+    {
+      "type": "color",
+      "id": "dot_color",
+      "default": "#000000",
+      "label": "Dot color"
+    },
+    {
+      "type": "header",
+      "content": "Chat Button"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_chat_button",
+      "default": true,
+      "label": "Show chat button"
+    },
+    {
+      "type": "text",
+      "id": "chat_button_label",
+      "default": "Chat with us",
+      "label": "Chat button label"
+    },
+    {
+      "type": "color",
+      "id": "chat_button_color",
+      "default": "#000000",
+      "label": "Chat button color"
+    },
+    {
+      "type": "color",
+      "id": "chat_button_text_color",
+      "default": "#ffffff",
+      "label": "Chat button icon color"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "text",
+          "id": "category_title",
+          "default": "CATEGORY",
+          "label": "Category title"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "default": "Shop Now",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "image_picker",
+          "id": "background_image",
+          "label": "Background image"
+        },
+        {
+          "type": "color",
+          "id": "placeholder_color",
+          "default": "#f5f5f5",
+          "label": "Placeholder color (if no image)"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "min": 0,
+          "max": 1,
+          "step": 0.1,
+          "default": 0.1,
+          "label": "Overlay opacity"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "default": "#ffffff",
+          "label": "Text color"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Jewelry Categories",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "category_title": "NECKLACES",
+            "button_text": "Shop Now"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "category_title": "EARRINGS",
+            "button_text": "Shop Now"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "category_title": "BEST SELLERS",
+            "button_text": "Shop Now"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "category_title": "SPOTTED ON",
+            "button_text": "Shop Now"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  // Chat button functionality
+  const chatButton = document.getElementById('chat-button');
+  if (chatButton) {
+    chatButton.addEventListener('click', function() {
+      if (typeof window.Shopify !== 'undefined' && window.Shopify.chat) {
+        window.Shopify.chat.open();
+      } else {
+        alert('Chat support is now available. How can we help you?');
+      }
+    });
+  }
+
+  // Mobile carousel functionality
+  const carouselTrack = document.querySelector('.carousel-track');
+  const slides = document.querySelectorAll('.carousel-slide');
+  const dots = document.querySelectorAll('.carousel-dot');
+  const prevButton = document.querySelector('.carousel-prev');
+  const nextButton = document.querySelector('.carousel-next');
+  
+  if (carouselTrack && slides.length > 0) {
+    let currentIndex = 0;
+    const totalSlides = slides.length;
+    
+    function updateCarousel() {
+      carouselTrack.style.transform = `translateX(-${currentIndex * 100}%)`;
+      
+      if (dots.length > 0) {
+        dots.forEach(dot => dot.classList.remove('active'));
+        dots[currentIndex].classList.add('active');
+      }
+    }
+    
+    if (prevButton) {
+      prevButton.addEventListener('click', function() {
+        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+        updateCarousel();
+      });
+    }
+    
+    if (nextButton) {
+      nextButton.addEventListener('click', function() {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        updateCarousel();
+      });
+    }
+    
+    dots.forEach(dot => {
+      dot.addEventListener('click', function() {
+        currentIndex = parseInt(this.getAttribute('data-index'));
+        updateCarousel();
+      });
+    });
+    
+    // Touch swipe functionality
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    carouselTrack.addEventListener('touchstart', function(e) {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    
+    carouselTrack.addEventListener('touchend', function(e) {
+      touchEndX = e.changedTouches[0].screenX;
+      
+      if (touchEndX < touchStartX - 50) {
+        // Swipe left - go to next slide
+        currentIndex = (currentIndex + 1) % totalSlides;
+        updateCarousel();
+      } else if (touchEndX > touchStartX + 50) {
+        // Swipe right - go to previous slide
+        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+        updateCarousel();
+      }
+    }, { passive: true });
+    
+    // Initialize the carousel
+    updateCarousel();
+  }
+  
+  // Enhanced hover effects for shop now buttons
+  const shopNowButtons = document.querySelectorAll('.shop-now');
+  
+  shopNowButtons.forEach(button => {
+    button.addEventListener('mouseenter', function() {
+      this.style.transition = 'all 0.3s ease';
+    });
+      function() {
+      this.style.transition = 'all 0.3s ease';
+    });
+    
+    button.addEventListener('mouseleave', function() {
+      this.style.transition = 'all 0.3s ease';
+    });
+  });
+});
+{% endjavascript %}

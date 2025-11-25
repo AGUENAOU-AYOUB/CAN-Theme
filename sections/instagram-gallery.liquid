@@ -1,0 +1,1120 @@
+<div class="missoma-instagram-section" style="background-color: {{ section.settings.background_color }};">
+  <div class="missoma-instagram-container">
+    {% if section.settings.title != blank %}
+      <h2 class="missoma-instagram-title">{{ section.settings.title }}</h2>
+    {% endif %}
+
+    {% if section.settings.enable_carousel %}
+      <div class="missoma-instagram-carousel">
+        <div class="missoma-instagram-carousel-container">
+          {% for block in section.blocks %}
+            <div class="missoma-instagram-item" {{ block.shopify_attributes }}>
+              <a href="{{ block.settings.link }}" class="missoma-instagram-link" target="_blank" rel="noopener">
+                {% if block.settings.image != blank %}
+                  <div class="missoma-instagram-image-container">
+                    <img
+                      src="{{ block.settings.image | img_url: '600x' }}"
+                      alt="{{ block.settings.image_alt | escape }}"
+                      class="missoma-instagram-image"
+                      loading="lazy"
+                      width="600"
+                      height="600"
+                    >
+
+                    <div class="missoma-instagram-overlay">
+                      {% if section.settings.show_instagram_icon %}
+                        <div class="missoma-instagram-icon">
+                          <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" fill="currentColor"/>
+                          </svg>
+                        </div>
+                      {% endif %}
+
+                      {% if block.settings.overlay_text != blank %}
+                        <div class="missoma-instagram-overlay-content">
+                          {{ block.settings.overlay_text }}
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endif %}
+
+                {% if block.settings.caption != blank and section.settings.show_captions %}
+                  <div class="missoma-instagram-caption">
+                    {{ block.settings.caption }}
+                  </div>
+                {% endif %}
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+
+        {% if section.settings.show_arrow %}
+          <div class="missoma-carousel-arrow">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        {% endif %}
+      </div>
+    {% else %}
+      <div class="missoma-instagram-grid">
+        {% for block in section.blocks %}
+          <div class="missoma-instagram-item" {{ block.shopify_attributes }}>
+            <a href="{{ block.settings.link }}" class="missoma-instagram-link" target="_blank" rel="noopener">
+              {% if block.settings.image != blank %}
+                <div class="missoma-instagram-image-container">
+                  <img
+                    src="{{ block.settings.image | img_url: '600x' }}"
+                    alt="{{ block.settings.image_alt | escape }}"
+                    class="missoma-instagram-image"
+                    loading="lazy"
+                    width="600"
+                    height="600"
+                  >
+
+                  <div class="missoma-instagram-overlay">
+                    {% if section.settings.show_instagram_icon %}
+                      <div class="missoma-instagram-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" fill="currentColor"/>
+                        </svg>
+                      </div>
+                    {% endif %}
+
+                    {% if block.settings.overlay_text != blank %}
+                      <div class="missoma-instagram-overlay-content">
+                        {{ block.settings.overlay_text }}
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+
+              {% if block.settings.caption != blank and section.settings.show_captions %}
+                <div class="missoma-instagram-caption">
+                  {{ block.settings.caption }}
+                </div>
+              {% endif %}
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.instagram_url != blank and section.settings.show_follow_button %}
+      <div class="missoma-instagram-follow">
+        <a
+          href="{{ section.settings.instagram_url }}"
+          class="missoma-instagram-follow-button"
+          target="_blank"
+          rel="noopener"
+        >
+          {{ section.settings.follow_text }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  .missoma-instagram-section {
+    width: 100%;
+    padding: {{ section.settings.section_padding }}px 0;
+    overflow: hidden;
+  }
+
+  .missoma-instagram-container {
+    max-width: {{ section.settings.container_width }}px;
+    margin: 0 auto;
+    padding: 0 {{ section.settings.container_padding }}px;
+  }
+
+  .missoma-instagram-title {
+    font-family: {{ section.settings.title_font }};
+    font-size: {{ section.settings.title_size }}px;
+    font-weight: {{ section.settings.title_weight }};
+    color: {{ section.settings.title_color }};
+    text-align: {{ section.settings.title_alignment }};
+    margin-bottom: {{ section.settings.title_margin }}px;
+    letter-spacing: {{ section.settings.title_letter_spacing }}px;
+  }
+
+  /* Grid Layout */
+  .missoma-instagram-grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    gap: {{ section.settings.grid_gap }}px;
+  }
+
+  /* Carousel Layout */
+  .missoma-instagram-carousel {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    touch-action: pan-y;
+  }
+
+  .missoma-instagram-carousel-container {
+    display: flex;
+    transition: transform 0.3s ease;
+    cursor: grab;
+  }
+
+  .missoma-instagram-carousel-container:active {
+    cursor: grabbing;
+  }
+
+  .missoma-instagram-carousel .missoma-instagram-item {
+    flex: 0 0 {% if section.settings.carousel_items_per_view_desktop == 1 %}100%{% elsif section.settings.carousel_items_per_view_desktop == 2 %}50%{% elsif section.settings.carousel_items_per_view_desktop == 3 %}33.333%{% elsif section.settings.carousel_items_per_view_desktop == 4 %}25%{% elsif section.settings.carousel_items_per_view_desktop == 5 %}20%{% else %}25%{% endif %};
+    padding: 0 {{ section.settings.carousel_item_spacing }}px;
+    box-sizing: border-box;
+  }
+
+  .missoma-carousel-arrow {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    z-index: 10;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .missoma-instagram-carousel:hover .missoma-carousel-arrow,
+  .missoma-instagram-carousel.is-dragging .missoma-carousel-arrow {
+    opacity: 1;
+  }
+
+  .missoma-instagram-item {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: {{ section.settings.image_aspect_ratio }};
+  }
+
+  .missoma-instagram-link {
+    display: block;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .missoma-instagram-image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .missoma-instagram-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform {{ section.settings.hover_transition_speed }}s ease;
+  }
+
+  {% if section.settings.enable_hover_effect %}
+  .missoma-instagram-link:hover .missoma-instagram-image {
+    transform: scale(1.05);
+  }
+  {% endif %}
+
+  .missoma-instagram-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+  }
+
+  .missoma-instagram-link:hover .missoma-instagram-overlay {
+    opacity: 1;
+  }
+
+  .missoma-instagram-overlay-content {
+    color: #ffffff;
+    font-family: {{ section.settings.overlay_font }};
+    font-size: {{ section.settings.overlay_font_size }}px;
+    font-weight: {{ section.settings.overlay_font_weight }};
+    text-align: center;
+    margin-top: 15px;
+  }
+
+  .missoma-instagram-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    color: #ffffff;
+    background-color: transparent;
+    border-radius: 0;
+    padding: 0;
+    z-index: 3;
+  }
+
+  .missoma-instagram-icon svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .missoma-instagram-caption {
+    padding: 15px;
+    font-family: {{ section.settings.caption_font }};
+    font-size: {{ section.settings.caption_font_size }}px;
+    color: {{ section.settings.caption_color }};
+    line-height: 1.4;
+  }
+
+  .missoma-instagram-follow {
+    margin-top: {{ section.settings.follow_button_margin }}px;
+    text-align: center;
+  }
+
+  .missoma-instagram-follow-button {
+    display: inline-block;
+    padding: {{ section.settings.follow_button_padding_vertical }}px {{ section.settings.follow_button_padding_horizontal }}px;
+    background-color: {{ section.settings.follow_button_background }};
+    color: {{ section.settings.follow_button_color }};
+    font-family: {{ section.settings.follow_button_font }};
+    font-size: {{ section.settings.follow_button_font_size }}px;
+    font-weight: {{ section.settings.follow_button_font_weight }};
+    text-decoration: none;
+    border: 1px solid {{ section.settings.follow_button_border_color }};
+    transition: all 0.3s ease;
+  }
+
+  .missoma-instagram-follow-button:hover {
+    background-color: {{ section.settings.follow_button_hover_background }};
+    color: {{ section.settings.follow_button_hover_color }};
+  }
+
+  @media screen and (max-width: 767px) {
+    .missoma-instagram-title {
+      font-size: {{ section.settings.title_size_mobile }}px;
+      margin-bottom: {{ section.settings.title_margin_mobile }}px;
+    }
+
+    .missoma-instagram-grid {
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
+      gap: {{ section.settings.grid_gap_mobile }}px;
+    }
+
+    .missoma-instagram-carousel .missoma-instagram-item {
+      flex: 0 0 {% if section.settings.carousel_items_per_view_mobile == 1 %}100%{% elsif section.settings.carousel_items_per_view_mobile == 2 %}50%{% else %}100%{% endif %};
+    }
+
+    .missoma-instagram-overlay-content {
+      font-size: {{ section.settings.overlay_font_size_mobile }}px;
+    }
+
+    .missoma-instagram-caption {
+      font-size: {{ section.settings.caption_font_size_mobile }}px;
+      padding: 10px;
+    }
+
+    .missoma-instagram-icon svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .missoma-instagram-follow-button {
+      font-size: {{ section.settings.follow_button_font_size_mobile }}px;
+      padding: {{ section.settings.follow_button_padding_vertical_mobile }}px {{ section.settings.follow_button_padding_horizontal_mobile }}px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Initialize carousel if enabled
+    {% if section.settings.enable_carousel %}
+      const carousel = document.querySelector('.missoma-instagram-carousel-container');
+      const carouselWrapper = document.querySelector('.missoma-instagram-carousel');
+      const items = carousel.querySelectorAll('.missoma-instagram-item');
+      const arrow = document.querySelector('.missoma-carousel-arrow');
+      
+      if (!carousel || items.length === 0) return;
+      
+      let itemsPerView = window.innerWidth <= 767 ? 
+        {{ section.settings.carousel_items_per_view_mobile }} : 
+        {{ section.settings.carousel_items_per_view_desktop }};
+      
+      let startX, startScrollLeft, isDragging = false;
+      let currentIndex = 0;
+      
+      // Get item width
+      function getItemWidth() {
+        return carousel.offsetWidth / itemsPerView;
+      }
+      
+      // Update carousel position
+      function updateCarousel(index) {
+        currentIndex = index;
+        const itemWidth = getItemWidth();
+        carousel.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+      }
+      
+      // Handle touch/mouse events for manual swiping
+      function handleDragStart(e) {
+        isDragging = true;
+        carousel.classList.add('dragging');
+        carouselWrapper.classList.add('is-dragging');
+        startX = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
+        startScrollLeft = carousel.scrollLeft;
+      }
+      
+      function handleDragMove(e) {
+        if (!isDragging) return;
+        e.preventDefault();
+        
+        const x = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
+        const walk = (startX - x) * 1.5; // Scroll speed multiplier
+        
+        const itemWidth = getItemWidth();
+        const currentTranslate = currentIndex * itemWidth;
+        const newTranslate = Math.max(0, Math.min(currentTranslate + walk, (items.length - itemsPerView) * itemWidth));
+        
+        carousel.style.transform = `translateX(-${newTranslate}px)`;
+      }
+      
+      function handleDragEnd(e) {
+        if (!isDragging) return;
+        isDragging = false;
+        carousel.classList.remove('dragging');
+        
+        // Keep the is-dragging class for a short time to keep the arrow visible
+        setTimeout(() => {
+          carouselWrapper.classList.remove('is-dragging');
+        }, 1500);
+        
+        const x = e.type.includes('mouse') ? e.pageX : (e.changedTouches ? e.changedTouches[0].pageX : startX);
+        const walk = startX - x;
+        
+        if (Math.abs(walk) > 100) { // Threshold to determine if it's a swipe
+          if (walk > 0 && currentIndex < items.length - itemsPerView) {
+            // Swiped left, go to next
+            currentIndex++;
+          } else if (walk < 0 && currentIndex > 0) {
+            // Swiped right, go to previous
+            currentIndex--;
+          }
+        }
+        
+        updateCarousel(currentIndex);
+      }
+      
+      // Handle window resize
+      window.addEventListener('resize', function() {
+        itemsPerView = window.innerWidth <= 767 ? 
+          {{ section.settings.carousel_items_per_view_mobile }} : 
+          {{ section.settings.carousel_items_per_view_desktop }};
+        
+        // Ensure current index is valid after resize
+        if (currentIndex > items.length - itemsPerView) {
+          currentIndex = Math.max(0, items.length - itemsPerView);
+        }
+        
+        updateCarousel(currentIndex);
+      });
+      
+      // Arrow click handler
+      if (arrow) {
+        arrow.addEventListener('click', function() {
+          if (currentIndex < items.length - itemsPerView) {
+            currentIndex++;
+            updateCarousel(currentIndex);
+          } else {
+            // Loop back to start
+            currentIndex = 0;
+            updateCarousel(currentIndex);
+          }
+        });
+      }
+      
+      // Add event listeners for touch/mouse events
+      carousel.addEventListener('mousedown', handleDragStart);
+      carousel.addEventListener('touchstart', handleDragStart);
+      
+      document.addEventListener('mousemove', handleDragMove);
+      document.addEventListener('touchmove', handleDragMove, { passive: false });
+      
+      document.addEventListener('mouseup', handleDragEnd);
+      document.addEventListener('touchend', handleDragEnd);
+      
+      // Prevent context menu on long press
+      carousel.addEventListener('contextmenu', e => e.preventDefault());
+      
+      // Auto play if enabled
+      {% if section.settings.carousel_autoplay %}
+        let autoplayInterval = setInterval(function() {
+          if (currentIndex < items.length - itemsPerView) {
+            currentIndex++;
+          } else {
+            currentIndex = 0;
+          }
+          updateCarousel(currentIndex);
+        }, {{ section.settings.carousel_autoplay_speed }} * 1000);
+        
+        // Pause autoplay on hover/touch if enabled
+        {% if section.settings.carousel_pause_on_hover %}
+          carouselWrapper.addEventListener('mouseenter', function() {
+            clearInterval(autoplayInterval);
+          });
+          
+          carouselWrapper.addEventListener('touchstart', function() {
+            clearInterval(autoplayInterval);
+          });
+          
+          carouselWrapper.addEventListener('mouseleave', function() {
+            if (!isDragging) {
+              autoplayInterval = setInterval(function() {
+                if (currentIndex < items.length - itemsPerView) {
+                  currentIndex++;
+                } else {
+                  currentIndex = 0;
+                }
+                updateCarousel(currentIndex);
+              }, {{ section.settings.carousel_autoplay_speed }} * 1000);
+            }
+          });
+          
+          carouselWrapper.addEventListener('touchend', function() {
+            if (!isDragging) {
+              autoplayInterval = setInterval(function() {
+                if (currentIndex < items.length - itemsPerView) {
+                  currentIndex++;
+                } else {
+                  currentIndex = 0;
+                }
+                updateCarousel(currentIndex);
+              }, {{ section.settings.carousel_autoplay_speed }} * 1000);
+            }
+          });
+        {% endif %}
+      {% endif %}
+      
+      // Initialize carousel
+      updateCarousel(0);
+    {% endif %}
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Instagram Gallery",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "@MISSOMALONDON"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "label": "Section Padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "min": 800,
+      "max": 1600,
+      "step": 50,
+      "label": "Container Width",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "container_padding",
+      "min": 0,
+      "max": 40,
+      "step": 5,
+      "label": "Container Padding",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_carousel",
+      "label": "Enable Carousel",
+      "default": true,
+      "info": "Display images in a carousel instead of a grid"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrow",
+      "label": "Show Arrow Indicator",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Grid Settings"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "label": "Columns (Desktop)",
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns (Mobile)",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 Column"
+        },
+        {
+          "value": "2",
+          "label": "2 Columns"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "label": "Grid Gap",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_mobile",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "label": "Grid Gap (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Carousel Settings"
+    },
+    {
+      "type": "select",
+      "id": "carousel_items_per_view_desktop",
+      "label": "Items Per View (Desktop)",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 Item"
+        },
+        {
+          "value": "2",
+          "label": "2 Items"
+        },
+        {
+          "value": "3",
+          "label": "3 Items"
+        },
+        {
+          "value": "4",
+          "label": "4 Items"
+        },
+        {
+          "value": "5",
+          "label": "5 Items"
+        }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "carousel_items_per_view_mobile",
+      "label": "Items Per View (Mobile)",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 Item"
+        },
+        {
+          "value": "2",
+          "label": "2 Items"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "range",
+      "id": "carousel_item_spacing",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "label": "Item Spacing",
+      "default": 10
+    },
+    {
+      "type": "checkbox",
+      "id": "carousel_autoplay",
+      "label": "Enable Autoplay",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "carousel_autoplay_speed",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "label": "Autoplay Speed (seconds)",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "carousel_pause_on_hover",
+      "label": "Pause Autoplay on Hover",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "image_aspect_ratio",
+      "label": "Image Aspect Ratio",
+      "options": [
+        {
+          "value": "1/1",
+          "label": "1:1 (Square)"
+        },
+        {
+          "value": "4/5",
+          "label": "4:5 (Portrait)"
+        },
+        {
+          "value": "16/9",
+          "label": "16:9 (Landscape)"
+        }
+      ],
+      "default": "1/1"
+    },
+    {
+      "type": "header",
+      "content": "Title Settings"
+    },
+    {
+      "type": "text",
+      "id": "title_font",
+      "label": "Title Font",
+      "default": "sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 16,
+      "max": 48,
+      "step": 1,
+      "label": "Title Size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "min": 14,
+      "max": 32,
+      "step": 1,
+      "label": "Title Size (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Title Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-Bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "title_letter_spacing",
+      "min": 0,
+      "max": 5,
+      "step": 0.1,
+      "label": "Title Letter Spacing",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "title_alignment",
+      "label": "Title Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "title_margin",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "label": "Title Bottom Margin",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "title_margin_mobile",
+      "min": 10,
+      "max": 40,
+      "step": 5,
+      "label": "Title Bottom Margin (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Image Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_hover_effect",
+      "label": "Enable Hover Zoom Effect",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "hover_transition_speed",
+      "min": 0.2,
+      "max": 1,
+      "step": 0.1,
+      "label": "Hover Transition Speed",
+      "default": 0.3
+    },
+    {
+      "type": "header",
+      "content": "Instagram Icon Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_instagram_icon",
+      "label": "Show Instagram Icon",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Caption Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_captions",
+      "label": "Show Captions",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "caption_font",
+      "label": "Caption Font",
+      "default": "sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "caption_font_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "label": "Caption Font Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "caption_font_size_mobile",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "label": "Caption Font Size (Mobile)",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "caption_color",
+      "label": "Caption Color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Follow Button Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_follow_button",
+      "label": "Show Follow Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "follow_text",
+      "label": "Follow Button Text",
+      "default": "Follow Us on Instagram"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "range",
+      "id": "follow_button_margin",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "label": "Follow Button Top Margin",
+      "default": 30
+    },
+    {
+      "type": "text",
+      "id": "follow_button_font",
+      "label": "Button Font",
+      "default": "sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "follow_button_font_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "label": "Button Font Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "follow_button_font_size_mobile",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "label": "Button Font Size (Mobile)",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "follow_button_font_weight",
+      "label": "Button Font Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-Bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "range",
+      "id": "follow_button_padding_vertical",
+      "min": 5,
+      "max": 30,
+      "step": 1,
+      "label": "Button Vertical Padding",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "follow_button_padding_vertical_mobile",
+      "min": 5,
+      "max": 20,
+      "step": 1,
+      "label": "Button Vertical Padding (Mobile)",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "follow_button_padding_horizontal",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "label": "Button Horizontal Padding",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "follow_button_padding_horizontal_mobile",
+      "min": 10,
+      "max": 40,
+      "step": 5,
+      "label": "Button Horizontal Padding (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "follow_button_background",
+      "label": "Button Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "follow_button_color",
+      "label": "Button Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "follow_button_border_color",
+      "label": "Button Border Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "follow_button_hover_background",
+      "label": "Button Hover Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "follow_button_hover_color",
+      "label": "Button Hover Text Color",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "instagram_post",
+      "name": "Instagram Post",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image Alt Text",
+          "default": "Instagram post"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Instagram Post URL"
+        },
+        {
+          "type": "textarea",
+          "id": "caption",
+          "label": "Caption"
+        },
+        {
+          "type": "textarea",
+          "id": "overlay_text",
+          "label": "Overlay Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram Gallery",
+      "blocks": [
+        {
+          "type": "instagram_post",
+          "settings": {
+            "image_alt": "Monday earrings",
+            "overlay_text": "MONDAY"
+          }
+        },
+        {
+          "type": "instagram_post",
+          "settings": {
+            "image_alt": "Tuesday earrings",
+            "overlay_text": "TUESDAY"
+          }
+        },
+        {
+          "type": "instagram_post",
+          "settings": {
+            "image_alt": "Wednesday earrings",
+            "overlay_text": "WEDNESDAY"
+          }
+        },
+        {
+          "type": "instagram_post",
+          "settings": {
+            "image_alt": "Thursday earrings",
+            "overlay_text": "THURSDAY"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,141 @@
+{% schema %}
+{
+  "name": "Fixed Image Grid",
+  "settings": [
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "Top Margin",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "Bottom Margin",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "label": "Vertical Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "label": "Horizontal Padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap between images",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Image Corner Radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns (Always Used)",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 6
+    },
+    { "type": "image_picker", "id": "image_1", "label": "Image 1" },
+    { "type": "image_picker", "id": "image_2", "label": "Image 2" },
+    { "type": "image_picker", "id": "image_3", "label": "Image 3" },
+    { "type": "image_picker", "id": "image_4", "label": "Image 4" },
+    { "type": "image_picker", "id": "image_5", "label": "Image 5" },
+    { "type": "image_picker", "id": "image_6", "label": "Image 6" }
+  ],
+  "presets": [
+    {
+      "name": "Fixed Image Grid",
+      "category": "Image"
+    }
+  ]
+}
+{% endschema %}
+
+<div
+  class="pdpaola-fixed-grid"
+  style="
+    margin-top: {{ section.settings.margin_top }}px;
+    margin-bottom: {{ section.settings.margin_bottom }}px;
+    padding: {{ section.settings.padding_vertical }}px {{ section.settings.padding_horizontal }}px;
+  "
+>
+  <div
+    class="image-grid"
+    style="
+      --gap: {{ section.settings.gap }}px;
+      --border-radius: {{ section.settings.border_radius }}px;
+      --columns: {{ section.settings.columns_desktop }};
+    "
+  >
+    {% for i in (1..6) %}
+      {% capture img_id %}image_{{ i }}{% endcapture %}
+      {% assign image = section.settings[img_id] %}
+      {% if image %}
+        <div class="grid-item">
+          <img
+            src="{{ image | img_url: '800x' }}"
+            loading="lazy"
+            alt="Gallery Image {{ i }}"
+          >
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  .pdpaola-fixed-grid {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .image-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--columns), 1fr);
+    gap: var(--gap);
+  }
+
+  .grid-item {
+    overflow: hidden;
+    border-radius: var(--border-radius);
+    aspect-ratio: 3 / 4;
+  }
+
+  .grid-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    display: block;
+  }
+</style>

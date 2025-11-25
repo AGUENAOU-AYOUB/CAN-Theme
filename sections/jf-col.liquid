@@ -1,0 +1,1877 @@
+{% comment %}
+  Jennifer Fisher Collection Template
+  Modified to only include Disponibilité and Prix filters
+  Removed Sort By section and Clear All button
+{% endcomment %}
+
+{%- style -%}
+  /* Base styles */
+  .jf-collection {
+    font-family: {{ section.settings.body_font }}, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: {{ section.settings.text_color }};
+    max-width: {{ section.settings.page_width }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* Collection header */
+  .jf-collection-header {
+    padding: {{ section.settings.header_padding_top }}px 0 {{ section.settings.header_padding_bottom }}px;
+    text-align: {{ section.settings.header_alignment }};
+  }
+
+  .jf-collection-title {
+    font-family: {{ section.settings.heading_font }}, 'Times New Roman', Times, serif;
+    font-size: {{ section.settings.heading_size }}px;
+    font-weight: {{ section.settings.heading_weight }};
+    color: {{ section.settings.heading_color }};
+    margin: 0 0 {{ section.settings.heading_margin_bottom }}px;
+    line-height: 1.2;
+    letter-spacing: {{ section.settings.heading_letter_spacing }}px;
+  }
+
+  .jf-collection-description {
+    font-size: {{ section.settings.description_size }}px;
+    line-height: 1.5;
+    max-width: 600px;
+    margin: 0;
+    {% if section.settings.header_alignment == 'center' %}
+      margin-left: auto;
+      margin-right: auto;
+    {% elsif section.settings.header_alignment == 'right' %}
+      margin-left: auto;
+    {% endif %}
+  }
+
+  /* Collection layout */
+  .jf-collection-container {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: {{ section.settings.container_gap }}px;
+  }
+
+  /* Product grid */
+  .jf-collection-products {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    gap: {{ section.settings.grid_gap }}px;
+  }
+
+  /* Product card */
+  .jf-product-card {
+    margin-bottom: {{ section.settings.card_margin_bottom }}px;
+  }
+
+  .jf-product-card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .jf-product-image-container {
+    position: relative;
+    width: 100%;
+    background-color: {{ section.settings.product_bg_color }};
+    margin-bottom: {{ section.settings.image_margin_bottom }}px;
+    {% if section.settings.image_aspect_ratio != 'natural' %}
+      aspect-ratio: {{ section.settings.image_aspect_ratio }};
+    {% endif %}
+    overflow: hidden;
+  }
+
+  .jf-product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: {{ section.settings.image_fit }};
+    display: block;
+    transition: opacity 0.3s ease;
+  }
+
+  .jf-product-image.secondary {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .jf-product-card:hover .jf-product-image.primary {
+    opacity: 0;
+  }
+
+  .jf-product-card:hover .jf-product-image.secondary {
+    opacity: 1;
+  }
+
+  /* Enhanced hover effect classes */
+  .jf-product-image.hover-hide {
+    opacity: 0;
+  }
+
+  .jf-product-image.hover-show {
+    opacity: 1;
+  }
+
+  .jf-product-info {
+    position: relative;
+  }
+
+  .jf-product-title-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 5px;
+  }
+
+  .jf-product-title {
+    font-family: {{ section.settings.product_title_font }}, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: {{ section.settings.product_title_size }}px;
+    font-weight: {{ section.settings.product_title_weight }};
+    color: {{ section.settings.product_title_color }};
+    margin: 0;
+    line-height: 1.2;
+    letter-spacing: {{ section.settings.product_title_letter_spacing }}px;
+    flex: 1;
+    padding-right: 10px;
+  }
+
+  .jf-product-price {
+    font-family: {{ section.settings.product_price_font }}, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: {{ section.settings.product_price_size }}px;
+    font-weight: {{ section.settings.product_price_weight }};
+    color: {{ section.settings.product_price_color }};
+    white-space: nowrap;
+  }
+
+  .jf-product-tag {
+    font-family: {{ section.settings.product_tag_font }}, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: {{ section.settings.product_tag_size }}px;
+    color: {{ section.settings.product_tag_color }};
+    display: block;
+    margin-top: {{ section.settings.product_tag_margin_top }}px;
+  }
+
+  /* Filters sidebar */
+  .jf-filters-container {
+    width: {{ section.settings.filter_width }}px;
+    {% if section.settings.filter_sticky %}
+      position: sticky;
+      top: {{ section.settings.filter_sticky_top }}px;
+      align-self: flex-start;
+      max-height: calc(100vh - {{ section.settings.filter_sticky_top }}px);
+      overflow-y: auto;
+    {% endif %}
+  }
+
+  /* Mobile filter button */
+  .jf-mobile-filter-button {
+    width: 100%;
+    padding: 12px 15px;
+    background: {{ section.settings.mobile_filter_bg }};
+    color: {{ section.settings.mobile_filter_color }};
+    text-align: center;
+    font-family: {{ section.settings.filter_title_font }}, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid {{ section.settings.mobile_filter_border }};
+    margin-bottom: 20px;
+    cursor: pointer;
+    display: none;
+  }
+
+  .jf-mobile-filter-label {
+    text-transform: uppercase;
+  }
+
+  /* Dawn filter overrides */
+  .jf-filters-wrapper .facets__heading {
+    font-family: {{ section.settings.filter_title_font }}, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: {{ section.settings.filter_title_size }}px;
+    font-weight: {{ section.settings.filter_title_weight }};
+    color: {{ section.settings.filter_title_color }};
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    letter-spacing: {{ section.settings.filter_title_letter_spacing }}px;
+  }
+
+  .jf-filters-wrapper .facets__display {
+    margin-bottom: 30px;
+  }
+
+  .jf-filters-wrapper .facets__item {
+    margin-bottom: 10px;
+  }
+
+  .jf-filters-wrapper .facets__item label {
+    font-family: {{ section.settings.filter_option_font }}, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: {{ section.settings.filter_option_size }}px;
+    color: {{ section.settings.filter_option_color }};
+    cursor: pointer;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+  }
+
+  .jf-filters-wrapper .facets__item label:hover,
+  .jf-filters-wrapper .facets__item input:checked + label {
+    color: {{ section.settings.filter_active_color }};
+  }
+
+  .jf-filters-wrapper .facets__item input[type="checkbox"] {
+    margin-right: 8px;
+  }
+
+  .jf-filters-wrapper .facets__summary {
+    font-family: {{ section.settings.filter_title_font }}, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: {{ section.settings.filter_title_size }}px;
+    font-weight: {{ section.settings.filter_title_weight }};
+    color: {{ section.settings.filter_title_color }};
+    text-transform: uppercase;
+    padding: 0;
+    margin-bottom: 15px;
+    letter-spacing: {{ section.settings.filter_title_letter_spacing }}px;
+  }
+
+  .jf-filters-wrapper .facets__summary::after,
+  .jf-filters-wrapper .facets__summary::before {
+    display: none;
+  }
+
+  .jf-filters-wrapper .facets__selected {
+    display: none;
+  }
+
+  .jf-filters-wrapper .facets__disclosure-vertical .facets__header {
+    padding-bottom: 0;
+  }
+
+  .jf-filters-wrapper .facets__form {
+    margin-top: 0;
+  }
+
+  .jf-filters-wrapper .facets__price {
+    display: none;
+  }
+
+  .jf-filters-wrapper .facets__reset {
+    display: none;
+  }
+
+  .jf-filters-wrapper .active-facets {
+    margin-bottom: 20px;
+  }
+
+  .jf-filters-wrapper .active-facets__button {
+    font-family: {{ section.settings.filter_option_font }}, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: {{ section.settings.filter_option_size }}px;
+    color: {{ section.settings.filter_active_color }};
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin-right: 15px;
+    text-decoration: underline;
+  }
+
+  .jf-filters-wrapper .active-facets__button-inner {
+    display: flex;
+    align-items: center;
+  }
+
+  .jf-filters-wrapper .active-facets__button-remove {
+    margin-left: 5px;
+    width: 12px;
+    height: 12px;
+  }
+
+  /* Load more button */
+  .jf-load-more {
+    display: block;
+    width: 100%;
+    max-width: {{ section.settings.load_more_width }}px;
+    margin: {{ section.settings.load_more_margin_top }}px auto 0;
+    padding: {{ section.settings.load_more_padding_vertical }}px {{ section.settings.load_more_padding_horizontal }}px;
+    text-align: center;
+    background-color: {{ section.settings.load_more_bg }};
+    color: {{ section.settings.load_more_color }};
+    border: {{ section.settings.load_more_border_width }}px solid {{ section.settings.load_more_border_color }};
+    cursor: pointer;
+    font-family: {{ section.settings.load_more_font }}, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-size: {{ section.settings.load_more_size }}px;
+    font-weight: {{ section.settings.load_more_weight }};
+    letter-spacing: {{ section.settings.load_more_letter_spacing }}px;
+    transition: background-color 0.3s, color 0.3s;
+    grid-column: 1 / -1;
+  }
+
+  .jf-load-more:hover {
+    background-color: {{ section.settings.load_more_hover_bg }};
+    color: {{ section.settings.load_more_hover_color }};
+  }
+
+  .jf-load-more.loading {
+    opacity: 0.5;
+    cursor: wait;
+  }
+
+  .jf-load-more.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* Collection full description */
+  .jf-collection-full-description {
+    max-width: {{ section.settings.page_width }}px;
+    margin: {{ section.settings.description_margin_top }}px auto 0;
+    padding: 0 20px;
+    font-size: {{ section.settings.full_description_size }}px;
+    line-height: {{ section.settings.full_description_line_height }};
+    color: {{ section.settings.text_color }};
+  }
+
+  .jf-collection-full-description p {
+    margin-bottom: 20px;
+  }
+
+  .jf-collection-full-description a {
+    color: {{ section.settings.link_color }};
+    text-decoration: underline;
+  }
+
+  /* Pagination (hidden but used for load more) */
+  .jf-pagination-wrapper {
+    display: none;
+  }
+
+  /* Loading spinner */
+  .jf-spinner {
+    display: none;
+    width: 40px;
+    height: 40px;
+    margin: 20px auto;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top-color: #000;
+    animation: jf-spin 1s ease-in-out infinite;
+  }
+
+  @keyframes jf-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* Filter status indicator */
+  .filter-status {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-left: 5px;
+    background-color: {{ section.settings.filter_active_color }};
+  }
+
+  .filter-count {
+    font-size: 12px;
+    color: {{ section.settings.filter_active_color }};
+    margin-left: 5px;
+  }
+
+  /* Mobile styles */
+  @media screen and (max-width: 768px) {
+    .jf-collection-container {
+      flex-direction: column;
+    }
+
+    .jf-filters-container {
+      width: 100%;
+      margin-bottom: 30px;
+      position: static;
+    }
+
+    .jf-mobile-filter-button {
+      display: block;
+    }
+
+    .jf-filters-wrapper {
+      display: none;
+    }
+
+    .jf-collection-products {
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
+      gap: {{ section.settings.grid_gap_mobile }}px;
+    }
+
+    .jf-collection-header {
+      padding: {{ section.settings.header_padding_top_mobile }}px 0 {{ section.settings.header_padding_bottom_mobile }}px;
+    }
+
+    .jf-collection-title {
+      font-size: {{ section.settings.heading_size_mobile }}px;
+      margin-bottom: {{ section.settings.heading_margin_bottom_mobile }}px;
+    }
+
+    .jf-collection-description {
+      font-size: {{ section.settings.description_size_mobile }}px;
+    }
+
+    .jf-product-title {
+      font-size: {{ section.settings.product_title_size_mobile }}px;
+    }
+
+    .jf-product-price {
+      font-size: {{ section.settings.product_price_size_mobile }}px;
+    }
+
+    .jf-product-tag {
+      font-size: {{ section.settings.product_tag_size_mobile }}px;
+    }
+
+    .jf-load-more {
+      font-size: {{ section.settings.load_more_size_mobile }}px;
+      padding: {{ section.settings.load_more_padding_vertical_mobile }}px {{ section.settings.load_more_padding_horizontal_mobile }}px;
+    }
+  }
+{%- endstyle -%}
+
+{% assign collection_to_display = collections[section.settings.collection_handle] %}
+{% if collection_to_display == blank %}
+  {% assign collection_to_display = collection %}
+{% endif %}
+
+<div class="jf-collection">
+  <div class="jf-collection-header">
+    <h1 class="jf-collection-title">{{ collection_to_display.title }}</h1>
+    {% if collection_to_display.description != blank %}
+      <div class="jf-collection-description">{{ collection_to_display.description }}</div>
+    {% endif %}
+  </div>
+
+  <div class="jf-collection-container">
+    <div class="jf-filters-container">
+      <button class="jf-mobile-filter-button" id="jf-mobile-filter-toggle">
+        <span class="jf-mobile-filter-label">FILTRER LES RÉSULTATS</span>
+        {% if collection_to_display.filters.size > 0 %}
+          {% assign active_values_count = 0 %}
+          {% for filter in collection_to_display.filters %}
+            {% assign active_values_count = active_values_count | plus: filter.active_values.size %}
+          {% endfor %}
+          {% if active_values_count > 0 %}
+            <span class="filter-count">({{ active_values_count }})</span>
+          {% endif %}
+        {% endif %}
+      </button>
+
+      <div class="jf-filters-wrapper" id="jf-filters-wrapper">
+        <form id="FacetFiltersForm" class="facets__form" action="{{ collection_to_display.url }}" method="get">
+          <input
+            type="hidden"
+            name="sort_by"
+            value="{{ collection_to_display.sort_by | default: collection_to_display.default_sort_by }}"
+          >
+
+          <!-- Disponibilité Filter -->
+          <div class="facets__disclosure disclosure-has-popup facets__disclosure-vertical">
+            <details
+              class="facets__details"
+              {% if collection_to_display.filters contains 'availability'
+                and collection_to_display.filters.availability.active_values.size > 0
+              %}
+                open
+              {% endif %}
+            >
+              <summary class="facets__summary">
+                <div>
+                  <span>DISPONIBILITÉ</span>
+                  {% assign availability_filter = collection_to_display.filters
+                    | where: 'label', 'Availability'
+                    | first
+                  %}
+                  {% if availability_filter and availability_filter.active_values.size > 0 %}
+                    <span class="filter-status"></span>
+                    <span class="filter-count">({{ availability_filter.active_values.size }})</span>
+                  {% endif %}
+                </div>
+              </summary>
+              <div id="Facet-availability" class="facets__display">
+                <ul class="facets__list list-unstyled" role="list">
+                  <li class="facets__item">
+                    <label for="Filter-availability-1">
+                      <input
+                        type="checkbox"
+                        name="filter.v.availability"
+                        value="1"
+                        id="Filter-availability-1"
+                        {% if collection_to_display.current_vendor == '1' %}
+                          checked
+                        {% endif %}
+                        onclick="this.form.submit();"
+                      >
+                      en stock
+                    </label>
+                  </li>
+                  <li class="facets__item">
+                    <label for="Filter-availability-2">
+                      <input
+                        type="checkbox"
+                        name="filter.v.availability"
+                        value="0"
+                        id="Filter-availability-2"
+                        {% if collection_to_display.current_vendor == '0' %}
+                          checked
+                        {% endif %}
+                        onclick="this.form.submit();"
+                      >
+                      rupture
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <!-- Prix Filter -->
+          <div class="facets__disclosure disclosure-has-popup facets__disclosure-vertical">
+            <details
+              class="facets__details"
+              {% if collection_to_display.filters contains 'price'
+                and collection_to_display.filters.price.active_values.size > 0
+              %}
+                open
+              {% endif %}
+            >
+              <summary class="facets__summary">
+                <div>
+                  <span>PRIX</span>
+                  {% assign price_filter = collection_to_display.filters | where: 'label', 'Price' | first %}
+                  {% if price_filter and price_filter.active_values.size > 0 %}
+                    <span class="filter-status"></span>
+                    <span class="filter-count">({{ price_filter.active_values.size }})</span>
+                  {% endif %}
+                </div>
+              </summary>
+              <div id="Facet-price" class="facets__display">
+                <ul class="facets__list list-unstyled" role="list">
+                  <li class="facets__item">
+                    <label for="Filter-price-1">
+                      <input
+                        type="checkbox"
+                        name="filter.v.price.gte"
+                        value="0"
+                        data-max="100"
+                        id="Filter-price-1"
+                        {% if collection_to_display.current_vendor == '0-100' %}
+                          checked
+                        {% endif %}
+                        onclick="applyPriceFilter(this, 0, 100);"
+                      >
+                      0 - 100 dh
+                    </label>
+                  </li>
+                  <li class="facets__item">
+                    <label for="Filter-price-2">
+                      <input
+                        type="checkbox"
+                        name="filter.v.price.gte"
+                        value="100"
+                        data-max="500"
+                        id="Filter-price-2"
+                        {% if collection_to_display.current_vendor == '100-500' %}
+                          checked
+                        {% endif %}
+                        onclick="applyPriceFilter(this, 100, 500);"
+                      >
+                      100 - 500 dh
+                    </label>
+                  </li>
+                  <li class="facets__item">
+                    <label for="Filter-price-3">
+                      <input
+                        type="checkbox"
+                        name="filter.v.price.gte"
+                        value="500"
+                        data-max="1000"
+                        id="Filter-price-3"
+                        {% if collection_to_display.current_vendor == '500-1000' %}
+                          checked
+                        {% endif %}
+                        onclick="applyPriceFilter(this, 500, 1000);"
+                      >
+                      500 - 1000 dh
+                    </label>
+                  </li>
+                  <li class="facets__item">
+                    <label for="Filter-price-4">
+                      <input
+                        type="checkbox"
+                        name="filter.v.price.gte"
+                        value="1000"
+                        data-max="5000"
+                        id="Filter-price-4"
+                        {% if collection_to_display.current_vendor == '1000-5000' %}
+                          checked
+                        {% endif %}
+                        onclick="applyPriceFilter(this, 1000, 5000);"
+                      >
+                      1000 - 5000 dh
+                    </label>
+                  </li>
+                  <li class="facets__item">
+                    <label for="Filter-price-5">
+                      <input
+                        type="checkbox"
+                        name="filter.v.price.gte"
+                        value="5000"
+                        data-max="10000"
+                        id="Filter-price-5"
+                        {% if collection_to_display.current_vendor == '5000-10000' %}
+                          checked
+                        {% endif %}
+                        onclick="applyPriceFilter(this, 5000, 10000);"
+                      >
+                      5000 - 10000 dh
+                    </label>
+                  </li>
+                  <li class="facets__item">
+                    <label for="Filter-price-6">
+                      <input
+                        type="checkbox"
+                        name="filter.v.price.gte"
+                        value="10000"
+                        data-max="20000"
+                        id="Filter-price-6"
+                        {% if collection_to_display.current_vendor == '10000-20000' %}
+                          checked
+                        {% endif %}
+                        onclick="applyPriceFilter(this, 10000, 20000);"
+                      >
+                      10000 - 20000 dh
+                    </label>
+                  </li>
+                  <li class="facets__item">
+                    <label for="Filter-price-7">
+                      <input
+                        type="checkbox"
+                        name="filter.v.price.gte"
+                        value="20000"
+                        data-max="999999"
+                        id="Filter-price-7"
+                        {% if collection_to_display.current_vendor == '20000-999999' %}
+                          checked
+                        {% endif %}
+                        onclick="applyPriceFilter(this, 20000, 999999);"
+                      >
+                      +20000 dh
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </details>
+          </div>
+
+          <!-- Active filters (without Clear All button) -->
+          <div class="active-facets active-facets-vertical">
+            {%- for filter in collection_to_display.filters -%}
+              {%- for value in filter.active_values -%}
+                <facet-remove>
+                  <a href="{{ value.url_to_remove }}" class="active-facets__button">
+                    <span class="active-facets__button-inner">
+                      {{ value.label | escape }}
+                      <svg
+                        class="icon icon-close active-facets__button-remove"
+                        aria-hidden="true"
+                        focusable="false"
+                        viewBox="0 0 10 10"
+                      >
+                        <path d="M9.6 1.4l-.7-.7L5 4.6 1.1.7l-.7.7L4.3 5 .4 8.9l.7.7L5 5.4l3.9 3.9.7-.7L5.7 5z" fill="currentColor">
+                      </svg>
+                    </span>
+                  </a>
+                </facet-remove>
+              {%- endfor -%}
+            {%- endfor -%}
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="jf-collection-products" id="jf-collection-products">
+      {% paginate collection_to_display.products by section.settings.products_per_page %}
+        {% for product in collection_to_display.products %}
+          <div class="jf-product-card">
+            <a href="{{ product.url }}" class="jf-product-card-link">
+              <div class="jf-product-image-container">
+                <img
+                  class="jf-product-image primary"
+                  src="{{ product.featured_image | img_url: section.settings.image_size, crop: section.settings.image_crop }}"
+                  alt="{{ product.featured_image.alt | escape }}"
+                  loading="lazy"
+                >
+                {% if product.images[1] %}
+                  <img
+                    class="jf-product-image secondary"
+                    src="{{ product.images[1] | img_url: section.settings.image_size, crop: section.settings.image_crop }}"
+                    alt="{{ product.title | escape }} - Secondary View"
+                    loading="lazy"
+                  >
+                {% endif %}
+              </div>
+              <div class="jf-product-info">
+                <div class="jf-product-title-price">
+                  <h3 class="jf-product-title">{{ product.title }}</h3>
+                  <div class="jf-product-price">{{ product.price | money }}</div>
+                </div>
+                {% if product.tags contains section.settings.new_arrival_tag %}
+                  <span class="jf-product-tag">{{ section.settings.new_arrival_text }}</span>
+                {% endif %}
+              </div>
+            </a>
+          </div>
+        {% else %}
+          <div class="jf-no-products" style="grid-column: 1 / -1; text-align: center; padding: 40px 0;">
+            <p>Aucun produit trouvé pour les filtres sélectionnés.</p>
+            <p>
+              <a href="{{ collection_to_display.url }}?sort_by={{ collection_to_display.sort_by | default: collection_to_display.default_sort_by }}"
+                >Effacer tous les filtres</a
+              >
+            </p>
+          </div>
+        {% endfor %}
+
+        {% if paginate.pages > 1 and section.settings.enable_load_more %}
+          <div class="jf-spinner" id="jf-spinner"></div>
+          <button class="jf-load-more" id="jf-load-more" data-next-url="{{ paginate.next.url }}">
+            {{ section.settings.load_more_text }}
+          </button>
+        {% endif %}
+
+        <div class="jf-pagination-wrapper">
+          {% render 'pagination', paginate: paginate %}
+        </div>
+      {% endpaginate %}
+    </div>
+  </div>
+
+  {% if section.settings.show_full_description %}
+    <div class="jf-collection-full-description">
+      {{ section.settings.full_description }}
+    </div>
+  {% endif %}
+</div>
+
+<script>
+  // Function to apply price filter
+  function applyPriceFilter(checkbox, min, max) {
+    if (checkbox.checked) {
+      // Uncheck all other price filters
+      const priceFilters = document.querySelectorAll('[data-max]');
+      priceFilters.forEach(filter => {
+        if (filter !== checkbox) {
+          filter.checked = false;
+        }
+      });
+
+      // Create or update hidden input for min price
+      let minInput = document.querySelector('input[name="filter.v.price.gte"]');
+      if (!minInput) {
+        minInput = document.createElement('input');
+        minInput.type = 'hidden';
+        minInput.name = 'filter.v.price.gte';
+        checkbox.form.appendChild(minInput);
+      }
+      minInput.value = min;
+
+      // Create or update hidden input for max price
+      let maxInput = document.querySelector('input[name="filter.v.price.lte"]');
+      if (!maxInput) {
+        maxInput = document.createElement('input');
+        maxInput.type = 'hidden';
+        maxInput.name = 'filter.v.price.lte';
+        checkbox.form.appendChild(maxInput);
+      }
+      maxInput.value = max;
+
+      // Submit the form
+      checkbox.form.submit();
+    }
+  }
+
+  // This function initializes hover effects for product cards
+  // It should be called both on initial page load and after loading more products
+  function initProductHoverEffect() {
+    const productCards = document.querySelectorAll('.jf-product-card');
+
+    productCards.forEach(card => {
+      const primaryImage = card.querySelector('.jf-product-image.primary');
+      const secondaryImage = card.querySelector('.jf-product-image.secondary');
+
+      if (primaryImage && secondaryImage) {
+        // Preload secondary image to ensure smooth transition
+        const img = new Image();
+        img.src = secondaryImage.getAttribute('src') || '';
+        img.crossOrigin = "anonymous";
+
+        // Add event listeners for hover if not already added
+        if (!card.dataset.hoverInitialized) {
+          card.addEventListener('mouseenter', () => {
+            primaryImage.classList.add('hover-hide');
+            secondaryImage.classList.add('hover-show');
+          });
+
+          card.addEventListener('mouseleave', () => {
+            primaryImage.classList.remove('hover-hide');
+            secondaryImage.classList.remove('hover-show');
+          });
+
+          // Mark as initialized to prevent duplicate event listeners
+          card.dataset.hoverInitialized = 'true';
+        }
+      }
+    });
+  }
+
+  // Function to handle loading more products
+  function setupLoadMore() {
+    const loadMoreButton = document.getElementById('jf-load-more');
+    const spinner = document.getElementById('jf-spinner');
+    const productsContainer = document.getElementById('jf-collection-products');
+
+    if (!loadMoreButton || !spinner || !productsContainer) return;
+
+    loadMoreButton.addEventListener('click', async function() {
+      const nextUrl = this.getAttribute('data-next-url');
+      if (!nextUrl) return;
+
+      // Show loading state
+      loadMoreButton.classList.add('loading');
+      loadMoreButton.disabled = true;
+      spinner.style.display = 'block';
+
+      try {
+        // Fetch next page
+        const response = await fetch(nextUrl);
+        const html = await response.text();
+
+        // Create a temporary element to parse the HTML
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        // Get the products from the next page
+        const newProducts = doc.querySelectorAll('.jf-product-card');
+
+        // Get the next URL for pagination
+        const nextPageButton = doc.querySelector('#jf-load-more');
+        const hasMorePages = nextPageButton && nextPageButton.getAttribute('data-next-url');
+
+        // Insert the new products before the load more button
+        newProducts.forEach(product => {
+          productsContainer.insertBefore(product, loadMoreButton.parentNode);
+        });
+
+        // Update the next URL or hide the button if no more pages
+        if (hasMorePages) {
+          loadMoreButton.setAttribute('data-next-url', nextPageButton.getAttribute('data-next-url'));
+        } else {
+          loadMoreButton.style.display = 'none';
+        }
+
+        // Initialize hover effect for new products
+        initProductHoverEffect();
+
+        // Check if load more should be disabled after loading
+        if ({{ section.settings.disable_load_more_after_loading | json }}) {
+          loadMoreButton.classList.add('disabled');
+          loadMoreButton.disabled = true;
+        }
+
+      } catch (error) {
+        console.error('Error loading more products:', error);
+      } finally {
+        // Reset loading state
+        loadMoreButton.classList.remove('loading');
+        if (!{{ section.settings.disable_load_more_after_loading | json }}) {
+          loadMoreButton.disabled = false;
+        }
+        spinner.style.display = 'none';
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // Mobile filter toggle
+    const mobileFilterToggle = document.getElementById('jf-mobile-filter-toggle');
+    const filtersWrapper = document.getElementById('jf-filters-wrapper');
+
+    if (mobileFilterToggle && filtersWrapper) {
+      mobileFilterToggle.addEventListener('click', function() {
+        if (filtersWrapper.style.display === 'block') {
+          filtersWrapper.style.display = 'none';
+        } else {
+          filtersWrapper.style.display = 'block';
+        }
+      });
+    }
+
+    // Availability filter functionality
+    const availabilityFilters = document.querySelectorAll('[name="filter.v.availability"]');
+
+    availabilityFilters.forEach(filter => {
+      filter.addEventListener('change', function() {
+        if (this.checked) {
+          // Uncheck other availability filters
+          availabilityFilters.forEach(otherFilter => {
+            if (otherFilter !== this) {
+              otherFilter.checked = false;
+            }
+          });
+
+          // Submit the form
+          this.form.submit();
+        }
+      });
+    });
+
+    // Check if any filters are active and update UI accordingly
+    const activeFilters = document.querySelectorAll('.active-facets__button');
+    if (activeFilters.length > 0) {
+      // Show the filters wrapper on mobile if there are active filters
+      if (window.innerWidth <= 768) {
+        filtersWrapper.style.display = 'block';
+      }
+    }
+
+    // Initialize product hover effects
+    initProductHoverEffect();
+
+    // Setup load more functionality if enabled
+    {% if section.settings.enable_load_more %}
+      setupLoadMore();
+    {% endif %}
+  });
+</script>
+
+{% schema %}
+{
+  "name": "JF Collection Template",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Collection Settings"
+    },
+    {
+      "type": "collection",
+      "id": "collection_handle",
+      "label": "Collection to display",
+      "info": "If not selected, will use the current collection"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 24,
+      "label": "Products per page"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "default": true,
+      "label": "Enable filtering",
+      "info": "Uses Dawn theme's built-in filtering"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_load_more",
+      "default": true,
+      "label": "Enable load more button",
+      "info": "Show a load more button instead of pagination"
+    },
+    {
+      "type": "checkbox",
+      "id": "disable_load_more_after_loading",
+      "default": false,
+      "label": "Disable load more after first load",
+      "info": "Disable the load more button after loading more products once"
+    },
+    {
+      "type": "range",
+      "id": "page_width",
+      "min": 800,
+      "max": 1600,
+      "step": 50,
+      "default": 1200,
+      "label": "Page width (px)"
+    },
+    {
+      "type": "font",
+      "id": "body_font",
+      "label": "Body Font"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link Color",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "label": "Header Alignment"
+    },
+    {
+      "type": "font",
+      "id": "heading_font",
+      "label": "Heading Font"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading Size",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 20,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading Size (Mobile)",
+      "default": 28
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "options": [
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "400",
+      "label": "Heading Weight"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "heading_letter_spacing",
+      "min": 0,
+      "max": 5,
+      "step": 0.1,
+      "default": 0,
+      "label": "Heading Letter Spacing (px)"
+    },
+    {
+      "type": "range",
+      "id": "heading_margin_bottom",
+      "min": 0,
+      "max": 40,
+      "step": 5,
+      "default": 10,
+      "label": "Heading Bottom Margin (px)"
+    },
+    {
+      "type": "range",
+      "id": "heading_margin_bottom_mobile",
+      "min": 0,
+      "max": 30,
+      "step": 5,
+      "default": 5,
+      "label": "Heading Bottom Margin Mobile (px)"
+    },
+    {
+      "type": "range",
+      "id": "header_padding_top",
+      "min": 10,
+      "max": 80,
+      "step": 5,
+      "default": 40,
+      "label": "Header Top Padding (px)"
+    },
+    {
+      "type": "range",
+      "id": "header_padding_bottom",
+      "min": 10,
+      "max": 80,
+      "step": 5,
+      "default": 30,
+      "label": "Header Bottom Padding (px)"
+    },
+    {
+      "type": "range",
+      "id": "header_padding_top_mobile",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "default": 20,
+      "label": "Header Top Padding Mobile (px)"
+    },
+    {
+      "type": "range",
+      "id": "header_padding_bottom_mobile",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "default": 20,
+      "label": "Header Bottom Padding Mobile (px)"
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Description Size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "description_size_mobile",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Description Size (Mobile)",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "range",
+      "id": "container_gap",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "default": 40,
+      "label": "Space between filters and products (px)"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label": "Columns on desktop"
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2,
+      "label": "Columns on mobile"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "default": 30,
+      "label": "Grid gap on desktop (px)"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap_mobile",
+      "min": 5,
+      "max": 30,
+      "step": 5,
+      "default": 15,
+      "label": "Grid gap on mobile (px)"
+    },
+    {
+      "type": "range",
+      "id": "card_margin_bottom",
+      "min": 0,
+      "max": 40,
+      "step": 5,
+      "default": 0,
+      "label": "Card bottom margin (px)"
+    },
+    {
+      "type": "header",
+      "content": "Product Settings"
+    },
+    {
+      "type": "font",
+      "id": "product_title_font",
+      "label": "Product Title Font"
+    },
+    {
+      "type": "range",
+      "id": "product_title_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Product Title Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "product_title_size_mobile",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Product Title Size (Mobile)",
+      "default": 13
+    },
+    {
+      "type": "select",
+      "id": "product_title_weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "500",
+      "label": "Product Title Weight"
+    },
+    {
+      "type": "color",
+      "id": "product_title_color",
+      "label": "Product Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "product_title_letter_spacing",
+      "min": 0,
+      "max": 3,
+      "step": 0.1,
+      "default": 0,
+      "label": "Product Title Letter Spacing (px)"
+    },
+    {
+      "type": "font",
+      "id": "product_price_font",
+      "label": "Product Price Font"
+    },
+    {
+      "type": "range",
+      "id": "product_price_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Product Price Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "product_price_size_mobile",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Product Price Size (Mobile)",
+      "default": 13
+    },
+    {
+      "type": "select",
+      "id": "product_price_weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "400",
+      "label": "Product Price Weight"
+    },
+    {
+      "type": "color",
+      "id": "product_price_color",
+      "label": "Product Price Color",
+      "default": "#666666"
+    },
+    {
+      "type": "text",
+      "id": "new_arrival_tag",
+      "label": "New Arrival Tag",
+      "default": "New Arrival",
+      "info": "Tag used to identify new arrivals"
+    },
+    {
+      "type": "text",
+      "id": "new_arrival_text",
+      "label": "New Arrival Text",
+      "default": "New Arrival",
+      "info": "Text displayed for new arrivals"
+    },
+    {
+      "type": "font",
+      "id": "product_tag_font",
+      "label": "Product Tag Font"
+    },
+    {
+      "type": "range",
+      "id": "product_tag_size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Product Tag Size",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "product_tag_size_mobile",
+      "min": 8,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Product Tag Size (Mobile)",
+      "default": 11
+    },
+    {
+      "type": "color",
+      "id": "product_tag_color",
+      "label": "Product Tag Color",
+      "default": "#999999"
+    },
+    {
+      "type": "range",
+      "id": "product_tag_margin_top",
+      "min": 0,
+      "max": 15,
+      "step": 1,
+      "default": 0,
+      "label": "Product Tag Top Margin (px)"
+    },
+    {
+      "type": "header",
+      "content": "Product Image Settings"
+    },
+    {
+      "type": "select",
+      "id": "image_size",
+      "options": [
+        {
+          "value": "200x200",
+          "label": "Small (200x200)"
+        },
+        {
+          "value": "300x300",
+          "label": "Medium (300x300)"
+        },
+        {
+          "value": "400x400",
+          "label": "Large (400x400)"
+        },
+        {
+          "value": "500x500",
+          "label": "Extra Large (500x500)"
+        },
+        {
+          "value": "600x600",
+          "label": "2X Large (600x600)"
+        },
+        {
+          "value": "800x800",
+          "label": "3X Large (800x800)"
+        }
+      ],
+      "default": "600x600",
+      "label": "Image Size"
+    },
+    {
+      "type": "select",
+      "id": "image_crop",
+      "options": [
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center",
+      "label": "Image Crop Position"
+    },
+    {
+      "type": "select",
+      "id": "image_aspect_ratio",
+      "options": [
+        {
+          "value": "natural",
+          "label": "Natural (Original aspect ratio)"
+        },
+        {
+          "value": "1/1",
+          "label": "1:1 (Square)"
+        },
+        {
+          "value": "3/4",
+          "label": "3:4 (Portrait)"
+        },
+        {
+          "value": "4/3",
+          "label": "4:3 (Landscape)"
+        }
+      ],
+      "default": "1/1",
+      "label": "Image Aspect Ratio"
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover (Fill container, may crop)"
+        },
+        {
+          "value": "contain",
+          "label": "Contain (Show entire image)"
+        }
+      ],
+      "default": "cover",
+      "label": "Image Fit"
+    },
+    {
+      "type": "color",
+      "id": "product_bg_color",
+      "label": "Product Background Color",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "range",
+      "id": "image_margin_bottom",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 10,
+      "label": "Image Bottom Margin (px)"
+    },
+    {
+      "type": "header",
+      "content": "Filter Settings"
+    },
+    {
+      "type": "range",
+      "id": "filter_width",
+      "min": 150,
+      "max": 350,
+      "step": 10,
+      "default": 250,
+      "label": "Filter Width (px)"
+    },
+    {
+      "type": "checkbox",
+      "id": "filter_sticky",
+      "default": true,
+      "label": "Make filters sticky on scroll"
+    },
+    {
+      "type": "range",
+      "id": "filter_sticky_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 20,
+      "label": "Sticky top position (px)"
+    },
+    {
+      "type": "font",
+      "id": "filter_title_font",
+      "label": "Filter Title Font"
+    },
+    {
+      "type": "color",
+      "id": "filter_title_color",
+      "label": "Filter Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "filter_title_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Filter Title Size",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "filter_title_weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600",
+      "label": "Filter Title Weight"
+    },
+    {
+      "type": "range",
+      "id": "filter_title_letter_spacing",
+      "min": 0,
+      "max": 3,
+      "step": 0.1,
+      "default": 0.5,
+      "label": "Filter Title Letter Spacing (px)"
+    },
+    {
+      "type": "font",
+      "id": "filter_option_font",
+      "label": "Filter Option Font"
+    },
+    {
+      "type": "color",
+      "id": "filter_option_color",
+      "label": "Filter Option Color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "filter_option_size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Filter Option Size",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "filter_active_color",
+      "label": "Filter Active Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "mobile_filter_bg",
+      "label": "Mobile Filter Button Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "mobile_filter_color",
+      "label": "Mobile Filter Button Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "mobile_filter_border",
+      "label": "Mobile Filter Button Border",
+      "default": "#dddddd"
+    },
+    {
+      "type": "header",
+      "content": "Load More Button Settings"
+    },
+    {
+      "type": "text",
+      "id": "load_more_text",
+      "label": "Load More Text",
+      "default": "Load More"
+    },
+    {
+      "type": "font",
+      "id": "load_more_font",
+      "label": "Load More Font"
+    },
+    {
+      "type": "range",
+      "id": "load_more_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Load More Font Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "load_more_size_mobile",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Load More Font Size (Mobile)",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "load_more_weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "400",
+      "label": "Load More Font Weight"
+    },
+    {
+      "type": "range",
+      "id": "load_more_letter_spacing",
+      "min": 0,
+      "max": 3,
+      "step": 0.1,
+      "default": 0,
+      "label": "Load More Letter Spacing (px)"
+    },
+    {
+      "type": "range",
+      "id": "load_more_width",
+      "min": 100,
+      "max": 600,
+      "step": 50,
+      "default": 400,
+      "label": "Load More Button Width (px)"
+    },
+    {
+      "type": "range",
+      "id": "load_more_margin_top",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "default": 40,
+      "label": "Load More Top Margin (px)"
+    },
+    {
+      "type": "range",
+      "id": "load_more_padding_vertical",
+      "min": 5,
+      "max": 30,
+      "step": 5,
+      "default": 15,
+      "label": "Load More Vertical Padding (px)"
+    },
+    {
+      "type": "range",
+      "id": "load_more_padding_horizontal",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "default": 20,
+      "label": "Load More Horizontal Padding (px)"
+    },
+    {
+      "type": "range",
+      "id": "load_more_padding_vertical_mobile",
+      "min": 5,
+      "max": 25,
+      "step": 5,
+      "default": 10,
+      "label": "Load More Vertical Padding Mobile (px)"
+    },
+    {
+      "type": "range",
+      "id": "load_more_padding_horizontal_mobile",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "default": 15,
+      "label": "Load More Horizontal Padding Mobile (px)"
+    },
+    {
+      "type": "color",
+      "id": "load_more_bg",
+      "label": "Load More Background Color",
+      "default": "rgba(0,0,0,0)"
+    },
+    {
+      "type": "color",
+      "id": "load_more_color",
+      "label": "Load More Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "load_more_border_color",
+      "label": "Load More Border Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "load_more_border_width",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 1,
+      "label": "Load More Border Width (px)"
+    },
+    {
+      "type": "color",
+      "id": "load_more_hover_bg",
+      "label": "Load More Hover Background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "load_more_hover_color",
+      "label": "Load More Hover Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Full Description"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_full_description",
+      "default": true,
+      "label": "Show full description below products"
+    },
+    {
+      "type": "range",
+      "id": "description_margin_top",
+      "min": 20,
+      "max": 100,
+      "step": 10,
+      "default": 60,
+      "label": "Description Top Margin (px)"
+    },
+    {
+      "type": "range",
+      "id": "full_description_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "default": 16,
+      "label": "Full Description Font Size (px)"
+    },
+    {
+      "type": "range",
+      "id": "full_description_line_height",
+      "min": 1.2,
+      "max": 2,
+      "step": 0.1,
+      "default": 1.6,
+      "label": "Full Description Line Height"
+    },
+    {
+      "type": "richtext",
+      "id": "full_description",
+      "label": "Full Description",
+      "default": "<p>When it comes to adorning your ears with elegance and style, nothing quite matches the timeless appeal of hoop earrings. At Jennifer Fisher, we offer an elevated selection of women's hoop earrings that will undoubtedly enhance your style. Whether you're a fan of large hoop earrings, small hoops or huggie hoop styles, we have something special for you.</p><p>Our diverse range of hoop earrings caters to every style preference. From the subtle allure of small hoops to a bold statement made by large hoop earrings, our earrings will accentuate your unique style and elevate your fashion game. And for those seeking a modern flair, our ear cuff option offers a striking alternative to traditional earrings, allowing you to stand out with sophistication.</p><p>Our collection of gold, rose gold and silver hoop earrings is sure to captivate you. Made from 14k gold and white gold plated brass, these hoops are versatile and perfect for women who appreciate everyday wear jewelry that never goes out of style. For those seeking the perfect balance of simplicity and sophistication, our classic hoop designs are a must-have. Whether you're dressing up for a special occasion or elevating your daily attire, our gold and silver hoop earrings are the perfect choice.</p><p>Explore our wide range of women's hoop earrings, from large hoops to small hoops, and more. Incorporate a piece of Jennifer Fisher's hoop earrings into your collection, and you'll experience the magic of timeless elegance. Shop all our styles now and discover the perfect hoops to compliment your look.</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "JF Collection Template",
+      "category": "Collection"
+    }
+  ]
+}
+{% endschema %}

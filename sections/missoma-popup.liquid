@@ -1,0 +1,274 @@
+{% unless customer %}
+{% comment %}
+  Missoma-style Popup Section
+  – Shows until the visitor submits the newsletter form
+  – Never shows again on the same browser once subscribed
+  – If dismissed (X or "No thanks"), waits 12 hours before showing again
+{% endcomment %}
+
+<div
+  id="missoma-popup"
+  class="missoma-popup-container {% if section.settings.show_popup %}{% else %}hidden{% endif %}"
+  data-popup-delay="{{ section.settings.popup_delay | times: 1000 }}"
+  data-trigger-type="{{ section.settings.trigger_type }}"
+>
+  <div class="missoma-popup-overlay"></div>
+
+  <div class="missoma-popup">
+    {% if section.settings.show_close_button %}
+      <button class="missoma-popup-close" aria-label="Close"><span class="icon">✕</span></button>
+    {% endif %}
+
+    <div class="missoma-popup-content">
+      {% if section.settings.popup_image != blank %}
+        <div class="missoma-popup-image">
+          <img
+            src="{{ section.settings.popup_image | img_url: 'master' }}"
+            alt="{{ section.settings.popup_image.alt | default: section.settings.popup_title }}"
+            width="400" height="600" loading="lazy">
+        </div>
+      {% endif %}
+
+      <div class="missoma-popup-text">
+        <h2>{{ section.settings.popup_title }}</h2>
+
+        {% if section.settings.show_description %}
+          <p class="missoma-popup-description">{{ section.settings.popup_description }}</p>
+        {% endif %}
+
+        {% if section.settings.popup_type == 'welcome' and section.settings.show_country_selector %}
+          <p>{{ section.settings.country_selector_text }}</p>
+          <div class="missoma-popup-country-selector">
+            <select id="CountrySelector" class="missoma-popup-select" aria-label="{{ 'general.country.dropdown_label' | t }}">
+              {% for country in shop.enabled_countries %}
+                <option value="{{ country.iso_code }}"
+                        {% if country.iso_code == shop.country_code %}selected{% endif %}>
+                  {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+                </option>
+              {% endfor %}
+            </select>
+            <span class="missoma-popup-select-icon">▼</span>
+          </div>
+        {% endif %}
+
+        {% if section.settings.show_signup %}
+          <div class="missoma-popup-signup">
+            {% if section.settings.popup_type == 'newsletter' %}
+              <p class="missoma-popup-signup-text">{{ section.settings.signup_text }}</p>
+            {% endif %}
+
+            {%- form 'customer', id: 'popup_form', class: 'missoma-popup-form' -%}
+              {%- if form.errors -%}
+                <div class="missoma-popup-form-error">{{ form.errors | default_errors }}</div>
+              {%- endif -%}
+
+              {%- if form.posted_successfully? -%}
+                <div class="missoma-popup-form-success">{{ 'newsletter.success' | t }}</div>
+              {%- else -%}
+                <input type="hidden" name="contact[tags]" value="newsletter">
+                <div class="missoma-popup-input-group">
+                  <input type="email"
+                         name="contact[email]"
+                         id="Email"
+                         class="missoma-popup-input{% if form.errors %} input--error{% endif %}"
+                         placeholder="{{ section.settings.email_placeholder }}"
+                         value="{{ form.email }}"
+                         required>
+                </div>
+                <button type="submit" class="missoma-popup-button missoma-popup-signup-button">
+                  {{ section.settings.button_text }}
+                </button>
+              {%- endif -%}
+            {%- endform -%}
+          </div>
+        {% endif %}
+
+        {% if section.settings.show_disclaimer %}
+          <p class="missoma-popup-disclaimer">{{ section.settings.disclaimer_text }}</p>
+        {% endif %}
+
+        {% if section.settings.show_no_thanks %}
+          <button class="missoma-popup-no-thanks">{{ section.settings.no_thanks_text }}</button>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .missoma-popup-container{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;z-index:9999;opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+  .missoma-popup-container.active{opacity:1;visibility:visible}
+  .missoma-popup-container.hidden{display:none}
+  .missoma-popup-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1}
+  .missoma-popup{position:relative;z-index:2;background:#fff;max-width:{{ section.settings.popup_width }}px;width:90%;display:flex;box-shadow:0 4px 20px rgba(0,0,0,.15);transform:translateY(20px);transition:transform .3s}
+  .missoma-popup-container.active .missoma-popup{transform:translateY(0)}
+  .missoma-popup-close{position:absolute;top:15px;right:15px;background:none;border:none;cursor:pointer;z-index:3;color:{{ section.settings.close_button_color }};width:24px;height:24px;display:flex;align-items:center;justify-content:center}
+  .missoma-popup-content{display:flex;width:100%}
+  .missoma-popup-image{width:50%;overflow:hidden}
+  .missoma-popup-image img{width:100%;height:100%;object-fit:cover}
+  .missoma-popup-text{width:50%;padding:40px;display:flex;flex-direction:column;justify-content:center}
+  .missoma-popup-text h2{font-size:{{ section.settings.heading_font_size }}px;font-weight:600;margin-bottom:15px;color:{{ section.settings.heading_color }}}
+  .missoma-popup-description{font-size:{{ section.settings.text_font_size }}px;margin-bottom:20px;color:{{ section.settings.text_color }}}
+  .missoma-popup-country-selector{position:relative;margin-bottom:25px}
+  .missoma-popup-select{width:100%;padding:12px 15px;border:1px solid {{ section.settings.input_border_color }};background:#fff;appearance:none;font-size:14px;color:{{ section.settings.text_color }}}
+  .missoma-popup-select-icon{position:absolute;right:15px;top:50%;transform:translateY(-50%);pointer-events:none;font-size:10px}
+  .missoma-popup-signup{margin-bottom:25px}
+  .missoma-popup-form{display:flex;flex-direction:column;gap:10px}
+  .missoma-popup-input{width:100%;padding:12px 15px;border:1px solid {{ section.settings.input_border_color }};font-size:14px}
+  .missoma-popup-input.input--error{border-color:#dc2626}
+  .missoma-popup-form-error{color:#dc2626;font-size:14px;margin-bottom:10px}
+  .missoma-popup-form-success{color:#059669;font-size:14px;margin-bottom:10px}
+  .missoma-popup-button{background:{{ section.settings.button_background_color }};color:{{ section.settings.button_text_color }};border:none;padding:12px 15px;font-size:14px;font-weight:500;cursor:pointer;transition:background .3s}
+  .missoma-popup-button:hover{background:{{ section.settings.button_hover_background_color }}}
+  .missoma-popup-disclaimer{font-size:12px;color:{{ section.settings.disclaimer_color }};margin-top:15px}
+  .missoma-popup-no-thanks{background:none;border:none;color:{{ section.settings.no_thanks_color }};font-size:14px;text-decoration:underline;cursor:pointer;padding:0;margin-top:10px;align-self:center}
+  @media screen and (max-width:767px){
+    .missoma-popup-content{flex-direction:column}
+    .missoma-popup-image,.missoma-popup-text{width:100%}
+    .missoma-popup-image{height:200px}
+    .missoma-popup-text{padding:30px 20px}
+    .missoma-popup{width:95%;margin:0 10px}
+  }
+</style>
+
+<script>
+/*  Popup logic:
+    – if localStorage.missomaNewsletterSubscribed == 'true'  ⇒ never show again
+    – if dismissed (X or "No thanks"), wait 12 hours before showing again
+    – shows on chosen trigger (immediate / delay / exit) until signup
+*/
+document.addEventListener('DOMContentLoaded',() => {
+  const popup = document.getElementById('missoma-popup');
+  if (!popup) return;
+
+  const STORAGE_KEY_SUBSCRIBED = 'missomaNewsletterSubscribed';
+  const STORAGE_KEY_DISMISSED = 'missomaPopupDismissed';
+  const TWELVE_HOURS_MS = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
+  
+  // Check if already subscribed
+  if (localStorage.getItem(STORAGE_KEY_SUBSCRIBED) === 'true') return;
+  
+  // Check if dismissed within last 12 hours
+  const dismissedTime = localStorage.getItem(STORAGE_KEY_DISMISSED);
+  if (dismissedTime) {
+    const timeSinceDismissal = Date.now() - parseInt(dismissedTime);
+    if (timeSinceDismissal < TWELVE_HOURS_MS) {
+      return; // Don't show popup yet
+    } else {
+      // Clear the dismissal timestamp if 12 hours have passed
+      localStorage.removeItem(STORAGE_KEY_DISMISSED);
+    }
+  }
+
+  /* helpers */
+  const show = () => { 
+    popup.classList.remove('hidden'); 
+    requestAnimationFrame(() => popup.classList.add('active')); 
+  };
+  
+  const hide = () => { 
+    popup.classList.remove('active'); 
+    setTimeout(() => popup.classList.add('hidden'), 300); 
+  };
+  
+  const hideWithDelay = () => {
+    // Store dismissal timestamp
+    localStorage.setItem(STORAGE_KEY_DISMISSED, Date.now().toString());
+    hide();
+  };
+  
+  const markSubscribed = () => {
+    localStorage.setItem(STORAGE_KEY_SUBSCRIBED, 'true');
+    // Clear dismissal timestamp when subscribed
+    localStorage.removeItem(STORAGE_KEY_DISMISSED);
+  };
+
+  /* trigger */
+  const triggerType = popup.dataset.triggerType;
+  const delayMs = parseInt(popup.dataset.popupDelay) || 2000;
+
+  if (triggerType === 'immediate') show();
+  else if (triggerType === 'delay') setTimeout(show, delayMs);
+  else if (triggerType === 'exit') {
+    document.addEventListener('mouseleave', e => { 
+      if(e.clientY < 0) show(); 
+    }, {once: true});
+  }
+
+  /* events */
+  const form = document.getElementById('popup_form');
+  if (form) {
+    form.addEventListener('submit', markSubscribed); // before redirect
+  }
+
+  /* success message present after redirect? */
+  if (popup.querySelector('.missoma-popup-form-success')) {
+    markSubscribed();
+    hide();
+  }
+
+  /* close / overlay / no-thanks trigger 12-hour delay */
+  const qs = s => popup.querySelector(s);
+  qs('.missoma-popup-close')?.addEventListener('click', hideWithDelay);
+  qs('.missoma-popup-overlay')?.addEventListener('click', hideWithDelay);
+  qs('.missoma-popup-no-thanks')?.addEventListener('click', hideWithDelay);
+});
+</script>
+{% endunless %}
+
+{% schema %}
+{
+  "name": "Missoma Popup",
+  "settings": [
+    { "type":"header","content":"Popup Settings" },
+    { "type":"checkbox","id":"show_popup","label":"Enable Popup","default":true },
+    { "type":"select","id":"popup_type","label":"Popup Type","options":[
+        { "value":"welcome","label":"Welcome Popup with Country Selector" },
+        { "value":"newsletter","label":"Newsletter Signup Popup" }
+      ],"default":"welcome" },
+    { "type":"select","id":"trigger_type","label":"Trigger Type","options":[
+        { "value":"immediate","label":"Immediate" },
+        { "value":"delay","label":"Time Delay" },
+        { "value":"exit","label":"Exit Intent" }
+      ],"default":"delay" },
+    { "type":"range","id":"popup_delay","min":0,"max":20,"step":1,"unit":"sec","label":"Popup Delay","default":2 },
+    { "type":"range","id":"popup_width","min":300,"max":1200,"step":50,"unit":"px","label":"Popup Width","default":800 },
+
+    { "type":"header","content":"Content Settings" },
+    { "type":"text","id":"popup_title","label":"Popup Title","default":"WELCOME TO OUR STORE" },
+    { "type":"checkbox","id":"show_description","label":"Show Description","default":true },
+    { "type":"textarea","id":"popup_description","label":"Popup Description","default":"Join our mailing list for exclusive offers and new arrivals." },
+    { "type":"image_picker","id":"popup_image","label":"Popup Image" },
+
+    { "type":"header","content":"Style Settings" },
+    { "type":"color","id":"heading_color","label":"Heading Color","default":"#000000" },
+    { "type":"color","id":"text_color","label":"Text Color","default":"#333333" },
+    { "type":"color","id":"button_background_color","label":"Button Background Color","default":"#000000" },
+    { "type":"color","id":"button_text_color","label":"Button Text Color","default":"#ffffff" },
+    { "type":"color","id":"button_hover_background_color","label":"Button Hover Background Color","default":"#333333" },
+    { "type":"color","id":"input_border_color","label":"Input Border Color","default":"#e0e0e0" },
+    { "type":"color","id":"close_button_color","label":"Close Button Color","default":"#000000" },
+    { "type":"color","id":"disclaimer_color","label":"Disclaimer Text Color","default":"#666666" },
+    { "type":"color","id":"no_thanks_color","label":"No Thanks Button Color","default":"#666666" },
+
+    { "type":"range","id":"heading_font_size","min":16,"max":48,"step":1,"unit":"px","label":"Heading Font Size","default":24 },
+    { "type":"range","id":"text_font_size","min":12,"max":24,"step":1,"unit":"px","label":"Text Font Size","default":14 },
+
+    { "type":"header","content":"Form Settings" },
+    { "type":"checkbox","id":"show_signup","label":"Show Signup Form","default":true },
+    { "type":"text","id":"signup_text","label":"Signup Text","default":"SIGN UP FOR 10% OFF YOUR FIRST ORDER" },
+    { "type":"text","id":"email_placeholder","label":"Email Placeholder","default":"Enter your email" },
+    { "type":"text","id":"button_text","label":"Button Text","default":"Sign Up" },
+
+    { "type":"header","content":"Additional Settings" },
+    { "type":"checkbox","id":"show_close_button","label":"Show Close Button","default":true },
+    { "type":"checkbox","id":"show_no_thanks","label":"Show 'No Thanks' Button","default":true },
+    { "type":"text","id":"no_thanks_text","label":"No Thanks Text","default":"No thanks, I'll pay full price" },
+    { "type":"checkbox","id":"show_disclaimer","label":"Show Disclaimer","default":true },
+    { "type":"textarea","id":"disclaimer_text","label":"Disclaimer Text","default":"By signing up, you agree to receive marketing emails from us. You can unsubscribe at any time." }
+  ],
+  "presets": [
+    { "name":"Missoma Popup","category":"Promotional" }
+  ]
+}
+{% endschema %}

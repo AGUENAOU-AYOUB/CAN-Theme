@@ -1,0 +1,1396 @@
+ 
+<!-- Structured Data for SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://azorjewelry.com",
+  "@type": "WebPage",
+  "name": "Collaborations & Partenariats - Azor Jewelry",
+  "description": "Page de collaboration pour partenariats d'entreprise et création de bijoux sur mesure",
+  "url": "{{ shop.url }}/pages/collaboration",
+  "mainEntity": {
+    "@type": "Service",
+    "name": "Création de Bijoux d'Entreprise Sur Mesure",
+    "provider": {
+      "@type": "Organization",
+      "name": "Azor Jewelry",
+      "url": "{{ shop.url }}"
+    },
+    "description": "Service de création de bijoux personnalisés pour entreprises, événements corporate et cadeaux d'affaires",
+    "areaServed": {
+      "@type": "Country",
+      "name": "Morocco"
+    }
+  }
+}
+</script>
+
+<!-- Collaboration/Partnership Page (Version avec Logos et Formulaire) -->
+<div class="collaboration-wrapper" itemscope itemtype="https://azorjewelry.com/CollaborateAction">
+  <!-- Header Section -->
+  <header class="page-header" role="banner">
+    <h1 class="page-title" itemprop="name">Bijoux pour Entreprises & Événements</h1>
+    <div class="page-description" itemprop="description">
+      <p>Chez <strong>Azor</strong>, chaque création est une célébration de l'unique, de l'élégance et de l'émotion. C'est dans cette même vision que nous collaborons avec des marques et entreprises qui partagent notre passion pour l'exception et l'authenticité.</p>
+      <p>Que ce soit à l'occasion du <strong>8 Mars</strong>, pour rendre hommage aux femmes inspirantes qui façonnent le monde, ou pour offrir un bijou porteur de sens à leurs équipes, nos partenaires nous font confiance pour concevoir des pièces qui racontent une histoire.</p>
+    </div>
+  </header>
+
+  <!-- Partners Logos Section --> 
+<section class="partners-section" aria-labelledby="partners-heading">
+  <h2 class="section-title" id="partners-heading">
+    {% if section.settings.section_title != blank %}
+      {{ section.settings.section_title }}
+    {% else %}
+      Nos Collaborateurs de Confiance
+    {% endif %}
+  </h2>
+  
+  <div class="partners-carousel-wrapper">
+    <div class="partners-carousel" id="partners-carousel" role="list" aria-label="Logos de nos entreprises partenaires">
+      {% for block in section.blocks %}
+        {% if block.type == 'partner_logo' and block.settings.show_logo %}
+          <div class="partner-logo" role="listitem" {{ block.shopify_attributes }}>
+            {% if block.settings.company_url != blank %}
+              <a href="{{ block.settings.company_url }}" 
+                 target="_blank" 
+                 rel="noopener noreferrer"
+                 aria-label="{{ block.settings.company_name }} - Visitez le site web">
+            {% endif %}
+            
+            {% if block.settings.logo_image != blank %}
+              <img src="{{ block.settings.logo_image | img_url: '300x160' }}" 
+                   alt="{{ block.settings.company_name }} - Partenaire Azor Jewelry" 
+                   title="{{ block.settings.company_name }} - {{ block.settings.company_description }}"
+                   loading="lazy" />
+            {% else %}
+              <!-- Placeholder if no image uploaded -->
+              <div class="logo-placeholder">
+                <span>{{ block.settings.company_name | default: 'Logo' }}</span>
+              </div>
+            {% endif %}
+            
+            {% if block.settings.company_url != blank %}
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+      
+      <!-- Show message if no logos -->
+      {% if section.blocks.size == 0 %}
+        <div class="no-logos-message">
+          <p>Ajoutez des logos de partenaires depuis le personnalisateur de thème.</p>
+        </div>
+      {% endif %}
+    </div>
+    
+    <!-- Mobile scroll indicators -->
+    {% if section.blocks.size > 2 %}
+      <div class="scroll-indicator mobile-only" aria-hidden="true">
+        <span>← Glissez pour voir plus →</span>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+  <!-- Success Modal -->
+  {% if form.posted_successfully? %}
+    <div class="success-modal" id="success-modal">
+      <div class="success-content">
+        <div class="success-icon">🤝</div>
+        <h2>Collaboration Initiée!</h2>
+        <p>Merci de votre intérêt pour une collaboration avec Azor. Notre équipe examinera votre demande et vous contactera dans les 24-48 heures.</p>
+        <button onclick="closeSuccessModal()" class="btn-close-success">Fermer</button>
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Collaboration Form -->
+  <section class="form-container" aria-labelledby="form-heading">
+    <div class="form-panel">
+      <h2 class="form-title" id="form-heading">Créons l'Exception Ensemble</h2>
+      <p class="form-subtitle">Offrez à vos collaborateurs une expérience précieuse et mémorable avec une pièce de joaillerie pensée sur mesure, symbole de reconnaissance et d'élégance.</p>
+      
+      {% form 'contact', aria-label: 'Formulaire de demande de collaboration' %}
+        <input type="hidden" name="contact[form_type]" value="collaboration_request">
+
+        <!-- Company Information -->
+        <fieldset class="form-section">
+          <legend class="section-heading">Informations sur l'Entreprise</legend>
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label for="company-name">Nom de l'Entreprise *</label>
+              <input type="text" 
+                     id="company-name" 
+                     name="contact[company_name]" 
+                     class="form-input" 
+                     placeholder="Nom de votre entreprise" 
+                     required
+                     aria-required="true"
+                     aria-describedby="company-name-desc">
+              <span id="company-name-desc" class="sr-only">Entrez le nom complet de votre entreprise</span>
+            </div>
+            <div class="form-group">
+              <label for="representative-name">Nom du Représentant *</label>
+              <input type="text" 
+                     id="representative-name" 
+                     name="contact[name]" 
+                     value="{{ form.name | escape }}" 
+                     class="form-input" 
+                     placeholder="Votre nom complet" 
+                     required 
+                     autocomplete="name"
+                     aria-required="true">
+            </div>
+            <div class="form-group">
+              <label for="email">Adresse E-mail *</label>
+              <input type="email" 
+                     id="email" 
+                     name="contact[email]" 
+                     value="{{ form.email | escape }}" 
+                     class="form-input" 
+                     placeholder="email@entreprise.com" 
+                     required 
+                     autocomplete="email"
+                     aria-required="true">
+            </div>
+            <div class="form-group">
+              <label for="phone">Téléphone *</label>
+              <input type="tel" 
+                     id="phone" 
+                     name="contact[phone]" 
+                     class="form-input" 
+                     placeholder="+212 6XX XXX XXX" 
+                     required 
+                     autocomplete="tel"
+                     aria-required="true">
+            </div>
+            <div class="form-group">
+              <label for="city">Ville *</label>
+              <input type="text" 
+                     id="city" 
+                     name="contact[city]" 
+                     class="form-input" 
+                     placeholder="Casablanca" 
+                     required
+                     aria-required="true">
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Project Description -->
+        <fieldset class="form-section">
+          <legend class="section-heading">Description du Projet</legend>
+          <div class="form-group">
+            <label for="description">Décrivez votre projet de collaboration *</label>
+            <textarea id="description" 
+                      name="contact[body]" 
+                      class="form-textarea" 
+                      placeholder="Parlez-nous de votre vision : type d'événement (8 Mars, anniversaire d'entreprise, récompenses...), nombre de pièces envisagées, budget approximatif, délais souhaités..." 
+                      rows="5" 
+                      required
+                      aria-required="true">{{ form.body | escape }}</textarea>
+          </div>
+        </fieldset>
+
+        <!-- Image Upload -->
+        <fieldset class="form-section">
+          <legend class="section-heading">Documents de Référence <span class="optional">(Facultatif)</span></legend>
+          <p class="help-text">Partagez votre logo, des inspirations visuelles, ou tout document pertinent</p>
+          <div class="upload-area" 
+               id="upload-area" 
+               role="button" 
+               tabindex="0" 
+               aria-label="Zone de téléchargement de fichiers. Cliquez ou glissez des fichiers ici">
+            <div class="upload-content">
+              <div class="upload-icon" aria-hidden="true">📎</div>
+              <p>Glissez vos fichiers ici ou <span class="upload-link">parcourez</span></p>
+              <p class="upload-formats">Formats acceptés: Images, PDF (Max 10MB)</p>
+            </div>
+            <input type="file" 
+                   id="image-upload-input" 
+                   multiple 
+                   accept="image/*,application/pdf" 
+                   style="display: none;"
+                   aria-label="Sélectionner des fichiers">
+            <div class="uploaded-images" id="uploaded-images-container" role="list" aria-label="Fichiers téléchargés"></div>
+          </div>
+          <input type="hidden" name="contact[files]" id="cloudinary-links-input">
+        </fieldset>
+
+        <button type="submit" 
+                class="btn-submit" 
+                id="submit-btn"
+                aria-label="Envoyer la demande de collaboration">
+          <span class="btn-text">Envoyer la Demande de Collaboration</span>
+          <span class="btn-loading" style="display: none;" aria-live="polite">⏳ Envoi en cours...</span>
+        </button>
+      {% endform %}
+    </div>
+  </section>
+</div>
+
+<!-- Add screen reader only class for accessibility -->
+<style>
+/* Screen reader only class for accessibility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Futura Font Import - If you have a custom Futura font file, add it here */
+@font-face {
+  font-family: 'Futura';
+  src: url('{{ "futura-medium.woff2" | asset_url }}') format('woff2'),
+       url('{{ "futura-medium.woff" | asset_url }}') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Futura';
+  src: url('{{ "futura-bold.woff2" | asset_url }}') format('woff2'),
+       url('{{ "futura-bold.woff" | asset_url }}') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-primary: 'Futura', 'Futura PT', 'Futura Std', 'Century Gothic', sans-serif;
+  --font-heading: 'Futura', 'Futura PT', 'Futura Std', 'Century Gothic', sans-serif;
+  --brand-gold: #a4845c;
+  --brand-gold-hover: #b8956d;
+  --light-gray: #f5f5f5;
+  --medium-gray: #e0e0e0;
+  --dark-gray: #666;
+  --text-color: #2c2c2c;
+  --bg-color: #fafafa;
+  --border-radius: 12px;
+  --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+* { box-sizing: border-box; }
+
+.collaboration-wrapper {
+  font-family: var(--font-primary);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background: transparent;
+}
+/* Logo placeholder styles */
+.logo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--light-gray);
+  border: 2px dashed var(--medium-gray);
+  border-radius: 8px;
+  color: var(--dark-gray);
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 10px;
+}
+
+.partner-logo a {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.no-logos-message {
+  padding: 40px;
+  text-align: center;
+  color: var(--dark-gray);
+  font-style: italic;
+}
+
+/* Customizer edit mode helper */
+.partner-logo[data-shopify-editor-block] {
+  outline: 2px dashed transparent;
+  transition: outline 0.3s ease;
+}
+
+.partner-logo[data-shopify-editor-block]:hover {
+  outline-color: var(--brand-gold);
+}
+/* Header Section */
+.page-header {
+  text-align: center; 
+  padding: 40px 20px;
+}
+
+.page-title {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin-bottom: 20px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.page-description {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.page-description p {
+  font-family: var(--font-primary);
+  font-size: 1.4rem;
+  color: var(--dark-gray);
+  line-height: 1.8;
+  margin-bottom: 15px;
+  font-weight: 300;
+}
+
+.page-description strong {
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+/* Partners Section */
+.partners-section {
+  margin-bottom: 60px;
+  padding: 40px 20px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: var(--box-shadow);
+  overflow: hidden;
+}
+
+.partners-section .section-title {
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  color: var(--text-color);
+  margin-bottom: 30px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.partners-carousel-wrapper {
+  position: relative;
+  padding: 0 20px;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.partners-carousel {
+  display: flex;
+  gap: 40px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 20px 0;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Style scrollbar but keep it minimal */
+.partners-carousel::-webkit-scrollbar {
+  height: 6px;
+}
+
+.partners-carousel::-webkit-scrollbar-track {
+  background: var(--light-gray);
+  border-radius: 3px;
+}
+
+.partners-carousel::-webkit-scrollbar-thumb {
+  background: var(--brand-gold);
+  border-radius: 3px;
+}
+
+.partners-carousel::-webkit-scrollbar-thumb:hover {
+  background: var(--brand-gold-hover);
+}
+
+/* Firefox scrollbar */
+.partners-carousel {
+  scrollbar-width: thin;
+  scrollbar-color: var(--brand-gold) var(--light-gray);
+}
+
+.partner-logo {
+  flex: 0 0 auto;
+  width: 150px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  scroll-snap-align: center;
+}
+
+.partner-logo:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.partner-logo img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: grayscale(100%);
+  transition: filter 0.3s ease;
+}
+
+.partner-logo:hover img {
+  filter: grayscale(0%);
+}
+
+.scroll-indicator {
+  display: none;
+  text-align: center;
+  color: var(--dark-gray);
+  font-size: 0.9rem;
+  margin-top: 10px;
+  font-style: italic;
+  font-family: var(--font-primary);
+}
+
+/* Form Container */
+.form-container {
+  background: white;
+  border-radius: 20px;
+  padding: 50px;
+  box-shadow: var(--box-shadow);
+}
+
+.form-panel {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.form-title {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  color: var(--text-color);
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.form-subtitle {
+  text-align: center;
+  color: var(--dark-gray);
+  font-size: 1.05rem;
+  margin-bottom: 40px;
+  line-height: 1.6;
+  font-family: var(--font-primary);
+  font-weight: 300;
+}
+
+.form-section {
+  margin-bottom: 35px;
+  border: none;
+  padding: 0;
+}
+
+.section-heading {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  color: var(--text-color);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--light-gray);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: var(--text-color);
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  font-family: var(--font-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.form-input, .form-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--medium-gray);
+  border-radius: var(--border-radius);
+  font-size: 16px;
+  font-family: var(--font-primary);
+  transition: all 0.3s ease;
+  background: white;
+  font-weight: 300;
+}
+
+.form-input:focus, .form-textarea:focus {
+  outline: none;
+  border-color: var(--brand-gold);
+  box-shadow: 0 0 0 3px rgba(164, 132, 92, 0.1);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.optional {
+  font-size: 0.85rem;
+  color: #999;
+  font-weight: 400;
+  font-family: var(--font-primary);
+  text-transform: none;
+}
+
+.help-text {
+  font-size: 0.9rem;
+  color: var(--dark-gray);
+  margin-bottom: 10px;
+  font-family: var(--font-primary);
+  font-weight: 300;
+}
+
+/* Upload Area */
+.upload-area {
+  border: 2px dashed var(--medium-gray);
+  border-radius: var(--border-radius);
+  padding: 30px;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  background: var(--light-gray);
+}
+
+.upload-area:hover, .upload-area.dragover {
+  border-color: var(--brand-gold);
+  background: #fdfaf6;
+}
+
+.upload-area:focus {
+  outline: 2px solid var(--brand-gold);
+  outline-offset: 2px;
+}
+
+.upload-content { 
+  pointer-events: none; 
+  font-family: var(--font-primary);
+}
+
+.upload-icon {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: var(--brand-gold);
+}
+
+.upload-link {
+  color: var(--brand-gold);
+  font-weight: 500;
+  text-decoration: underline;
+  font-family: var(--font-primary);
+}
+
+.upload-formats {
+  font-size: 0.85rem;
+  color: #999;
+  margin-top: 5px;
+  font-family: var(--font-primary);
+}
+
+.uploaded-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.uploaded-image {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 1;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.uploaded-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.remove-image {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #e74c3c;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 24px;
+  text-align: center;
+  padding: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-family: var(--font-primary);
+}
+
+.uploaded-image.uploading::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(2px);
+}
+
+.uploaded-image.uploading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -15px;
+  border: 3px solid rgba(164, 132, 92, 0.3);
+  border-top-color: var(--brand-gold);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Submit Button */
+.btn-submit {
+  width: 100%;
+  padding: 18px;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-family: var(--font-heading);
+}
+
+.btn-submit:hover {
+  background: var(--brand-gold);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(164, 132, 92, 0.3);
+}
+
+.btn-submit:focus {
+  outline: 2px solid var(--brand-gold);
+  outline-offset: 2px;
+}
+
+.btn-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Success Modal */
+.success-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+}
+
+.success-content {
+  background: white;
+  padding: 50px;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 500px;
+  margin: 20px;
+}
+
+.success-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+
+.success-content h2 {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  color: var(--text-color);
+  margin-bottom: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.success-content p {
+  font-family: var(--font-primary);
+  font-weight: 300;
+}
+
+.btn-close-success {
+  background: black;
+  color: white;
+  border: none;
+  padding: 14px 30px;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background 0.3s ease;
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.btn-close-success:hover {
+  background: var(--brand-gold);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 2rem;
+  }
+  
+  .partners-carousel-wrapper {
+    padding: 0 10px;
+  }
+  
+  .partners-carousel {
+    gap: 15px;
+    padding: 15px 5px;
+    /* Ensure scrollbar is visible on mobile for better UX */
+    scrollbar-width: auto;
+  }
+  
+  .partners-carousel::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .partner-logo {
+    width: calc((100vw - 50px) / 2);
+    min-width: 140px;
+    max-width: 200px;
+  }
+  
+  .scroll-indicator.mobile-only {
+    display: block;
+  }
+  
+  .form-container {
+    padding: 30px 20px;
+  }
+  
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-title {
+    font-size: 1.8rem;
+  }
+  
+  .section-heading {
+    font-size: 1.2rem;
+  }
+  
+  .btn-submit {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .collaboration-wrapper {
+    padding: 10px;
+  }
+  
+  .page-header {
+    padding: 20px 10px;
+  }
+  
+  .partners-section {
+    padding: 30px 10px;
+  }
+  
+  .partner-logo {
+    width: calc((100vw - 40px) / 2);
+    min-width: 120px;
+  }
+}
+
+/* Print Styles for better SEO */
+@media print {
+  .upload-area,
+  .btn-submit,
+  .scroll-indicator {
+    display: none !important;
+  }
+  
+  .partners-carousel {
+    flex-wrap: wrap;
+    overflow: visible;
+  }
+}
+</style>
+
+<script>
+// Cloudinary Configuration - REPLACE WITH YOUR ACTUAL VALUES
+const CLOUDINARY_CLOUD_NAME = 'dauakzabl';  // Your actual cloud name
+const CLOUDINARY_UPLOAD_PRESET = 'Customize azor'; // Your actual preset
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Check if Cloudinary is configured
+  if (CLOUDINARY_CLOUD_NAME === 'YOUR_CLOUD_NAME_HERE' || CLOUDINARY_UPLOAD_PRESET === 'YOUR_UPLOAD_PRESET_HERE') {
+    alert('⚠️ Attention: Cloudinary n\'est pas configuré. Veuillez modifier les paramètres dans le code.');
+  }
+  
+  initImageUpload();
+  initFormSubmission();
+  initPartnersCarousel();
+  initAccessibility();
+  
+  // Handle success modal if form was posted successfully
+  {% if form.posted_successfully? %}
+    const successModal = document.getElementById('success-modal');
+    if (successModal) {
+      successModal.style.display = 'flex';
+      // Focus management for accessibility
+      const closeBtn = successModal.querySelector('.btn-close-success');
+      if (closeBtn) closeBtn.focus();
+    }
+  {% endif %}
+});
+
+// Initialize accessibility features for better SEO and UX
+function initAccessibility() {
+  // Add keyboard navigation to upload area
+  const uploadArea = document.getElementById('upload-area');
+  if (uploadArea) {
+    uploadArea.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        document.getElementById('image-upload-input').click();
+      }
+    });
+  }
+  
+  // Add skip link for screen readers
+  const skipLink = document.createElement('a');
+  skipLink.href = '#form-heading';
+  skipLink.className = 'sr-only';
+  skipLink.textContent = 'Aller au formulaire de collaboration';
+  skipLink.style.position = 'absolute';
+  skipLink.style.left = '-9999px';
+  skipLink.addEventListener('focus', function() {
+    this.style.left = '10px';
+    this.style.top = '10px';
+  });
+  skipLink.addEventListener('blur', function() {
+    this.style.left = '-9999px';
+  });
+  document.body.insertBefore(skipLink, document.body.firstChild);
+}
+
+// Initialize partners carousel for desktop (snap to center)
+function initPartnersCarousel() {
+  const carousel = document.getElementById('partners-carousel');
+  if (!carousel) return;
+  
+  // Enable horizontal scrolling with mouse wheel
+  carousel.addEventListener('wheel', function(e) {
+    if (e.deltaY !== 0) {
+      e.preventDefault();
+      carousel.scrollLeft += e.deltaY;
+    }
+  });
+  
+  // Touch support for mobile
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+  
+  carousel.addEventListener('mousedown', (e) => {
+    isDown = true;
+    carousel.style.cursor = 'grabbing';
+    startX = e.pageX - carousel.offsetLeft;
+    scrollLeft = carousel.scrollLeft;
+  });
+  
+  carousel.addEventListener('mouseleave', () => {
+    isDown = false;
+    carousel.style.cursor = 'grab';
+  });
+  
+  carousel.addEventListener('mouseup', () => {
+    isDown = false;
+    carousel.style.cursor = 'grab';
+  });
+  
+  carousel.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - carousel.offsetLeft;
+    const walk = (x - startX) * 2;
+    carousel.scrollLeft = scrollLeft - walk;
+  });
+  
+  // Set initial cursor
+  carousel.style.cursor = 'grab';
+  
+  // Center align for desktop if all logos fit
+  if (window.innerWidth > 768) {
+    const containerWidth = carousel.parentElement.offsetWidth;
+    const totalLogos = carousel.children.length;
+    const logoWidth = 150;
+    const gap = 40;
+    const totalWidth = (totalLogos * logoWidth) + ((totalLogos - 1) * gap);
+    
+    if (totalWidth < containerWidth) {
+      carousel.style.justifyContent = 'center';
+    }
+  }
+  
+  // Add lazy loading for performance (helps SEO)
+  const images = carousel.querySelectorAll('img');
+  images.forEach(img => {
+    if ('loading' in HTMLImageElement.prototype) {
+      img.loading = 'lazy';
+    }
+  });
+}
+
+// Image Upload Functionality
+function initImageUpload() {
+  const uploadArea = document.getElementById('upload-area');
+  const fileInput = document.getElementById('image-upload-input');
+  const container = document.getElementById('uploaded-images-container');
+  const linksInput = document.getElementById('cloudinary-links-input');
+  
+  if (!uploadArea) return;
+  
+  let uploadedCloudinaryLinks = [];
+  
+  // Click to upload
+  uploadArea.addEventListener('click', () => fileInput.click());
+  
+  // Drag and drop events
+  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    uploadArea.addEventListener(eventName, e => {
+      e.preventDefault();
+      e.stopPropagation();
+    }, false);
+  });
+  
+  ['dragenter', 'dragover'].forEach(eventName => {
+    uploadArea.addEventListener(eventName, () => {
+      uploadArea.classList.add('dragover');
+      uploadArea.setAttribute('aria-label', 'Zone active - relâchez pour télécharger');
+    }, false);
+  });
+  
+  ['dragleave', 'drop'].forEach(eventName => {
+    uploadArea.addEventListener(eventName, () => {
+      uploadArea.classList.remove('dragover');
+      uploadArea.setAttribute('aria-label', 'Zone de téléchargement de fichiers. Cliquez ou glissez des fichiers ici');
+    }, false);
+  });
+  
+  uploadArea.addEventListener('drop', e => handleFiles(e.dataTransfer.files), false);
+  fileInput.addEventListener('change', e => handleFiles(e.target.files), false);
+  
+  const handleFiles = (files) => {
+    Array.from(files).forEach(file => {
+      if (file.size > 10 * 1024 * 1024) {
+        alert(`Le fichier "${file.name}" dépasse 10 Mo.`);
+        return;
+      }
+      
+      if (!file.type.startsWith('image/') && file.type !== 'application/pdf') {
+        alert(`Format non supporté: ${file.name}. Utilisez des images ou PDF.`);
+        return;
+      }
+      
+      uploadToCloudinary(file);
+    });
+  };
+  
+  const uploadToCloudinary = async (file) => {
+    const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`;
+    const thumbnailDiv = createThumbnail(file, true);
+    container.appendChild(thumbnailDiv);
+    
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        body: formData
+      });
+      
+      const data = await response.json();
+      
+      if (data.secure_url) {
+        uploadedCloudinaryLinks.push(data.secure_url);
+        linksInput.value = uploadedCloudinaryLinks.join(' ');
+        thumbnailDiv.classList.remove('uploading');
+        thumbnailDiv.dataset.url = data.secure_url;
+        thumbnailDiv.setAttribute('aria-label', `Fichier téléchargé: ${file.name}`);
+      } else {
+        throw new Error(data.error?.message || 'Erreur inconnue');
+      }
+    } catch (error) {
+      console.error('Échec de l\'upload:', error);
+      alert(`Échec de l'envoi de "${file.name}". Veuillez réessayer.`);
+      container.removeChild(thumbnailDiv);
+    }
+  };
+  
+  const createThumbnail = (file, isLoading = false) => {
+    const div = document.createElement('div');
+    div.className = 'uploaded-image';
+    div.setAttribute('role', 'listitem');
+    if (isLoading) {
+      div.classList.add('uploading');
+      div.setAttribute('aria-busy', 'true');
+    }
+    
+    if (file.type.startsWith('image/')) {
+      const img = document.createElement('img');
+      img.src = URL.createObjectURL(file);
+      img.alt = `Aperçu de ${file.name}`;
+      img.onload = () => URL.revokeObjectURL(img.src);
+      div.appendChild(img);
+    } else {
+      // For PDFs, show an icon with proper alt text
+      div.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;font-size:2rem;" role="img" aria-label="Document PDF">📄</div>';
+    }
+    
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'remove-image';
+    removeBtn.innerHTML = '×';
+    removeBtn.type = 'button';
+    removeBtn.setAttribute('aria-label', `Supprimer ${file.name}`);
+    removeBtn.onclick = (e) => {
+      e.stopPropagation();
+      const urlToRemove = div.dataset.url;
+      if (urlToRemove) {
+        uploadedCloudinaryLinks = uploadedCloudinaryLinks.filter(link => link !== urlToRemove);
+        linksInput.value = uploadedCloudinaryLinks.join(' ');
+      }
+      container.removeChild(div);
+      // Announce removal for screen readers
+      const announcement = document.createElement('div');
+      announcement.setAttribute('role', 'status');
+      announcement.setAttribute('aria-live', 'polite');
+      announcement.className = 'sr-only';
+      announcement.textContent = `${file.name} supprimé`;
+      document.body.appendChild(announcement);
+      setTimeout(() => document.body.removeChild(announcement), 1000);
+    };
+    
+    div.appendChild(removeBtn);
+    return div;
+  };
+}
+
+// Form Submission with enhanced validation
+function initFormSubmission() {
+  const form = document.querySelector('form[action*="contact"]');
+  const submitBtn = document.getElementById('submit-btn');
+  
+  if (form && submitBtn) {
+    // Add novalidate to handle validation via JS for better UX
+    form.setAttribute('novalidate', '');
+    
+    form.addEventListener('submit', function(e) {
+      // Custom validation
+      const requiredFields = form.querySelectorAll('[required]');
+      let isValid = true;
+      
+      requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+          isValid = false;
+          field.classList.add('error');
+          field.setAttribute('aria-invalid', 'true');
+          
+          // Add error message for accessibility
+          if (!field.nextElementSibling || !field.nextElementSibling.classList.contains('error-message')) {
+            const errorMsg = document.createElement('span');
+            errorMsg.className = 'error-message sr-only';
+            errorMsg.setAttribute('role', 'alert');
+            errorMsg.textContent = 'Ce champ est requis';
+            field.parentNode.insertBefore(errorMsg, field.nextSibling);
+          }
+        } else {
+          field.classList.remove('error');
+          field.setAttribute('aria-invalid', 'false');
+          const errorMsg = field.nextElementSibling;
+          if (errorMsg && errorMsg.classList.contains('error-message')) {
+            errorMsg.remove();
+          }
+        }
+      });
+      
+      if (!isValid) {
+        e.preventDefault();
+        const firstError = form.querySelector('.error');
+        if (firstError) firstError.focus();
+        return;
+      }
+      
+      // Check if images are still uploading
+      if (document.querySelector('.uploaded-image.uploading')) {
+        e.preventDefault();
+        alert("Veuillez attendre la fin de l'envoi de tous les fichiers.");
+        return;
+      }
+      
+      // Disable button and show loading state
+      const btnText = submitBtn.querySelector('.btn-text');
+      const btnLoading = submitBtn.querySelector('.btn-loading');
+      btnText.style.display = 'none';
+      btnLoading.style.display = 'inline';
+      submitBtn.disabled = true;
+      submitBtn.setAttribute('aria-busy', 'true');
+    });
+    
+    // Remove error styling on input
+    const inputs = form.querySelectorAll('.form-input, .form-textarea');
+    inputs.forEach(input => {
+      input.addEventListener('input', function() {
+        if (this.value.trim()) {
+          this.classList.remove('error');
+          this.setAttribute('aria-invalid', 'false');
+          const errorMsg = this.nextElementSibling;
+          if (errorMsg && errorMsg.classList.contains('error-message')) {
+            errorMsg.remove();
+          }
+        }
+      });
+    });
+  }
+}
+
+// Close success modal with accessibility
+function closeSuccessModal() {
+  const modal = document.getElementById('success-modal');
+  if (modal) {
+    modal.style.display = 'none';
+    // Return focus to form
+    document.getElementById('company-name').focus();
+  }
+}
+
+// Add ESC key to close modal
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    const modal = document.getElementById('success-modal');
+    if (modal && modal.style.display === 'flex') {
+      closeSuccessModal();
+    }
+  }
+});
+
+// Window resize handler
+window.addEventListener('resize', initPartnersCarousel);
+
+// Add error styling
+const style = document.createElement('style');
+style.textContent = `
+  .form-input.error, .form-textarea.error {
+    border-color: #e74c3c !important;
+  }
+  .error-message {
+    color: #e74c3c;
+    font-size: 0.85rem;
+    margin-top: 5px;
+    display: block;
+  }
+`;
+document.head.appendChild(style);
+</script>
+
+{% schema %}
+{
+  "name": "Collaboration Page",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Nos Collaborateurs de Confiance"
+    },
+    {
+      "type": "text",
+      "id": "cloudinary_cloud_name",
+      "label": "Cloudinary Cloud Name",
+      "default": "dauakzabl",
+      "info": "Your Cloudinary cloud name for file uploads"
+    },
+    {
+      "type": "text",
+      "id": "cloudinary_upload_preset",
+      "label": "Cloudinary Upload Preset",
+      "default": "Customize azor",
+      "info": "Your Cloudinary upload preset name"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "partner_logo",
+      "name": "Partner Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo_image",
+          "label": "Logo Image",
+          "info": "Recommended: 300x160px PNG with transparent background"
+        },
+        {
+          "type": "text",
+          "id": "company_name",
+          "label": "Company Name",
+          "default": "Company Name",
+          "info": "Used for alt text and accessibility"
+        },
+        {
+          "type": "text",
+          "id": "company_description",
+          "label": "Company Description",
+          "default": "Partner description",
+          "info": "Brief description for SEO"
+        },
+        {
+          "type": "url",
+          "id": "company_url",
+          "label": "Company Website (Optional)",
+          "info": "Link to partner's website"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_logo",
+          "label": "Show this logo",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collaboration Content",
+      "category": "Custom",
+      "blocks": [
+        {
+          "type": "partner_logo",
+          "settings": {
+            "company_name": "Mercedes-Benz",
+            "company_description": "Création de bijoux corporate"
+          }
+        },
+        {
+          "type": "partner_logo",
+          "settings": {
+            "company_name": "Banque Populaire",
+            "company_description": "Bijoux sur mesure pour entreprise"
+          }
+        },
+        {
+          "type": "partner_logo",
+          "settings": {
+            "company_name": "Attijariwafa Bank",
+            "company_description": "Cadeaux d'entreprise personnalisés"
+          }
+        },
+        {
+          "type": "partner_logo",
+          "settings": {
+            "company_name": "Wafa Assurance",
+            "company_description": "Bijoux événements corporate"
+          }
+        },
+        {
+          "type": "partner_logo",
+          "settings": {
+            "company_name": "Sanlam",
+            "company_description": "Collaboration bijoux d'entreprise"
+          }
+        },
+        {
+          "type": "partner_logo",
+          "settings": {
+            "company_name": "MDJS",
+            "company_description": "Créations sur mesure corporate"
+          }
+        },
+        {
+          "type": "partner_logo",
+          "settings": {
+            "company_name": "ADD",
+            "company_description": "Bijoux innovation et technologie"
+          }
+        },
+        {
+          "type": "partner_logo",
+          "settings": {
+            "company_name": "Maroc PME",
+            "company_description": "Support aux entreprises marocaines"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

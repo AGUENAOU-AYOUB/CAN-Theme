@@ -1,0 +1,997 @@
+{{ 'product-return.css' | asset_url | stylesheet_tag }}
+
+<style>
+  .product-return-section {
+    padding: {{ section.settings.section_padding }}px 20px;
+    background-color: {{ section.settings.background_color }};
+    font-family: {{ section.settings.heading_font }}, sans-serif;
+    color: #333;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .return-container {
+    margin: 0 auto;
+  }
+
+  /* Main heading styles */
+  .return-header {
+    text-align: center;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #e5e5e5;
+    margin-bottom: 40px;
+  }
+
+  .return-main-heading {
+    color: {{ section.settings.heading_color }};
+    font-size: {{ section.settings.heading_size }}px;
+    font-weight: 400;
+    margin: 40px 0;
+    font-family: {{ section.settings.heading_font }}, serif;
+    line-height: 1.2;
+  }
+
+  /* Two column layout for desktop */
+  .return-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  /* Policy column */
+  .return-policy-column {
+    width: 100%;
+    padding-right: 20px;
+  }
+
+  .return-policy-title {
+    color: {{ section.settings.policy_title_color }};
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 15px;
+  }
+
+  .return-policy-text {
+    color: {{ section.settings.policy_text_color }};
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 40px;
+  }
+
+  .return-policy-text p {
+    margin-bottom: 20px;
+  }
+
+  /* Forms column */
+  .return-forms-column {
+    width: 100%;
+  }
+
+  .return-form {
+    margin-bottom: 60px;
+  }
+
+  .return-form-title {
+    color: {{ section.settings.form_title_color }};
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 5px;
+    font-family: {{ section.settings.heading_font }}, serif;
+  }
+
+  .required-fields {
+    color: {{ section.settings.form_text_color }};
+    font-size: 14px;
+    margin-bottom: 25px;
+    opacity: 0.7;
+  }
+
+  .form-fields {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  /* Animated form field */
+  .form-field {
+    width: 100%;
+    margin-bottom: 25px;
+    position: relative;
+  }
+
+  .form-field-label {
+    position: absolute;
+    left: 0;
+    top: 12px;
+    font-size: 14px;
+    color: {{ section.settings.form_text_color }};
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
+
+  .form-field input {
+    width: 100%;
+    padding: 12px 0;
+    border: none;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 14px;
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent;
+    z-index: 1;
+    position: relative;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: 0;
+  }
+
+  .form-field input:focus,
+  .form-field input:not(:placeholder-shown) {
+    border-color: {{ section.settings.input_focus_color }};
+  }
+
+  .form-field input:focus + .form-field-label,
+  .form-field input:not(:placeholder-shown) + .form-field-label {
+    font-size: 12px;
+    top: -10px;
+    color: {{ section.settings.input_focus_color }};
+  }
+
+  /* Button styles */
+  .return-button {
+    display: inline-block;
+    padding: {{ section.settings.button_padding }}px 30px;
+    background-color: {{ section.settings.button_bg_color }};
+    color: {{ section.settings.button_text_color }};
+    border: none;
+    border-radius: {{ section.settings.button_radius }}px;
+    font-size: {{ section.settings.button_font_size }}px;
+    cursor: pointer;
+    text-align: center;
+    letter-spacing: 0.5px;
+    min-width: 180px;
+    transition: all 0.3s ease;
+  }
+
+  .return-button-white {
+    background-color: {{ section.settings.white_button_bg_color }};
+    color: {{ section.settings.white_button_text_color }};
+    border: 1px solid {{ section.settings.white_button_border_color }};
+  }
+
+  .return-button:hover {
+    opacity: 0.9;
+    background-color: {{ section.settings.button_hover_bg_color }};
+    color: {{ section.settings.button_hover_text_color }};
+  }
+
+  .return-button-white:hover {
+    background-color: {{ section.settings.white_button_hover_bg_color }};
+    color: {{ section.settings.white_button_hover_text_color }};
+  }
+
+  /* Horizontal separator */
+  .return-separator {
+    height: 1px;
+    background-color: #e5e5e5;
+    width: 100%;
+    margin: 60px 0;
+  }
+
+  /* Return instructions section */
+  .return-instructions {
+    margin: 40px 0;
+  }
+
+  .instructions-title {
+    color: {{ section.settings.instructions_title_color }};
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 30px;
+  }
+
+  .instruction-steps {
+    margin-bottom: 40px;
+  }
+
+  .instruction-step {
+    display: flex;
+    margin-bottom: 30px;
+    align-items: flex-start;
+  }
+
+  .step-icon {
+    flex: 0 0 24px;
+    margin-right: 15px;
+  }
+
+  .step-content {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.7;
+    color: {{ section.settings.instructions_text_color }};
+  }
+
+  /* Collection points button */
+  .collection-points-button {
+    display: inline-block;
+    padding: {{ section.settings.button_padding }}px 30px;
+    background-color: {{ section.settings.white_button_bg_color }};
+    color: {{ section.settings.white_button_text_color }};
+    border: 1px solid {{ section.settings.white_button_border_color }};
+    border-radius: {{ section.settings.button_radius }}px;
+    font-size: {{ section.settings.button_font_size }}px;
+    cursor: pointer;
+    text-align: center;
+    margin: 20px 0 40px;
+    min-width: 180px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .collection-points-button:hover {
+    background-color: {{ section.settings.white_button_hover_bg_color }};
+    color: {{ section.settings.white_button_hover_text_color }};
+  }
+
+  /* Policy details section */
+  .policy-details {
+    margin: 20px 0 40px;
+  }
+
+  .policy-details p {
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: {{ section.settings.policy_details_color }};
+  }
+
+  /* FAQ Button */
+  .faq-button {
+    display: inline-block;
+    padding: {{ section.settings.button_padding }}px 30px;
+    background-color: {{ section.settings.white_button_bg_color }};
+    color: {{ section.settings.white_button_text_color }};
+    border: 1px solid {{ section.settings.white_button_border_color }};
+    border-radius: {{ section.settings.button_radius }}px;
+    font-size: {{ section.settings.button_font_size }}px;
+    cursor: pointer;
+    text-align: center;
+    margin: 20px 0 40px;
+    min-width: 180px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .faq-button:hover {
+    background-color: {{ section.settings.white_button_hover_bg_color }};
+    color: {{ section.settings.white_button_hover_text_color }};
+  }
+
+  /* Help section */
+  .need-help {
+    margin: 40px 0;
+  }
+
+  .help-title {
+    color: {{ section.settings.instructions_title_color }};
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+
+  .help-text {
+    color: {{ section.settings.instructions_text_color }};
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .chat-button {
+    display: inline-block;
+    padding: {{ section.settings.button_padding }}px 30px;
+    background-color: {{ section.settings.white_button_bg_color }};
+    color: {{ section.settings.white_button_text_color }};
+    border: 1px solid {{ section.settings.white_button_border_color }};
+    border-radius: {{ section.settings.button_radius }}px;
+    font-size: {{ section.settings.button_font_size }}px;
+    cursor: pointer;
+    text-align: center;
+    margin: 10px 0;
+    min-width: 180px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .chat-button:hover {
+    background-color: {{ section.settings.white_button_hover_bg_color }};
+    color: {{ section.settings.white_button_hover_text_color }};
+  }
+
+  /* Form success and error messages */
+  .form-message {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    display: none;
+  }
+
+  .form-message--success {
+    background-color: #f8f9fa;
+    border: 1px solid #28a745;
+    color: #28a745;
+  }
+
+  .form-message--error {
+    background-color: #f8f9fa;
+    border: 1px solid #dc3545;
+    color: #dc3545;
+  }
+
+  /* Responsive styles */
+  @media screen and (min-width: 768px) {
+    .return-content {
+      display: flex;
+    }
+
+    .return-policy-column {
+      width: 35%;
+      padding-right: 40px;
+    }
+
+    .return-forms-column {
+      width: 65%;
+    }
+
+    .form-field {
+      width: 48%;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .return-main-heading {
+      font-size: calc({{ section.settings.heading_size }}px * 0.8);
+    }
+
+    .return-form-title {
+      font-size: 20px;
+    }
+
+    .form-fields {
+      flex-direction: column;
+    }
+
+    .form-field {
+      width: 100%;
+    }
+
+    .instruction-step {
+      align-items: flex-start;
+    }
+  }
+</style>
+
+<div class="product-return-section">
+  <div class="return-container">
+    <div class="return-header">
+      <h1 class="return-main-heading">{{ section.settings.main_heading }}</h1>
+    </div>
+
+    <div class="return-content">
+      <!-- Left Column: Return Policy -->
+      <div class="return-policy-column">
+        <h3 class="return-policy-title">{{ section.settings.policy_title }}</h3>
+        <div class="return-policy-text">{{ section.settings.policy_text }}</div>
+      </div>
+
+      <!-- Right Column: Return Forms -->
+      <div class="return-forms-column">
+        <!-- Declare Return Form -->
+        <div class="return-form">
+          <h2 class="return-form-title">{{ section.settings.declare_title }}</h2>
+          <div class="required-fields">{{ section.settings.required_fields_text }}</div>
+
+          <div id="DeclareReturnSuccess" class="form-message form-message--success" style="display: none;">
+            {{ section.settings.success_message }}
+          </div>
+          <div id="DeclareReturnError" class="form-message form-message--error" style="display: none;">
+            {{ section.settings.error_message }}
+          </div>
+
+          <form id="DeclareReturnForm" action="/contact#contact_form" method="post">
+            <input type="hidden" name="form_type" value="contact">
+            <input type="hidden" name="utf8" value="✓">
+            <input type="hidden" name="contact[subject]" value="Demande de retour">
+            <!-- Add a hidden field to identify which form was submitted -->
+            <input type="hidden" name="contact[form_name]" value="declare_return">
+
+            <div class="form-fields">
+              <div class="form-field">
+                <input type="email" name="contact[email]" id="DeclareEmail" required placeholder=" ">
+                <label class="form-field-label" for="DeclareEmail">{{ section.settings.email_label }}</label>
+              </div>
+              <div class="form-field">
+                <input type="text" name="contact[order_number]" id="DeclareOrderNumber" required placeholder=" ">
+                <label class="form-field-label" for="DeclareOrderNumber">
+                  {{- section.settings.order_number_label -}}
+                </label>
+              </div>
+            </div>
+
+            <!-- Hidden field for the body content -->
+            <input type="hidden" name="contact[body]" id="DeclareBody">
+
+            <button type="submit" class="return-button" onclick="prepareDeclareForm()">
+              {{ section.settings.declare_button_text }}
+            </button>
+          </form>
+        </div>
+
+        <!-- Track Return Form -->
+        <div class="return-form">
+          <h2 class="return-form-title">{{ section.settings.track_title }}</h2>
+          <div class="required-fields">{{ section.settings.required_fields_text }}</div>
+
+          <div id="TrackReturnSuccess" class="form-message form-message--success" style="display: none;">
+            {{ section.settings.track_success_message }}
+          </div>
+          <div id="TrackReturnError" class="form-message form-message--error" style="display: none;">
+            {{ section.settings.error_message }}
+          </div>
+
+          <form id="TrackReturnForm" action="/contact#contact_form" method="post">
+            <input type="hidden" name="form_type" value="contact">
+            <input type="hidden" name="utf8" value="✓">
+            <input type="hidden" name="contact[subject]" value="Suivi de retour">
+            <!-- Add a hidden field to identify which form was submitted -->
+            <input type="hidden" name="contact[form_name]" value="track_return">
+
+            <div class="form-fields">
+              <div class="form-field">
+                <input type="email" name="contact[email]" id="TrackEmail" required placeholder=" ">
+                <label class="form-field-label" for="TrackEmail">{{ section.settings.email_label }}</label>
+              </div>
+              <div class="form-field">
+                <input type="text" name="contact[order_number]" id="TrackOrderNumber" required placeholder=" ">
+                <label class="form-field-label" for="TrackOrderNumber">{{ section.settings.order_number_label }}</label>
+              </div>
+            </div>
+
+            <!-- Hidden field for the body content -->
+            <input type="hidden" name="contact[body]" id="TrackBody">
+
+            <button type="submit" class="return-button return-button-white" onclick="prepareTrackForm()">
+              {{ section.settings.track_button_text }}
+            </button>
+          </form>
+        </div>
+
+        <!-- Return Instructions moved to right column -->
+        <div class="return-instructions">
+          <h2 class="instructions-title">{{ section.settings.instructions_title }}</h2>
+
+          <div class="instruction-steps">
+            <!-- Step 1 -->
+            <div class="instruction-step">
+              <div class="step-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#333" stroke-width="1"/>
+                  <text x="12" y="16" text-anchor="middle" font-size="12" fill="#333">1</text>
+                </svg>
+              </div>
+              <div class="step-content">
+                {{ section.settings.step_1_text }}
+              </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="instruction-step">
+              <div class="step-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#333" stroke-width="1"/>
+                  <text x="12" y="16" text-anchor="middle" font-size="12" fill="#333">2</text>
+                </svg>
+              </div>
+              <div class="step-content">
+                {{ section.settings.step_2_text }}
+              </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="instruction-step">
+              <div class="step-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#333" stroke-width="1"/>
+                  <text x="12" y="16" text-anchor="middle" font-size="12" fill="#333">3</text>
+                </svg>
+              </div>
+              <div class="step-content">
+                {{ section.settings.step_3_text }}
+              </div>
+            </div>
+          </div>
+
+          <a href="{{ section.settings.collection_points_url }}" class="collection-points-button">
+            {{- section.settings.collection_points_button_text -}}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="return-separator"></div>
+
+    <!-- Policy Details Section (Outside columns) -->
+    <div class="policy-details">
+      {{ section.settings.return_policy_details }}
+
+      <a href="{{ section.settings.faq_url }}" class="faq-button">{{ section.settings.faq_button_text }}</a>
+    </div>
+
+    <div class="need-help">
+      <div class="help-title">{{ section.settings.need_help_text }}</div>
+      <div class="help-text">{{ section.settings.customer_support_text }}</div>
+      <a href="{{ section.settings.chat_url }}" class="chat-button">{{ section.settings.chat_button_text }}</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Check for success/error parameters in URL and display appropriate messages
+  document.addEventListener('DOMContentLoaded', function() {
+    // Check if we're coming back from a form submission
+    if (window.location.search.includes('contact_posted=true')) {
+      // Get the form name from localStorage if available
+      const formName = localStorage.getItem('lastSubmittedForm');
+      
+      if (formName === 'declare_return') {
+        document.getElementById('DeclareReturnSuccess').style.display = 'block';
+        // Scroll to the success message
+        document.getElementById('DeclareReturnSuccess').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else if (formName === 'track_return') {
+        document.getElementById('TrackReturnSuccess').style.display = 'block';
+        // Scroll to the success message
+        document.getElementById('TrackReturnSuccess').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      
+      // Clear the localStorage after showing the message
+      localStorage.removeItem('lastSubmittedForm');
+    }
+  });
+
+  // Prepare the declare return form before submission
+  function prepareDeclareForm() {
+    const email = document.getElementById('DeclareEmail').value;
+    const orderNumber = document.getElementById('DeclareOrderNumber').value;
+    const bodyField = document.getElementById('DeclareBody');
+    
+    // Format the body content
+    const bodyContent = `Demande de retour\n\nEmail: ${email}\nNuméro de commande: ${orderNumber}`;
+    
+    // Set the body content
+    bodyField.value = bodyContent;
+    
+    // Store the form name in localStorage to retrieve after redirect
+    localStorage.setItem('lastSubmittedForm', 'declare_return');
+    
+    // The form will submit normally after this function completes
+    return true;
+  }
+  
+  // Prepare the track return form before submission
+  function prepareTrackForm() {
+    const email = document.getElementById('TrackEmail').value;
+    const orderNumber = document.getElementById('TrackOrderNumber').value;
+    const bodyField = document.getElementById('TrackBody');
+    
+    // Format the body content
+    const bodyContent = `Suivi de retour\n\nEmail: ${email}\nNuméro de commande: ${orderNumber}`;
+    
+    // Set the body content
+    bodyField.value = bodyContent;
+    
+    // Store the form name in localStorage to retrieve after redirect
+    localStorage.setItem('lastSubmittedForm', 'track_return');
+    
+    // The form will submit normally after this function completes
+    return true;
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Product Return",
+  "tag": "section",
+  "class": "section product-return-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Main Heading"
+    },
+    {
+      "type": "text",
+      "id": "main_heading",
+      "label": "Main Heading",
+      "default": "Retourner un produit"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading Font",
+      "options": [
+        {
+          "value": "serif",
+          "label": "Serif"
+        },
+        {
+          "value": "sans-serif",
+          "label": "Sans-serif"
+        }
+      ],
+      "default": "serif"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 20,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading Size",
+      "default": 32
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "header",
+      "content": "Return Policy Section"
+    },
+    {
+      "type": "text",
+      "id": "policy_title",
+      "label": "Policy Title",
+      "default": "Politique de retour"
+    },
+    {
+      "type": "richtext",
+      "id": "policy_text",
+      "label": "Policy Text",
+      "default": "<p>Vous pouvez retourner vos articles gratuitement dans un délai de 30 jours suivant la réception de votre commande. Veuillez noter que le retour ne sera valide que si nos conditions de retour sont respectées.</p><p>Une fois le colis reçu, votre remboursement sera traité dans les plus brefs délais.</p>"
+    },
+    {
+      "type": "color",
+      "id": "policy_title_color",
+      "label": "Policy Title Color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "policy_text_color",
+      "label": "Policy Text Color",
+      "default": "#4c4d4d"
+    },
+    {
+      "type": "header",
+      "content": "Declare Return Form"
+    },
+    {
+      "type": "text",
+      "id": "declare_title",
+      "label": "Declare Return Title",
+      "default": "Déclarer un retour"
+    },
+    {
+      "type": "text",
+      "id": "required_fields_text",
+      "label": "Required Fields Text",
+      "default": "*Champs obligatoires"
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email Field Label",
+      "default": "E-mail"
+    },
+    {
+      "type": "text",
+      "id": "order_number_label",
+      "label": "Order Number Field Label",
+      "default": "*N° de commande"
+    },
+    {
+      "type": "text",
+      "id": "declare_button_text",
+      "label": "Declare Button Text",
+      "default": "Déclarer un retour"
+    },
+    {
+      "type": "color",
+      "id": "form_title_color",
+      "label": "Form Title Color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "form_text_color",
+      "label": "Form Text Color",
+      "default": "#4c4d4d"
+    },
+    {
+      "type": "header",
+      "content": "Track Return Form"
+    },
+    {
+      "type": "text",
+      "id": "track_title",
+      "label": "Track Return Title",
+      "default": "Suivre un retour"
+    },
+    {
+      "type": "text",
+      "id": "track_button_text",
+      "label": "Track Button Text",
+      "default": "Trouver mon retour"
+    },
+    {
+      "type": "header",
+      "content": "Form Messages"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success Message",
+      "default": "Votre demande de retour a été envoyée avec succès. Nous vous contacterons bientôt."
+    },
+    {
+      "type": "text",
+      "id": "track_success_message",
+      "label": "Track Success Message",
+      "default": "Votre demande de suivi a été envoyée. Nous vous contacterons avec les détails de votre retour."
+    },
+    {
+      "type": "text",
+      "id": "error_message",
+      "label": "Error Message",
+      "default": "Une erreur s'est produite. Veuillez réessayer ou nous contacter directement."
+    },
+    {
+      "type": "header",
+      "content": "Form Fields Styling"
+    },
+    {
+      "type": "color",
+      "id": "input_focus_color",
+      "label": "Input Focus Color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Button Styling"
+    },
+    {
+      "type": "range",
+      "id": "button_padding",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Button Padding",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Button Font Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Button Border Radius",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Primary Button Background",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Primary Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg_color",
+      "label": "Primary Button Hover Background",
+      "default": "#555555"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Primary Button Hover Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "white_button_bg_color",
+      "label": "Secondary Button Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "white_button_text_color",
+      "label": "Secondary Button Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "white_button_border_color",
+      "label": "Secondary Button Border Color",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "color",
+      "id": "white_button_hover_bg_color",
+      "label": "Secondary Button Hover Background",
+      "default":  "white_button_hover_bg_color",
+      "label": "Secondary Button Hover Background",
+      "default": "#f9f9f9"
+    },
+    {
+      "type": "color",
+      "id": "white_button_hover_text_color",
+      "label": "Secondary Button Hover Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Return Instructions"
+    },
+    {
+      "type": "text",
+      "id": "instructions_title",
+      "label": "Instructions Title",
+      "default": "Comment retourner vos produits?"
+    },
+    {
+      "type": "richtext",
+      "id": "step_1_text",
+      "label": "Step 1 Text",
+      "default": "<p>Complétez le formulaire de retour ci-dessus ou directement dans votre compte client (rubrique \"Commandes\") à vous en avez un. Vous recevrez ainsi votre étiquette de retour.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "step_2_text",
+      "label": "Step 2 Text",
+      "default": "<p>Emballez le(s) produit(s) : vous pouvez réutiliser la boîte Dior fournie à cet effet. Si vous retournez l'intégralité de la commande, la boîte Dior doit également être retournée.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "step_3_text",
+      "label": "Step 3 Text",
+      "default": "<p>Imprimez l'étiquette de retour et collez-la sur le colis, puis déposez-le à votre point de collecte le plus proche. Nous vous recommandons de conserver tous les justificatifs d'envoi, tels que le numéro de suivi et la preuve de dépôt, pour votre retour.</p>"
+    },
+    {
+      "type": "text",
+      "id": "collection_points_button_text",
+      "label": "Collection Points Button Text",
+      "default": "Voir les points de collecte disponibles"
+    },
+    {
+      "type": "text",
+      "id": "collection_points_url",
+      "label": "Collection Points URL",
+      "default": "#"
+    },
+    {
+      "type": "header",
+      "content": "Return Policy Details"
+    },
+    {
+      "type": "richtext",
+      "id": "return_policy_details",
+      "label": "Return Policy Details",
+      "default": "<p>Dior prend en charge les frais de retour. Cependant, les frais de livraison initiaux ne sont remboursés que si la commande complète est retournée.</p><p>Tous les produits doivent être retournés dans leur emballage d'origine, non ouverts, en parfait état, et complets (accessoires, sacs, pochettes, instructions, garantie, etc.)</p><p>En cas de retour de produits ayant fait l'objet d'une offre promotionnelle incluant un ou plusieurs cadeaux tels que échantillons, pochettes et coffrets cadeaux, tous les articles doivent être retournés par le client à PCD. Si l'un d'entre eux n'est pas envoyé, nous ne pourrons pas accepter le retour et votre remboursement sera bloqué.</p><p>Les produits personnalisés ou gravés ne peuvent faire l'objet d'un remboursement, à l'exception des produits endommagés.</p><p>Pour plus de détails, veuillez consulter notre FAQ.</p>"
+    },
+    {
+      "type": "color",
+      "id": "policy_details_color",
+      "label": "Policy Details Text Color",
+      "default": "#4c4d4d"
+    },
+    {
+      "type": "text",
+      "id": "faq_button_text",
+      "label": "FAQ Button Text",
+      "default": "View our FAQs"
+    },
+    {
+      "type": "text",
+      "id": "faq_url",
+      "label": "FAQ Page URL",
+      "default": "#"
+    },
+    {
+      "type": "header",
+      "content": "Help Section"
+    },
+    {
+      "type": "text",
+      "id": "need_help_text",
+      "label": "Need Help Text",
+      "default": "Besoin d'aide ? Contactez-nous par message."
+    },
+    {
+      "type": "text",
+      "id": "customer_support_text",
+      "label": "Customer Support Text",
+      "default": "Un ambassadeur Dior est disponible pour répondre à vos questions par message ou chat, à votre convenance, pendant la journée."
+    },
+    {
+      "type": "text",
+      "id": "chat_button_text",
+      "label": "Chat Button Text",
+      "default": "Démarrer une conversation"
+    },
+    {
+      "type": "text",
+      "id": "chat_url",
+      "label": "Chat URL",
+      "default": "#"
+    },
+    {
+      "type": "color",
+      "id": "instructions_text_color",
+      "label": "Instructions Text Color",
+      "default": "#4c4d4d"
+    },
+    {
+      "type": "color",
+      "id": "instructions_title_color",
+      "label": "Instructions Title Color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Section Padding",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Return"
+    }
+  ]
+}
+{% endschema %}

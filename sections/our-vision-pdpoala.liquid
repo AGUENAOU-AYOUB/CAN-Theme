@@ -1,0 +1,153 @@
+{% schema %}
+{
+  "name": "Our Vision Section",
+  "tag": "section",
+  "class": "section-our-vision",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_heading",
+      "label": "Heading",
+      "default": "OUR VISION"
+    },
+    {
+      "type": "image_picker",
+      "id": "vision_image",
+      "label": "Image between Heading and Text"
+    },
+    {
+      "type": "textarea",
+      "id": "section_text",
+      "label": "Description",
+      "default": "Our vision goes beyond the tangible. At PDPAOLA, we believe in a new luxury that’s built on honesty, inclusivity, and creative integrity. A vision where jewelry becomes a second skin — an element of personal expression that enhances the beauty of who we are and what we represent."
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading Font Size (px)",
+      "min": 14,
+      "max": 48,
+      "step": 1,
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "body_font_size",
+      "label": "Body Font Size (px)",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content Block Position",
+      "default": "right",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Content Max Width (px)",
+      "min": 600,
+      "max": 1400,
+      "step": 50,
+      "default": 800
+    }
+  ],
+  "presets": [
+    {
+      "name": "Our Vision Section",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+
+{% style %}
+  .section-our-vision {
+    display: flex;
+    justify-content:
+      {% if section.settings.content_alignment == 'left' %}
+        flex-start;
+      {% elsif section.settings.content_alignment == 'center' %}
+        center;
+      {% elsif section.settings.content_alignment == 'right' %}
+        flex-end;
+      {% endif %};
+    padding: 60px 20px;
+    width: 100%;
+    background-color: #ffffff;
+  }
+
+  .section-our-vision .vision-container {
+    max-width: {{ section.settings.max_width }}px;
+    width: 100%;
+    text-align: {{ section.settings.text_alignment }};
+    color: {{ section.settings.text_color }};
+  }
+
+  .section-our-vision .vision-heading {
+    font-size: {{ section.settings.heading_font_size }}px;
+    font-weight: bold;
+    color: {{ section.settings.heading_color }};
+    margin-bottom: 20px;
+    letter-spacing: 0.05em;
+  }
+
+  .section-our-vision .vision-image {
+    margin: 20px 0;
+  }
+
+  .section-our-vision .vision-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .section-our-vision .vision-text {
+    font-size: {{ section.settings.body_font_size }}px;
+    white-space: pre-line;
+    line-height: 1.7;
+  }
+{% endstyle %}
+
+<div class="vision-container">
+  <div class="vision-heading">{{ section.settings.section_heading }}</div>
+
+  {% if section.settings.vision_image != blank %}
+    <div class="vision-image">
+      <img src="{{ section.settings.vision_image | img_url: 'master' }}" alt="Vision Image">
+    </div>
+  {% endif %}
+
+  <div class="vision-text">{{ section.settings.section_text }}</div>
+</div>

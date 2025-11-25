@@ -1,0 +1,1116 @@
+<div class="missoma-services-section" style="background-color: {{ section.settings.background_color }};">
+  <div
+    class="missoma-services-container {% if section.settings.enable_carousel %}missoma-carousel{% endif %}"
+    data-carousel="{{ section.settings.enable_carousel }}"
+    data-autoplay="{{ section.settings.enable_autoplay }}"
+    data-autoplay-speed="{{ section.settings.autoplay_speed | times: 1000 }}"
+  >
+    <div class="missoma-services-wrapper">
+      {% for block in section.blocks %}
+        <div
+          class="missoma-service-column {% if section.settings.enable_carousel %}missoma-slide{% endif %}"
+          {{ block.shopify_attributes }}
+          style="{% if section.settings.enable_carousel %}margin-right: {{ section.settings.slide_spacing }}px;{% endif %}"
+        >
+          {% if block.settings.image != blank %}
+            <div class="missoma-service-image-container" style="height: {{ section.settings.image_height }}px;">
+              {% if block.settings.banner_text != blank and section.settings.show_badges %}
+                <div
+                  class="missoma-service-banner"
+                  style="
+                    background-color: {{ section.settings.badge_background_color }};
+                    color: {{ section.settings.badge_text_color }};
+                    font-size: {{ section.settings.badge_font_size }}px;
+                  "
+                >
+                  {{ block.settings.banner_text }}
+                </div>
+              {% endif %}
+              <img
+                src="{{ block.settings.image | img_url: 'master' }}"
+                alt="{{ block.settings.heading }}"
+                class="missoma-service-image"
+                loading="lazy"
+                style="object-fit: {{ section.settings.image_fit }};"
+              >
+            </div>
+          {% endif %}
+
+          <h2
+            class="missoma-service-heading"
+            style="
+              font-size: {{ section.settings.heading_font_size }}px;
+              color: {{ section.settings.heading_color }};
+              margin-bottom: {{ section.settings.heading_margin }}px;
+            "
+          >
+            {{ block.settings.heading }}
+          </h2>
+
+          <a
+            href="{{ block.settings.link }}"
+            class="missoma-service-link"
+            style="
+              font-size: {{ section.settings.link_font_size }}px;
+              color: {{ section.settings.link_color }};
+            "
+          >
+            {{ block.settings.link_text }}
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if section.settings.enable_carousel %}
+      {% if section.settings.show_arrows %}
+        <button class="missoma-carousel-arrow missoma-carousel-prev" aria-label="Previous slide">
+          <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 1L1 7L7 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="missoma-carousel-arrow missoma-carousel-next" aria-label="Next slide">
+          <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 1L7 7L1 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      {% endif %}
+
+      {% if section.settings.show_dots %}
+        <div class="missoma-carousel-dots">
+          {% for block in section.blocks %}
+            <button
+              class="missoma-carousel-dot"
+              data-index="{{ forloop.index0 }}"
+              aria-label="Go to slide {{ forloop.index }}"
+            ></button>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  .missoma-services-section {
+    width: 100%;
+    padding: {{ section.settings.section_padding_vertical }}px {{ section.settings.section_padding_horizontal }}px;
+    background-color: {{ section.settings.background_color }};
+  }
+
+  .missoma-services-container {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .missoma-services-wrapper {
+    display: flex;
+    {% unless section.settings.enable_carousel %}
+    gap: {{ section.settings.column_gap }}px;
+    {% endunless %}
+    {% if section.settings.enable_carousel %}
+    overflow: hidden;
+    {% endif %}
+  }
+
+  .missoma-service-column {
+    {% unless section.settings.enable_carousel %}
+    flex: 1;
+    min-width: 0;
+    {% endunless %}
+    {% if section.settings.enable_carousel %}
+    flex: 0 0 {{ section.settings.slides_per_view_percentage }}%;
+    {% endif %}
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .missoma-service-image-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: {{ section.settings.image_margin }}px;
+    overflow: hidden;
+  }
+
+  .missoma-service-image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    transition: transform {{ section.settings.hover_transition_duration }}s ease;
+  }
+
+  {% if section.settings.enable_image_hover %}
+  .missoma-service-column:hover .missoma-service-image {
+    transform: scale({{ section.settings.image_hover_scale }});
+  }
+  {% endif %}
+
+  .missoma-service-banner {
+    position: absolute;
+    top: {{ section.settings.badge_top_position }}px;
+    left: {{ section.settings.badge_left_position }}px;
+    background-color: {{ section.settings.badge_background_color }};
+    color: {{ section.settings.badge_text_color }};
+    font-family: {{ section.settings.font_family }};
+    font-size: {{ section.settings.badge_font_size }}px;
+    font-weight: {{ section.settings.badge_font_weight }};
+    padding: {{ section.settings.badge_padding_vertical }}px {{ section.settings.badge_padding_horizontal }}px;
+    z-index: 1;
+  }
+
+  .missoma-service-heading {
+    font-family: {{ section.settings.font_family }};
+    font-size: {{ section.settings.heading_font_size }}px;
+    font-weight: {{ section.settings.heading_font_weight }};
+    color: {{ section.settings.heading_color }};
+    text-transform: {{ section.settings.heading_text_transform }};
+    margin: 0 0 {{ section.settings.heading_margin }}px 0;
+    letter-spacing: {{ section.settings.heading_letter_spacing }}px;
+  }
+
+  .missoma-service-link {
+    font-family: {{ section.settings.font_family }};
+    font-size: {{ section.settings.link_font_size }}px;
+    font-weight: {{ section.settings.link_font_weight }};
+    color: {{ section.settings.link_color }};
+    text-decoration: none;
+    position: relative;
+    transition: color {{ section.settings.hover_transition_duration }}s ease;
+  }
+
+  {% if section.settings.enable_link_hover %}
+  .missoma-service-link:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: {{ section.settings.link_color }};
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform {{ section.settings.hover_transition_duration }}s ease;
+  }
+
+  .missoma-service-link:hover {
+    color: {{ section.settings.link_hover_color }};
+  }
+
+  .missoma-service-link:hover:after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+    background-color: {{ section.settings.link_hover_color }};
+  }
+  {% endif %}
+
+  /* Carousel Styles */
+  .missoma-carousel {
+    position: relative;
+  }
+
+  .missoma-slide {
+    transition: transform 0.5s ease;
+  }
+
+  .missoma-carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: {{ section.settings.arrow_size }}px;
+    height: {{ section.settings.arrow_size }}px;
+    border-radius: 50%;
+    background-color: {{ section.settings.arrow_background_color }};
+    color: {{ section.settings.arrow_color }};
+    border: 1px solid {{ section.settings.arrow_border_color }};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    transition: all 0.3s ease;
+  }
+
+  .missoma-carousel-arrow:hover {
+    background-color: {{ section.settings.arrow_hover_background_color }};
+    color: {{ section.settings.arrow_hover_color }};
+  }
+
+  .missoma-carousel-prev {
+    left: {{ section.settings.arrow_offset }}px;
+  }
+
+  .missoma-carousel-next {
+    right: {{ section.settings.arrow_offset }}px;
+  }
+
+  .missoma-carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: {{ section.settings.dot_spacing }}px;
+    margin-top: {{ section.settings.dots_margin_top }}px;
+  }
+
+  .missoma-carousel-dot {
+    width: {{ section.settings.dot_size }}px;
+    height: {{ section.settings.dot_size }}px;
+    border-radius: 50%;
+    background-color: {{ section.settings.dot_color }};
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: all 0.3s ease;
+  }
+
+  .missoma-carousel-dot:hover {
+    opacity: 0.7;
+  }
+
+  .missoma-carousel-dot.active {
+    opacity: 1;
+    background-color: {{ section.settings.dot_active_color }};
+  }
+
+  /* Responsive styles */
+  @media screen and (max-width: 767px) {
+    .missoma-services-wrapper {
+      {% unless section.settings.enable_carousel %}
+      flex-direction: column;
+      {% endunless %}
+    }
+
+    {% unless section.settings.enable_carousel %}
+    .missoma-service-column {
+      width: 100%;
+      margin-bottom: {{ section.settings.mobile_column_margin }}px;
+    }
+
+    .missoma-service-column:last-child {
+      margin-bottom: 0;
+    }
+    {% endunless %}
+
+    {% if section.settings.enable_carousel %}
+    .missoma-service-column {
+      flex: 0 0 {{ section.settings.mobile_slides_per_view_percentage }}%;
+    }
+    {% endif %}
+
+    .missoma-service-heading {
+      font-size: {{ section.settings.mobile_heading_font_size }}px;
+    }
+
+    .missoma-service-link {
+      font-size: {{ section.settings.mobile_link_font_size }}px;
+    }
+
+    .missoma-service-banner {
+      font-size: {{ section.settings.mobile_badge_font_size }}px;
+      padding: {{ section.settings.mobile_badge_padding_vertical }}px {{ section.settings.mobile_badge_padding_horizontal }}px;
+    }
+
+    .missoma-carousel-arrow {
+      width: {{ section.settings.mobile_arrow_size }}px;
+      height: {{ section.settings.mobile_arrow_size }}px;
+    }
+
+    .missoma-carousel-dot {
+      width: {{ section.settings.mobile_dot_size }}px;
+      height: {{ section.settings.mobile_dot_size }}px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const carouselContainers = document.querySelectorAll('.missoma-carousel');
+    
+    carouselContainers.forEach(container => {
+      if (container.getAttribute('data-carousel') === 'true') {
+        initCarousel(container);
+      }
+    });
+    
+    function initCarousel(container) {
+      const wrapper = container.querySelector('.missoma-services-wrapper');
+      const slides = container.querySelectorAll('.missoma-slide');
+      const prevButton = container.querySelector('.missoma-carousel-prev');
+      const nextButton = container.querySelector('.missoma-carousel-next');
+      const dots = container.querySelectorAll('.missoma-carousel-dot');
+      
+      let currentIndex = 0;
+      let slideWidth = slides[0].offsetWidth + parseInt(slides[0].style.marginRight || 0);
+      let autoplayInterval;
+      
+      // Initialize dots
+      if (dots.length > 0) {
+        dots[0].classList.add('active');
+      }
+      
+      // Set up autoplay
+      const autoplay = container.getAttribute('data-autoplay') === 'true';
+      const autoplaySpeed = parseInt(container.getAttribute('data-autoplay-speed')) || 5000;
+      
+      if (autoplay) {
+        startAutoplay();
+      }
+      
+      function startAutoplay() {
+        autoplayInterval = setInterval(() => {
+          goToSlide((currentIndex + 1) % slides.length);
+        }, autoplaySpeed);
+      }
+      
+      function stopAutoplay() {
+        clearInterval(autoplayInterval);
+      }
+      
+      // Navigation functions
+      function goToSlide(index) {
+        if (index < 0) {
+          index = slides.length - 1;
+        } else if (index >= slides.length) {
+          index = 0;
+        }
+        
+        currentIndex = index;
+        const offset = -currentIndex * slideWidth;
+        wrapper.style.transform = `translateX(${offset}px)`;
+        
+        // Update dots
+        dots.forEach(dot => dot.classList.remove('active'));
+        if (dots[currentIndex]) {
+          dots[currentIndex].classList.add('active');
+        }
+      }
+      
+      // Event listeners
+      if (prevButton) {
+        prevButton.addEventListener('click', () => {
+          if (autoplay) stopAutoplay();
+          goToSlide(currentIndex - 1);
+          if (autoplay) startAutoplay();
+        });
+      }
+      
+      if (nextButton) {
+        nextButton.addEventListener('click', () => {
+          if (autoplay) stopAutoplay();
+          goToSlide(currentIndex + 1);
+          if (autoplay) startAutoplay();
+        });
+      }
+      
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+          if (autoplay) stopAutoplay();
+          goToSlide(index);
+          if (autoplay) startAutoplay();
+        });
+      });
+      
+      // Handle window resize
+      window.addEventListener('resize', () => {
+        slideWidth = slides[0].offsetWidth + parseInt(slides[0].style.marginRight || 0);
+        goToSlide(currentIndex);
+      });
+      
+      // Touch events for mobile swipe
+      let touchStartX = 0;
+      let touchEndX = 0;
+      
+      wrapper.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+        if (autoplay) stopAutoplay();
+      }, { passive: true });
+      
+      wrapper.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+        if (autoplay) startAutoplay();
+      }, { passive: true });
+      
+      function handleSwipe() {
+        const swipeThreshold = 50;
+        if (touchEndX < touchStartX - swipeThreshold) {
+          // Swipe left
+          goToSlide(currentIndex + 1);
+        } else if (touchEndX > touchStartX + swipeThreshold) {
+          // Swipe right
+          goToSlide(currentIndex - 1);
+        }
+      }
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Missoma Services",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 800,
+      "max": 1600,
+      "step": 10,
+      "label": "Max Width",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "section_padding_vertical",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "label": "Section Vertical Padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_horizontal",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "label": "Section Horizontal Padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "label": "Gap Between Columns",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "mobile_column_margin",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "label": "Mobile Column Bottom Margin",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "font_family",
+      "label": "Font Family",
+      "default": "'Helvetica Neue', Helvetica, Arial, sans-serif"
+    },
+    {
+      "type": "header",
+      "content": "Image Settings"
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "min": 100,
+      "max": 600,
+      "step": 10,
+      "label": "Image Height",
+      "default": 300
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image Fit",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover"
+        },
+        {
+          "value": "contain",
+          "label": "Contain"
+        },
+        {
+          "value": "fill",
+          "label": "Fill"
+        }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "range",
+      "id": "image_margin",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "label": "Image Bottom Margin",
+      "default": 20
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_image_hover",
+      "label": "Enable Image Hover Effect",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "image_hover_scale",
+      "min": 1,
+      "max": 1.5,
+      "step": 0.1,
+      "label": "Image Hover Scale",
+      "default": 1.1
+    },
+    {
+      "type": "header",
+      "content": "Badge Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badges",
+      "label": "Show Badges",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "badge_top_position",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "label": "Badge Top Position",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "badge_left_position",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "label": "Badge Left Position",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "badge_font_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "label": "Badge Font Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "mobile_badge_font_size",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "label": "Mobile Badge Font Size",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "badge_font_weight",
+      "label": "Badge Font Weight",
+      "options": [
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-Bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "badge_padding_vertical",
+      "min": 2,
+      "max": 20,
+      "step": 1,
+      "label": "Badge Vertical Padding",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "badge_padding_horizontal",
+      "min": 5,
+      "max": 30,
+      "step": 1,
+      "label": "Badge Horizontal Padding",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "mobile_badge_padding_vertical",
+      "min": 2,
+      "max": 15,
+      "step": 1,
+      "label": "Mobile Badge Vertical Padding",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "mobile_badge_padding_horizontal",
+      "min": 5,
+      "max": 25,
+      "step": 1,
+      "label": "Mobile Badge Horizontal Padding",
+      "default": 10
+    },
+    {
+      "type": "color",
+      "id": "badge_background_color",
+      "label": "Badge Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Badge Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Heading Settings"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "min": 16,
+      "max": 60,
+      "step": 1,
+      "label": "Heading Font Size",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_font_size",
+      "min": 14,
+      "max": 40,
+      "step": 1,
+      "label": "Mobile Heading Font Size",
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight",
+      "label": "Heading Font Weight",
+      "options": [
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-Bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "select",
+      "id": "heading_text_transform",
+      "label": "Heading Text Transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "lowercase",
+          "label": "Lowercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "range",
+      "id": "heading_letter_spacing",
+      "min": 0,
+      "max": 10,
+      "step": 0.1,
+      "label": "Heading Letter Spacing (px)",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "heading_margin",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "label": "Heading Bottom Margin",
+      "default": 15
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Link Settings"
+    },
+    {
+      "type": "range",
+      "id": "link_font_size",
+      "min": 12,
+      "max": 30,
+      "step": 1,
+      "label": "Link Font Size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "mobile_link_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "label": "Mobile Link Font Size",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "link_font_weight",
+      "label": "Link Font Weight",
+      "options": [
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-Bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_link_hover",
+      "label": "Enable Link Hover Effect",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Link Hover Color",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Carousel Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_carousel",
+      "label": "Enable Carousel",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_percentage",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "label": "Slides Width (%)",
+      "default": 35
+    },
+    {
+      "type": "range",
+      "id": "mobile_slides_per_view_percentage",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "label": "Mobile Slides Width (%)",
+      "default": 85
+    },
+    {
+      "type": "range",
+      "id": "slide_spacing",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "label": "Space Between Slides",
+      "default": 20
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "Enable Autoplay",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "label": "Autoplay Speed (seconds)",
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Carousel Navigation"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show Navigation Arrows",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "arrow_size",
+      "min": 30,
+      "max": 60,
+      "step": 5,
+      "label": "Arrow Size",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_arrow_size",
+      "min": 20,
+      "max": 50,
+      "step": 5,
+      "label": "Mobile Arrow Size",
+      "default": 35
+    },
+    {
+      "type": "range",
+      "id": "arrow_offset",
+      "min": -50,
+      "max": 50,
+      "step": 5,
+      "label": "Arrow Offset",
+      "default": -20
+    },
+    {
+      "type": "color",
+      "id": "arrow_background_color",
+      "label": "Arrow Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "arrow_color",
+      "label": "Arrow Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "arrow_border_color",
+      "label": "Arrow Border Color",
+      "default": "#e5e5e5"
+    },
+    {
+      "type": "color",
+      "id": "arrow_hover_background_color",
+      "label": "Arrow Hover Background Color",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "arrow_hover_color",
+      "label": "Arrow Hover Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Carousel Dots"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show Dots Navigation",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "dots_margin_top",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "label": "Dots Top Margin",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "dot_size",
+      "min": 6,
+      "max": 16,
+      "step": 1,
+      "label": "Dot Size",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "mobile_dot_size",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "label": "Mobile Dot Size",
+      "default": 6
+    },
+    {
+      "type": "range",
+      "id": "dot_spacing",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "label": "Space Between Dots",
+      "default": 8
+    },
+    {
+      "type": "color",
+      "id": "dot_color",
+      "label": "Dot Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "dot_active_color",
+      "label": "Active Dot Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Animation Settings"
+    },
+    {
+      "type": "range",
+      "id": "hover_transition_duration",
+      "min": 0.1,
+      "max": 1,
+      "step": 0.1,
+      "label": "Hover Transition Duration (seconds)",
+      "default": 0.3
+    }
+  ],
+  "blocks": [
+    {
+      "type": "service",
+      "name": "Service",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "banner_text",
+          "label": "Banner Text",
+          "info": "Leave empty to hide banner"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Service Heading"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link Text",
+          "default": "Learn More"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Missoma Services",
+      "blocks": [
+        {
+          "type": "service",
+          "settings": {
+            "heading": "OUR STORES",
+            "banner_text": "MARLOW NOW OPEN",
+            "link_text": "Plan Your Visit"
+          }
+        },
+        {
+          "type": "service",
+          "settings": {
+            "heading": "WELDING",
+            "link_text": "Book an Appointment"
+          }
+        },
+        {
+          "type": "service",
+          "settings": {
+            "heading": "PIERCING",
+            "link_text": "Book an Appointment"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

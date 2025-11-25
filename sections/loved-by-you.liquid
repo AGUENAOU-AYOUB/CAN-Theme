@@ -1,0 +1,792 @@
+<div class="loved-by-you-section">
+  <div class="loved-by-you-container">
+    <h2 class="loved-by-you-title">{{ section.settings.title }}</h2>
+
+    <div class="loved-by-you-slider">
+      <div class="loved-by-you-slider-wrapper">
+        {% for block in section.blocks %}
+          <div class="loved-by-you-item" {{ block.shopify_attributes }}>
+            <div class="loved-by-you-stars">
+              {% for i in (1..block.settings.rating) %}
+                <span class="loved-by-you-star">★</span>
+              {% endfor %}
+              {% assign empty_stars = 5 | minus: block.settings.rating %}
+              {% for i in (1..empty_stars) %}
+                <span class="loved-by-you-star empty">★</span>
+              {% endfor %}
+            </div>
+
+            <h3 class="loved-by-you-product-title">{{ block.settings.product_title }}</h3>
+
+            <div class="loved-by-you-review">
+              {{ block.settings.review_text }}
+            </div>
+
+            <div class="loved-by-you-reviewer">
+              {{ block.settings.reviewer_name }}
+            </div>
+
+            {% if block.settings.product_url != blank %}
+              <a href="{{ block.settings.product_url }}" class="loved-by-you-link">
+                {{ section.settings.shop_button_text }}
+              </a>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    {% if section.settings.show_navigation %}
+      <div class="loved-by-you-navigation">
+        <button class="loved-by-you-prev" aria-label="Previous review">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="loved-by-you-next" aria-label="Next review">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  .loved-by-you-section {
+    width: 100%;
+    padding: {{ section.settings.section_padding }}px 0;
+    background-color: {{ section.settings.background_color }};
+    overflow: hidden;
+  }
+
+  .loved-by-you-container {
+    max-width: {{ section.settings.container_width }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+  }
+
+  .loved-by-you-title {
+    font-family: {{ section.settings.heading_font }};
+    font-size: {{ section.settings.heading_size }}px;
+    font-weight: {{ section.settings.heading_weight }};
+    color: {{ section.settings.heading_color }};
+    text-align: left;
+    margin-bottom: 30px;
+    letter-spacing: {{ section.settings.heading_letter_spacing }}px;
+  }
+
+  .loved-by-you-slider {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .loved-by-you-slider-wrapper {
+    display: flex;
+    transition: transform 0.5s ease;
+    gap: {{ section.settings.item_gap }}px;
+  }
+
+  .loved-by-you-item {
+    flex: 0 0 calc(100% / {{ section.settings.items_per_row }} - ({{ section.settings.item_gap }}px * ({{ section.settings.items_per_row }} - 1) / {{ section.settings.items_per_row }}));
+    padding: {{ section.settings.item_padding }}px;
+    box-sizing: border-box;
+  }
+
+  .loved-by-you-stars {
+    margin-bottom: 15px;
+  }
+
+  .loved-by-you-star {
+    color: {{ section.settings.star_color }};
+    font-size: {{ section.settings.star_size }}px;
+    margin-right: 2px;
+  }
+
+  .loved-by-you-star.empty {
+    opacity: 0.3;
+  }
+
+  .loved-by-you-product-title {
+    font-family: {{ section.settings.product_title_font }};
+    font-size: {{ section.settings.product_title_size }}px;
+    font-weight: {{ section.settings.product_title_weight }};
+    color: {{ section.settings.product_title_color }};
+    margin-bottom: 15px;
+    line-height: 1.2;
+  }
+
+  .loved-by-you-review {
+    font-family: {{ section.settings.review_font }};
+    font-size: {{ section.settings.review_size }}px;
+    font-weight: {{ section.settings.review_weight }};
+    color: {{ section.settings.review_color }};
+    line-height: 1.5;
+    margin-bottom: 15px;
+  }
+
+  .loved-by-you-reviewer {
+    font-family: {{ section.settings.reviewer_font }};
+    font-size: {{ section.settings.reviewer_size }}px;
+    font-weight: {{ section.settings.reviewer_weight }};
+    color: {{ section.settings.reviewer_color }};
+    margin-top: 20px;
+  }
+
+  .loved-by-you-link {
+    display: inline-block;
+    margin-top: 15px;
+    font-family: {{ section.settings.button_font }};
+    font-size: {{ section.settings.button_font_size }}px;
+    font-weight: {{ section.settings.button_font_weight }};
+    color: {{ section.settings.button_text_color }};
+    text-decoration: underline;
+  }
+
+  .loved-by-you-navigation {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    gap: 10px;
+  }
+
+  .loved-by-you-prev,
+  .loved-by-you-next {
+    width: 40px;
+    height: 40px;
+    border: 1px solid {{ section.settings.nav_border_color }};
+    background-color: {{ section.settings.nav_background_color }};
+    color: {{ section.settings.nav_color }};
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .loved-by-you-prev:hover,
+  .loved-by-you-next:hover {
+    background-color: {{ section.settings.nav_hover_background_color }};
+    color: {{ section.settings.nav_hover_color }};
+  }
+
+  @media screen and (max-width: 767px) {
+    .loved-by-you-title {
+      font-size: {{ section.settings.mobile_heading_size }}px;
+    }
+
+    .loved-by-you-slider-wrapper {
+      gap: {{ section.settings.mobile_item_gap }}px;
+    }
+
+    .loved-by-you-item {
+      flex: 0 0 calc(100% / {{ section.settings.mobile_items_per_row }} - ({{ section.settings.mobile_item_gap }}px * ({{ section.settings.mobile_items_per_row }} - 1) / {{ section.settings.mobile_items_per_row }}));
+      padding: {{ section.settings.mobile_item_padding }}px;
+    }
+
+    .loved-by-you-product-title {
+      font-size: {{ section.settings.mobile_product_title_size }}px;
+    }
+
+    .loved-by-you-review {
+      font-size: {{ section.settings.mobile_review_size }}px;
+    }
+
+    .loved-by-you-reviewer {
+      font-size: {{ section.settings.mobile_reviewer_size }}px;
+    }
+
+    .loved-by-you-star {
+      font-size: {{ section.settings.mobile_star_size }}px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const sliderWrapper = document.querySelector('.loved-by-you-slider-wrapper');
+    const prevButton = document.querySelector('.loved-by-you-prev');
+    const nextButton = document.querySelector('.loved-by-you-next');
+    const items = document.querySelectorAll('.loved-by-you-item');
+    
+    if (!sliderWrapper || items.length === 0) return;
+    
+    let currentIndex = 0;
+    const itemsPerRow = window.innerWidth <= 767 ? 
+      {{ section.settings.mobile_items_per_row }} : 
+      {{ section.settings.items_per_row }};
+    
+    const totalSlides = Math.ceil(items.length / itemsPerRow);
+    
+    function updateSlider() {
+      const itemWidth = items[0].offsetWidth;
+      const gap = window.innerWidth <= 767 ? 
+        {{ section.settings.mobile_item_gap }} : 
+        {{ section.settings.item_gap }};
+      
+      const offset = currentIndex * (itemWidth + gap);
+      sliderWrapper.style.transform = `translateX(-${offset}px)`;
+    }
+    
+    function goToSlide(index) {
+      currentIndex = Math.max(0, Math.min(index, totalSlides - 1));
+      updateSlider();
+    }
+    
+    if (prevButton) {
+      prevButton.addEventListener('click', function() {
+        goToSlide(currentIndex - 1);
+      });
+    }
+    
+    if (nextButton) {
+      nextButton.addEventListener('click', function() {
+        goToSlide(currentIndex + 1);
+      });
+    }
+    
+    // Handle window resize
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function() {
+        updateSlider();
+      }, 250);
+    });
+    
+    // Initialize slider
+    updateSlider();
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Loved By You",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "LOVED BY YOU"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "label": "Section Padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "min": 800,
+      "max": 1600,
+      "step": 50,
+      "label": "Container Width",
+      "default": 1200
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "range",
+      "id": "items_per_row",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Items Per Row",
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "mobile_items_per_row",
+      "label": "Mobile Items Per Row",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 Item"
+        },
+        {
+          "value": "2",
+          "label": "2 Items"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "range",
+      "id": "item_gap",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "label": "Gap Between Items",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "mobile_item_gap",
+      "min": 10,
+      "max": 40,
+      "step": 5,
+      "label": "Mobile Gap Between Items",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "item_padding",
+      "min": 0,
+      "max": 40,
+      "step": 5,
+      "label": "Item Padding",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mobile_item_padding",
+      "min": 0,
+      "max": 30,
+      "step": 5,
+      "label": "Mobile Item Padding",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation",
+      "label": "Show Navigation Arrows",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Heading Typography"
+    },
+    {
+      "type": "text",
+      "id": "heading_font",
+      "label": "Heading Font",
+      "default": "sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 16,
+      "max": 48,
+      "step": 1,
+      "label": "Heading Size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_size",
+      "min": 14,
+      "max": 36,
+      "step": 1,
+      "label": "Mobile Heading Size",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-Bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "heading_letter_spacing",
+      "min": 0,
+      "max": 5,
+      "step": 0.1,
+      "label": "Heading Letter Spacing",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Star Rating"
+    },
+    {
+      "type": "range",
+      "id": "star_size",
+      "min": 12,
+      "max": 30,
+      "step": 1,
+      "label": "Star Size",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "mobile_star_size",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "label": "Mobile Star Size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star Color",
+      "default": "#9a8e63"
+    },
+    {
+      "type": "header",
+      "content": "Product Title Typography"
+    },
+    {
+      "type": "text",
+      "id": "product_title_font",
+      "label": "Product Title Font",
+      "default": "sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "product_title_size",
+      "min": 14,
+      "max": 32,
+      "step": 1,
+      "label": "Product Title Size",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "mobile_product_title_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "label": "Mobile Product Title Size",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "product_title_weight",
+      "label": "Product Title Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-Bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "color",
+      "id": "product_title_color",
+      "label": "Product Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Review Text Typography"
+    },
+    {
+      "type": "text",
+      "id": "review_font",
+      "label": "Review Font",
+      "default": "sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "review_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "label": "Review Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "mobile_review_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "label": "Mobile Review Size",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "review_weight",
+      "label": "Review Weight",
+      "options": [
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "color",
+      "id": "review_color",
+      "label": "Review Color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Reviewer Name Typography"
+    },
+    {
+      "type": "text",
+      "id": "reviewer_font",
+      "label": "Reviewer Font",
+      "default": "sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "reviewer_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "label": "Reviewer Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "mobile_reviewer_size",
+      "min": 12,
+      "max": 16,
+      "step": 1,
+      "label": "Mobile Reviewer Size",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "reviewer_weight",
+      "label": "Reviewer Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-Bold"
+        }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "color",
+      "id": "reviewer_color",
+      "label": "Reviewer Color",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "text",
+      "id": "shop_button_text",
+      "label": "Shop Button Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "text",
+      "id": "button_font",
+      "label": "Button Font",
+      "default": "sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "label": "Button Font Size",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "button_font_weight",
+      "label": "Button Font Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-Bold"
+        }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Navigation Settings"
+    },
+    {
+      "type": "color",
+      "id": "nav_background_color",
+      "label": "Navigation Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "nav_color",
+      "label": "Navigation Arrow Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "nav_border_color",
+      "label": "Navigation Border Color",
+      "default": "#e5e5e5"
+    },
+    {
+      "type": "color",
+      "id": "nav_hover_background_color",
+      "label": "Navigation Hover Background Color",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "nav_hover_color",
+      "label": "Navigation Hover Arrow Color",
+      "default": "#000000"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Star Rating",
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "product_title",
+          "label": "Product Title",
+          "default": "Product Name"
+        },
+        {
+          "type": "textarea",
+          "id": "review_text",
+          "label": "Review Text",
+          "default": "This is a great product. I love it and would recommend it to anyone looking for quality and style."
+        },
+        {
+          "type": "text",
+          "id": "reviewer_name",
+          "label": "Reviewer Name",
+          "default": "Customer Name"
+        },
+        {
+          "type": "url",
+          "id": "product_url",
+          "label": "Product URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Loved By You",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "product_title": "RIDGE HEART CHARM PENDANT NECKLACE",
+            "review_text": "This is the most beautiful pendant, both in design and quality. As it is from the Barbie movie, it sends a strong message of confidence and self empowerment. It gives me confidence and reminds me of my inner strength, and I wear it every day!",
+            "reviewer_name": "Shanice"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "product_title": "LUCY WILLIAMS MEDIUM ENGRAVABLE ROMAN ARC COIN NECKLACE",
+            "review_text": "Such a gorgeous piece. Perfect statement size and I love the chain as it's not too dainty for the pendant like a lot of other designers often are, and really helps to make the coin stand out with its rich gold tone. Love it",
+            "reviewer_name": "Dawn"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "product_title": "LUCY WILLIAMS CHUNKY MEDIUM ENTWINE HOOP EARRINGS",
+            "review_text": "I am surprised by the quality of the earrings - first Missoma earrings I treated myself to and I love wearing them. So beautiful! My next pair will be the smaller version. <3",
+            "reviewer_name": "Ivana"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,1419 @@
+{% comment %}
+  Enhanced Jennifer Fisher Inspired Product Page Section
+  Version: 4.0.0
+
+  This section recreates the Jennifer Fisher product page design
+  with extensive customization options, variant pricing, description tabs,
+  and improved mobile view.
+{% endcomment %}
+
+{% schema %}
+{
+  "name": "Jennifer Fisher Product",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "select",
+      "id": "desktop_layout",
+      "label": "Desktop Layout",
+      "options": [
+        {
+          "value": "image_left",
+          "label": "Image Left, Content Right"
+        },
+        {
+          "value": "image_right",
+          "label": "Image Right, Content Left"
+        }
+      ],
+      "default": "image_left"
+    },
+    {
+      "type": "header",
+      "content": "Product Information"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sku",
+      "label": "Show SKU",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "label": "Show product tags",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_status_label",
+      "label": "Show status label (New Arrival, etc.)",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "status_label",
+      "label": "Status Label Text",
+      "default": "New Arrival"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_shipping_status",
+      "label": "Show shipping status",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "shipping_status_text",
+      "label": "Shipping Status Text",
+      "default": "Ready to Ship"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font",
+      "label": "Heading Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "font_picker",
+      "id": "body_font",
+      "label": "Body Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "range",
+      "id": "product_title_size",
+      "min": 16,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "label": "Product Title Size",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "product_title_size_mobile",
+      "min": 14,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Product Title Size (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "price_size",
+      "min": 14,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Price Size",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "price_size_mobile",
+      "min": 14,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Price Size (Mobile)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "variant_title_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Variant Title Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_text_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Button Text Size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f2f2f2"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "price_color",
+      "label": "Price Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "variant_title_color",
+      "label": "Variant Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "variant_option_color",
+      "label": "Variant Option Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "variant_option_bg",
+      "label": "Variant Option Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "variant_selected_color",
+      "label": "Selected Variant Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "variant_selected_bg",
+      "label": "Selected Variant Background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Add to Cart Button Background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text",
+      "label": "Add to Cart Button Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "buy_now_bg",
+      "label": "Buy Now Button Background",
+      "default": "#4a4a4a"
+    },
+    {
+      "type": "color",
+      "id": "buy_now_color",
+      "label": "Buy Now Button Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "text",
+      "id": "add_to_cart_text",
+      "label": "Add to Cart Button Text",
+      "default": "ADD TO CART"
+    },
+    {
+      "type": "text",
+      "id": "sold_out_text",
+      "label": "Sold Out Button Text",
+      "default": "Sold out"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_buy_now",
+      "label": "Enable Buy Now Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "buy_now_text",
+      "label": "Buy Now Button Text",
+      "default": "Buy Now"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_wishlist",
+      "label": "Enable Wishlist Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "wishlist_text",
+      "label": "Wishlist Button Text",
+      "default": "Add to wishlist"
+    },
+    {
+      "type": "header",
+      "content": "Product Description Tabs"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_description_tabs",
+      "label": "Enable Description Tabs",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tab_overview",
+      "label": "Show Overview Tab",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tab_overview_title",
+      "label": "Overview Tab Title",
+      "default": "Overview"
+    },
+    {
+      "type": "richtext",
+      "id": "tab_overview_content",
+      "label": "Overview Tab Content (if empty, uses product description)",
+      "default": "<p></p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tab_details",
+      "label": "Show Details Tab",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tab_details_title",
+      "label": "Details Tab Title",
+      "default": "Details"
+    },
+    {
+      "type": "richtext",
+      "id": "tab_details_content",
+      "label": "Details Tab Content",
+      "default": "<p>Product details information will appear here.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tab_measurements",
+      "label": "Show Measurements Tab",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tab_measurements_title",
+      "label": "Measurements Tab Title",
+      "default": "Measurements"
+    },
+    {
+      "type": "richtext",
+      "id": "tab_measurements_content",
+      "label": "Measurements Tab Content",
+      "default": "<p>Product measurements information will appear here.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tab_shipping",
+      "label": "Show Shipping Tab",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tab_shipping_title",
+      "label": "Shipping Tab Title",
+      "default": "Shipping & Delivery"
+    },
+    {
+      "type": "richtext",
+      "id": "tab_shipping_content",
+      "label": "Shipping Tab Content",
+      "default": "<p>Shipping & delivery information will appear here.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tab_returns",
+      "label": "Show Returns Tab",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tab_returns_title",
+      "label": "Returns Tab Title",
+      "default": "Returns & Exchanges"
+    },
+    {
+      "type": "richtext",
+      "id": "tab_returns_content",
+      "label": "Returns Tab Content",
+      "default": "<p>Returns & exchanges information will appear here.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tab_care",
+      "label": "Show Care Tab",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tab_care_title",
+      "label": "Care Tab Title",
+      "default": "Jewelry Care"
+    },
+    {
+      "type": "richtext",
+      "id": "tab_care_content",
+      "label": "Care Tab Content",
+      "default": "<p>Jewelry care information will appear here.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tab_custom1",
+      "label": "Show Custom Tab 1",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "tab_custom1_title",
+      "label": "Custom Tab 1 Title",
+      "default": "Custom Tab 1"
+    },
+    {
+      "type": "richtext",
+      "id": "tab_custom1_content",
+      "label": "Custom Tab 1 Content",
+      "default": "<p>Custom tab content will appear here.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tab_custom2",
+      "label": "Show Custom Tab 2",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "tab_custom2_title",
+      "label": "Custom Tab 2 Title",
+      "default": "Custom Tab 2"
+    },
+    {
+      "type": "richtext",
+      "id": "tab_custom2_content",
+      "label": "Custom Tab 2 Content",
+      "default": "<p>Custom tab content will appear here.</p>"
+    },
+    {
+      "type": "color",
+      "id": "tab_text_color",
+      "label": "Tab Text Color",
+      "default": "#4a4a4a"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_color",
+      "label": "Active Tab Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "tab_content_color",
+      "label": "Tab Content Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "tab_font_size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Tab Font Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "tab_content_font_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Tab Content Font Size",
+      "default": 14
+    }
+  ],
+  "presets": [
+    {
+      "name": "Jennifer Fisher Product",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  /* Base Styles */
+  .jf-product-container {
+    display: flex;
+    flex-direction: column;
+    background-color: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    padding: 0;
+    margin: 0;
+    font-family: {{ section.settings.body_font.family }}, {{ section.settings.body_font.fallback_families }};
+    font-weight: {{ section.settings.body_font.weight }};
+    font-style: {{ section.settings.body_font.style }};
+  }
+
+  @media screen and (min-width: 768px) {
+    .jf-product-container {
+      flex-direction: {% if section.settings.desktop_layout == 'image_left' %}row{% else %}row-reverse{% endif %};
+    }
+  }
+
+  /* Gallery Styles */
+  .jf-product-gallery {
+    width: 100%;
+    padding: 0;
+  }
+
+  @media screen and (min-width: 768px) {
+    .jf-product-gallery {
+      width: 60%;
+    }
+  }
+
+  .jf-product-gallery img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Product Info Styles */
+  .jf-product-info {
+    width: 100%;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media screen and (min-width: 768px) {
+    .jf-product-info {
+      width: 40%;
+      padding: 3rem;
+    }
+  }
+
+  .jf-product-title {
+    font-family: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};
+    font-weight: {{ section.settings.heading_font.weight }};
+    font-style: {{ section.settings.heading_font.style }};
+    font-size: {{ section.settings.product_title_size_mobile }}px;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.2;
+  }
+
+  @media screen and (min-width: 768px) {
+    .jf-product-title {
+      font-size: {{ section.settings.product_title_size }}px;
+    }
+  }
+
+  .jf-product-price {
+    font-size: {{ section.settings.price_size_mobile }}px;
+    margin: 0 0 0.5rem 0;
+    color: {{ section.settings.price_color }};
+  }
+
+  @media screen and (min-width: 768px) {
+    .jf-product-price {
+      font-size: {{ section.settings.price_size }}px;
+    }
+  }
+
+  .jf-status-label {
+    font-size: 0.9rem;
+    margin: 0.5rem 0 1.5rem 0;
+  }
+
+  /* Variant Selector Styles */
+  .jf-variant-selector {
+    margin: 1.5rem 0;
+  }
+
+  .jf-variant-title {
+    font-size: {{ section.settings.variant_title_size }}px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.75rem;
+    color: {{ section.settings.variant_title_color }};
+  }
+
+  .jf-variant-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .jf-variant-option {
+    padding: 0.5rem 1rem;
+    border: 1px solid {{ section.settings.variant_option_color }};
+    background: {{ section.settings.variant_option_bg }};
+    color: {{ section.settings.variant_option_color }};
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+  }
+
+  .jf-variant-option.selected {
+    background-color: {{ section.settings.variant_selected_bg }};
+    color: {{ section.settings.variant_selected_color }};
+    border-color: {{ section.settings.variant_selected_bg }};
+  }
+
+  .jf-shipping-status {
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  /* Button Styles */
+  .jf-product-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .jf-add-to-cart, .jf-buy-now {
+    padding: 1rem 2rem;
+    font-size: {{ section.settings.button_text_size }}px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    text-align: center;
+    border: none;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Update the button styles to add a clean hover effect */
+  .jf-add-to-cart {
+    background-color: {{ section.settings.button_background }};
+    color: {{ section.settings.button_text }};
+    transition: all 0.3s ease;
+    border: 1px solid {{ section.settings.button_background }};
+  }
+
+  .jf-add-to-cart:hover {
+    background-color: transparent;
+    color: {{ section.settings.button_background }};
+    border: 1px solid {{ section.settings.button_background }};
+  }
+
+  /* Update the button effect for the ripple */
+  .jf-add-to-cart .button-effect {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba({{ section.settings.button_background | color_to_rgb }}, 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+  }
+
+  .jf-add-to-cart:active {
+    background-color: rgba({{ section.settings.button_background | color_to_rgb }}, 0.8);
+  }
+
+  /* Jennifer Fisher button effect */
+  .jf-add-to-cart .button-effect {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+  }
+
+  .jf-add-to-cart.clicked .button-effect {
+    animation: ripple 0.6s ease-out;
+  }
+
+  @keyframes ripple {
+    0% {
+      width: 0;
+      height: 0;
+      opacity: 0.5;
+    }
+    100% {
+      width: 300px;
+      height: 300px;
+      opacity: 0;
+    }
+  }
+
+  .jf-buy-now {
+    background-color: {{ section.settings.buy_now_bg }};
+    color: {{ section.settings.buy_now_color }};
+    transition: background-color 0.2s ease;
+  }
+
+  .jf-buy-now:hover {
+    background-color: rgba({{ section.settings.buy_now_bg | color_to_rgb }}, 0.9);
+  }
+
+  .jf-wishlist-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 0.5rem 0;
+    margin-top: 0.5rem;
+  }
+
+  .jf-wishlist-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Additional Info */
+  .jf-vendor {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .jf-sku {
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+    color: rgba({{ section.settings.text_color | color_to_rgb }}, 0.7);
+  }
+
+  .jf-tags {
+    margin-top: 2rem;
+    font-size: 0.8rem;
+  }
+
+  .jf-tags span {
+    display: inline-block;
+    margin-right: 0.5rem;
+    padding: 0.25rem 0.5rem;
+    background-color: rgba({{ section.settings.text_color | color_to_rgb }}, 0.1);
+  }
+
+  /* Description Tabs - New Layout */
+  .jf-description-tabs {
+    margin-top: 2rem;
+    border-top: 1px solid rgba({{ section.settings.text_color | color_to_rgb }}, 0.2);
+    padding-top: 1rem;
+    width: 100%;
+  }
+
+  /* Mobile layout - horizontal tabs on top */
+  .jf-tab-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .jf-tab-headers {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+
+  .jf-tab-headers::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+
+  .jf-tab-header {
+    padding: 0;
+    background: transparent;
+    border: none;
+    text-align: left;
+    font-size: {{ section.settings.tab_font_size }}px;
+    color: {{ section.settings.tab_text_color }};
+    cursor: pointer;
+    transition: color 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .jf-tab-header.active {
+    color: {{ section.settings.tab_active_color }};
+    font-weight: 600;
+  }
+
+  .jf-tab-content {
+    display: none;
+    padding: 0.5rem 0 1rem;
+    color: {{ section.settings.tab_content_color }};
+    font-size: {{ section.settings.tab_content_font_size }}px;
+    line-height: 1.6;
+  }
+
+  .jf-tab-content.active {
+    display: block;
+  }
+
+  /* Desktop layout - vertical tabs on left */
+  @media screen and (min-width: 768px) {
+    .jf-tab-container {
+      flex-direction: row;
+    }
+
+    .jf-tab-headers {
+      flex-direction: column;
+      width: 30%;
+      overflow-x: visible;
+      gap: 0.75rem;
+      margin-bottom: 0;
+      padding-bottom: 0;
+      padding-right: 1.5rem;
+    }
+
+    .jf-tab-header {
+      text-align: left;
+      padding: 0.25rem 0;
+    }
+
+    .jf-tab-content-container {
+      width: 70%;
+      border-left: none;
+      padding-left: 0;
+    }
+
+    .jf-tab-content {
+      padding: 0 0 1rem;
+    }
+  }
+
+  /* Price Adjustments */
+  .jf-price-adjustment {
+    font-size: 0.85rem;
+    color: rgba({{ section.settings.text_color | color_to_rgb }}, 0.8);
+    margin-left: 0.5rem;
+  }
+
+  /* Mobile product actions positioning */
+  .jf-mobile-actions-container {
+    display: none;
+  }
+
+  .jf-mobile-actions-container.active {
+    display: block;
+  }
+
+  @media screen and (max-width: 767px) {
+    .jf-mobile-actions-container {
+      width: 100%;
+      background-color: {{ section.settings.background_color }};
+      padding: 1rem 0 0 0;
+      margin-top: 1rem;
+    }
+
+    .jf-product-info {
+      padding-bottom: 1.5rem;
+    }
+  }
+
+  /* Ensure cart icon is not affected by this section */
+  .jf-product-container svg.jf-wishlist-icon {
+    /* Only target the wishlist icon within this section */
+    fill: currentColor;
+    stroke: currentColor;
+  }
+
+  /* Prevent styles from leaking outside the section */
+  .jf-product-container {
+    isolation: isolate;
+  }
+</style>
+
+<div class="jf-product-container">
+  <div class="jf-product-gallery">
+    <div class="jf-main-image">
+      {% if product.featured_media %}
+        <img
+          src="{{ product.featured_media | img_url: 'master' }}"
+          alt="{{ product.featured_media.alt | escape }}"
+          loading="lazy"
+          width="{{ product.featured_media.width }}"
+          height="{{ product.featured_media.height }}"
+        >
+      {% else %}
+        {{ 'product-1' | placeholder_svg_tag }}
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="jf-product-info">
+    {% if section.settings.show_vendor and product.vendor %}
+      <div class="jf-vendor">{{ product.vendor }}</div>
+    {% endif %}
+
+    <h1 class="jf-product-title">{{ product.title }}</h1>
+
+    <div class="jf-product-price">
+      <span class="jf-current-price">{{ product.price | money }}</span>
+    </div>
+
+    {% if section.settings.enable_status_label %}
+      <div class="jf-status-label">{{ section.settings.status_label }}</div>
+    {% endif %}
+
+    {% if section.settings.show_sku and product.selected_or_first_available_variant.sku %}
+      <div class="jf-sku">SKU: {{ product.selected_or_first_available_variant.sku }}</div>
+    {% endif %}
+
+    {% for option in product.options_with_values %}
+      <div class="jf-variant-selector" data-option-index="{{ forloop.index0 }}">
+        <div class="jf-variant-title">{{ option.name }}</div>
+        <div class="jf-variant-options">
+          {% for value in option.values %}
+            <button
+              class="jf-variant-option{% if option.selected_value == value %} selected{% endif %}"
+              data-option-value="{{ value | escape }}"
+              {% if option.name == 'Material' or option.name == 'Size' or option.name == 'Type' %}
+                {% assign price_adjustment = 0 %}
+                {% for variant in product.variants %}
+                  {% if variant.options contains value %}
+                    {% if variant.price != product.price %}
+                      {% assign price_adjustment = variant.price | minus: product.price %}
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+                {% if price_adjustment != 0 %}
+                  data-price-adjustment="{{ price_adjustment }}"
+                {% endif %}
+              {% endif %}
+            >
+              {{ value }}
+              {% if option.name == 'Material' or option.name == 'Size' or option.name == 'Type' %}
+                {% assign price_adjustment = 0 %}
+                {% for variant in product.variants %}
+                  {% if variant.options contains value %}
+                    {% if variant.price != product.price %}
+                      {% assign price_adjustment = variant.price | minus: product.price %}
+                      <span class="jf-price-adjustment">
+                        {% if price_adjustment > 0 %}+{% endif %}
+                        {{ price_adjustment | money }}
+                      </span>
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+            </button>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+
+    {% if section.settings.enable_shipping_status %}
+      <div class="jf-shipping-status">{{ section.settings.shipping_status_text }}</div>
+    {% endif %}
+
+    <!-- Desktop product actions -->
+    <div class="jf-product-actions jf-desktop-actions" style="display: none;">
+      <button
+        type="button"
+        class="jf-add-to-cart"
+        data-product-id="{{ product.id }}"
+        data-original-text="{{ section.settings.add_to_cart_text }}"
+      >
+        <span class="button-effect"></span>
+        {{ section.settings.add_to_cart_text }}
+      </button>
+
+      {% if section.settings.enable_buy_now %}
+        <button type="button" class="jf-buy-now" data-product-id="{{ product.id }}">
+          {{ section.settings.buy_now_text }}
+        </button>
+      {% endif %}
+
+      {% if section.settings.enable_wishlist %}
+        <button type="button" class="jf-wishlist-button" data-product-id="{{ product.id }}">
+          <svg class="jf-wishlist-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+          {{ section.settings.wishlist_text }}
+        </button>
+      {% endif %}
+    </div>
+
+    {% if section.settings.show_tags and product.tags.size > 0 %}
+      <div class="jf-tags">
+        {% for tag in product.tags %}
+          <span>{{ tag }}</span>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.enable_description_tabs %}
+      <div class="jf-description-tabs">
+        <div class="jf-tab-container">
+          <div class="jf-tab-headers">
+            {% if section.settings.show_tab_overview %}
+              <button class="jf-tab-header active" data-tab="overview">
+                {{ section.settings.tab_overview_title }}
+              </button>
+            {% endif %}
+
+            {% if section.settings.show_tab_details %}
+              <button class="jf-tab-header" data-tab="details">{{ section.settings.tab_details_title }}</button>
+            {% endif %}
+
+            {% if section.settings.show_tab_measurements %}
+              <button class="jf-tab-header" data-tab="measurements">
+                {{ section.settings.tab_measurements_title }}
+              </button>
+            {% endif %}
+
+            {% if section.settings.show_tab_shipping %}
+              <button class="jf-tab-header" data-tab="shipping">{{ section.settings.tab_shipping_title }}</button>
+            {% endif %}
+
+            {% if section.settings.show_tab_returns %}
+              <button class="jf-tab-header" data-tab="returns">{{ section.settings.tab_returns_title }}</button>
+            {% endif %}
+
+            {% if section.settings.show_tab_care %}
+              <button class="jf-tab-header" data-tab="care">{{ section.settings.tab_care_title }}</button>
+            {% endif %}
+
+            {% if section.settings.show_tab_custom1 %}
+              <button class="jf-tab-header" data-tab="custom1">{{ section.settings.tab_custom1_title }}</button>
+            {% endif %}
+
+            {% if section.settings.show_tab_custom2 %}
+              <button class="jf-tab-header" data-tab="custom2">{{ section.settings.tab_custom2_title }}</button>
+            {% endif %}
+          </div>
+
+          <div class="jf-tab-content-container">
+            {% if section.settings.show_tab_overview %}
+              <div class="jf-tab-content active" data-tab="overview">
+                {% if section.settings.tab_overview_content != blank %}
+                  {{ section.settings.tab_overview_content }}
+                {% else %}
+                  {{ product.description }}
+                {% endif %}
+              </div>
+            {% endif %}
+
+            {% if section.settings.show_tab_details %}
+              <div class="jf-tab-content" data-tab="details">
+                {{ section.settings.tab_details_content }}
+              </div>
+            {% endif %}
+
+            {% if section.settings.show_tab_measurements %}
+              <div class="jf-tab-content" data-tab="measurements">
+                {{ section.settings.tab_measurements_content }}
+              </div>
+            {% endif %}
+
+            {% if section.settings.show_tab_shipping %}
+              <div class="jf-tab-content" data-tab="shipping">
+                {{ section.settings.tab_shipping_content }}
+              </div>
+            {% endif %}
+
+            {% if section.settings.show_tab_returns %}
+              <div class="jf-tab-content" data-tab="returns">
+                {{ section.settings.tab_returns_content }}
+              </div>
+            {% endif %}
+
+            {% if section.settings.show_tab_care %}
+              <div class="jf-tab-content" data-tab="care">
+                {{ section.settings.tab_care_content }}
+              </div>
+            {% endif %}
+
+            {% if section.settings.show_tab_custom1 %}
+              <div class="jf-tab-content" data-tab="custom1">
+                {{ section.settings.tab_custom1_content }}
+              </div>
+            {% endif %}
+
+            {% if section.settings.show_tab_custom2 %}
+              <div class="jf-tab-content" data-tab="custom2">
+                {{ section.settings.tab_custom2_content }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Mobile product actions (below description tabs) -->
+  <div class="jf-mobile-actions-container">
+    <div class="jf-product-actions">
+      <button
+        type="button"
+        class="jf-add-to-cart"
+        data-product-id="{{ product.id }}"
+        data-original-text="{{ section.settings.add_to_cart_text }}"
+      >
+        <span class="button-effect"></span>
+        {{ section.settings.add_to_cart_text }}
+      </button>
+
+      {% if section.settings.enable_buy_now %}
+        <button type="button" class="jf-buy-now" data-product-id="{{ product.id }}">
+          {{ section.settings.buy_now_text }}
+        </button>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Handle responsive layout
+    const mobileActionsContainer = document.querySelector('.jf-mobile-actions-container');
+    const desktopActions = document.querySelector('.jf-desktop-actions');
+    
+    function handleResponsiveLayout() {
+      if (window.innerWidth < 768) {
+        if (mobileActionsContainer) mobileActionsContainer.classList.add('active');
+        if (desktopActions) desktopActions.style.display = 'none';
+      } else {
+        if (mobileActionsContainer) mobileActionsContainer.classList.remove('active');
+        if (desktopActions) desktopActions.style.display = 'flex';
+      }
+    }
+    
+    // Initial call
+    handleResponsiveLayout();
+    
+    // Listen for window resize
+    window.addEventListener('resize', handleResponsiveLayout);
+    
+    // Handle variant selection
+    const variantSelectors = document.querySelectorAll('.jf-variant-selector');
+    const addToCartButtons = document.querySelectorAll('.jf-add-to-cart');
+    const buyNowButtons = document.querySelectorAll('.jf-buy-now');
+    const currentPriceElement = document.querySelector('.jf-current-price');
+    
+    // Store original button text for each button
+    addToCartButtons.forEach(button => {
+      // Make sure the button has the effect span
+      if (!button.querySelector('.button-effect')) {
+        const buttonText = button.textContent.trim();
+        button.innerHTML = '<span class="button-effect"></span>' + buttonText;
+      }
+      
+      // Store the original text
+      button.setAttribute('data-original-text', button.textContent.trim());
+    });
+    
+    // Get the product JSON
+    const productJson = {{ product | json }};
+    const basePrice = {{ product.price }};
+    
+    variantSelectors.forEach(selector => {
+      const options = selector.querySelectorAll('.jf-variant-option');
+      
+      options.forEach(option => {
+        option.addEventListener('click', function() {
+          // Remove selected class from all options in this selector
+          options.forEach(opt => opt.classList.remove('selected'));
+          
+          // Add selected class to clicked option
+          this.classList.add('selected');
+          
+          // Update the variant selection
+          updateSelectedVariant();
+        });
+      });
+    });
+    
+    /* Update the JavaScript function that handles button text updates */
+    function updateSelectedVariant() {
+      // Get all selected options
+      const selectedOptions = [];
+      let totalPriceAdjustment = 0;
+      
+      variantSelectors.forEach(selector => {
+        const selected = selector.querySelector('.jf-variant-option.selected');
+        if (selected) {
+          selectedOptions.push(selected.getAttribute('data-option-value'));
+          
+          // Add price adjustment if any
+          const priceAdjustment = selected.getAttribute('data-price-adjustment');
+          if (priceAdjustment) {
+            totalPriceAdjustment += parseInt(priceAdjustment);
+          }
+        }
+      });
+      
+      // Find the matching variant
+      let selectedVariant = null;
+      
+      if (productJson.variants) {
+        for (const variant of productJson.variants) {
+          const variantOptions = [
+            variant.option1,
+            variant.option2,
+            variant.option3
+          ].filter(Boolean);
+          
+          if (arraysEqual(variantOptions, selectedOptions)) {
+            selectedVariant = variant;
+            break;
+          }
+        }
+      }
+      
+      // Update price display
+      if (selectedVariant) {
+        currentPriceElement.innerHTML = formatMoney(selectedVariant.price);
+      } else if (totalPriceAdjustment !== 0) {
+        // If no exact variant match but we have price adjustments
+        const adjustedPrice = basePrice + totalPriceAdjustment;
+        currentPriceElement.innerHTML = formatMoney(adjustedPrice);
+      }
+      
+      // Update the add to cart button state
+      if (selectedVariant && selectedVariant.available) {
+        addToCartButtons.forEach(button => {
+          // Keep the button text as is, just update the disabled state
+          const buttonEffect = button.querySelector('.button-effect');
+          if (!buttonEffect) {
+            button.innerHTML = '<span class="button-effect"></span>' + button.innerHTML;
+          }
+          button.disabled = false;
+        });
+        
+        buyNowButtons.forEach(button => {
+          button.disabled = false;
+        });
+      } else {
+        // Update the sold out text handling
+        addToCartButtons.forEach(button => {
+          // Store the original text if not already stored
+          if (!button.getAttribute('data-original-text')) {
+            button.setAttribute('data-original-text', button.textContent.trim());
+          }
+          
+          // Keep the button effect element
+          const buttonEffect = button.querySelector('.button-effect');
+          button.innerHTML = '';
+          if (buttonEffect) {
+            button.appendChild(buttonEffect);
+          } else {
+            const newEffect = document.createElement('span');
+            newEffect.className = 'button-effect';
+            button.appendChild(newEffect);
+          }
+          
+          button.appendChild(document.createTextNode('{{ section.settings.sold_out_text }}'));
+          button.disabled = true;
+        });
+        
+        buyNowButtons.forEach(button => {
+          button.disabled = true;
+        });
+      }
+    }
+    
+    function formatMoney(cents) {
+      const moneyFormat = {{ shop.money_format | json }};
+      const value = (cents / 100).toFixed(2);
+      return moneyFormat.replace(/\{\{\s*amount\s*\}\}/, value);
+    }
+    
+    function arraysEqual(a, b) {
+      if (a.length !== b.length) return false;
+      for (let i = 0; i < a.length; i++) {
+        if (a[i] !== b[i]) return false;
+      }
+      return true;
+    }
+    
+    // Handle add to cart with ripple effect
+    addToCartButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        // Create ripple effect
+        const buttonEffect = this.querySelector('.button-effect');
+        this.classList.add('clicked');
+        
+        // Add to cart
+        addToCart();
+        
+        // Remove the clicked class after animation completes
+        setTimeout(() => {
+          this.classList.remove('clicked');
+        }, 600);
+      });
+    });
+    
+    // Add a function to restore button text if needed
+    function restoreButtonText() {
+      addToCartButtons.forEach(button => {
+        const originalText = button.getAttribute('data-original-text');
+        if (originalText && button.textContent.trim() === 'Sold out') {
+          const buttonEffect = button.querySelector('.button-effect');
+          button.innerHTML = '';
+          if (buttonEffect) {
+            button.appendChild(buttonEffect);
+          } else {
+            const newEffect = document.createElement('span');
+            newEffect.className = 'button-effect';
+            button.appendChild(newEffect);
+          }
+          button.appendChild(document.createTextNode(originalText));
+        }
+      });
+    }
+    
+    // Handle buy now
+    buyNowButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        addToCart(true);
+      });
+    });
+    
+    function addToCart(goToCart = false) {
+      const productId = addToCartButtons[0].getAttribute('data-product-id');
+      
+      // Get selected variant ID
+      let variantId = productJson.variants[0].id; // Default to first variant
+      
+      const selectedOptions = [];
+      variantSelectors.forEach(selector => {
+        const selected = selector.querySelector('.jf-variant-option.selected');
+        if (selected) {
+          selectedOptions.push(selected.getAttribute('data-option-value'));
+        }
+      });
+      
+      // Find matching variant
+      if (productJson.variants) {
+        for (const variant of productJson.variants) {
+          const variantOptions = [
+            variant.option1,
+            variant.option2,
+            variant.option3
+          ].filter(Boolean);
+          
+          if (arraysEqual(variantOptions, selectedOptions)) {
+            variantId = variant.id;
+            break;
+          }
+        }
+      }
+      
+      // Add to cart using Shopify AJAX API
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          items: [{
+            id: variantId,
+            quantity: 1
+          }]
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (goToCart) {
+          // Redirect to cart page
+          window.location.href = '/cart';
+        } else {
+          // Open cart drawer - Dawn theme specific
+          if (typeof window.openCartDrawer === 'function') {
+            window.openCartDrawer();
+          } else {
+            // Fallback for Dawn theme - trigger click on cart icon
+            const cartDrawerToggle = document.querySelector('cart-drawer-toggle button') || 
+                                    document.querySelector('.header__icon--cart') ||
+                                    document.querySelector('[data-action="open-drawer"][data-drawer-id="cart-drawer"]');
+            if (cartDrawerToggle) {
+              cartDrawerToggle.click();
+            }
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Error adding to cart:', error);
+      });
+    }
+    
+    // Handle wishlist
+    const wishlistButton = document.querySelector('.jf-wishlist-button');
+    if (wishlistButton) {
+      wishlistButton.addEventListener('click', function() {
+        // Implement wishlist functionality
+        // This is a placeholder - you'll need to implement your own wishlist functionality
+        // or integrate with an app like Wishlist Plus
+        
+        alert('Item added to wishlist!');
+        
+        // Only modify the wishlist icon, not other icons
+        const wishlistIcon = this.querySelector('.jf-wishlist-icon');
+        if (wishlistIcon) {
+          wishlistIcon.setAttribute('fill', wishlistIcon.getAttribute('fill') === 'none' ? 'currentColor' : 'none');
+        }
+      });
+    }
+    
+    // Handle description tabs
+    const tabHeaders = document.querySelectorAll('.jf-tab-header');
+    const tabContents = document.querySelectorAll('.jf-tab-content');
+    
+    tabHeaders.forEach(header => {
+      header.addEventListener('click', function() {
+        const tabName = this.getAttribute('data-tab');
+        
+        // Remove active class from all headers and contents
+        tabHeaders.forEach(h => h.classList.remove('active'));
+        tabContents.forEach(c => c.classList.remove('active'));
+        
+        // Add active class to clicked header and corresponding content
+        this.classList.add('active');
+        document.querySelector(`.jf-tab-content[data-tab="${tabName}"]`).classList.add('active');
+      });
+    });
+  });
+</script>

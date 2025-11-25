@@ -1,0 +1,189 @@
+{% schema %}
+{
+  "name": "FAQ Section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General Settings"
+    },
+    {
+      "type": "text",
+      "id": "faq_heading",
+      "label": "FAQ Heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "text",
+      "id": "heading_font",
+      "label": "Heading Font Family",
+      "default": "Helvetica, Arial, sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading Font Size",
+      "min": 16,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "color",
+      "id": "question_color",
+      "label": "Question Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "text",
+      "id": "question_font",
+      "label": "Question Font Family",
+      "default": "Helvetica, Arial, sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "question_size",
+      "label": "Question Font Size",
+      "min": 14,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "answer_color",
+      "label": "Answer Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "text",
+      "id": "answer_font",
+      "label": "Answer Font Family",
+      "default": "Helvetica, Arial, sans-serif"
+    },
+    {
+      "type": "range",
+      "id": "answer_size",
+      "label": "Answer Font Size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "FAQ Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Your question here."
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer",
+          "default": "Your answer here."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ Section"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  .faq-section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+  .faq-section h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: {{ section.settings.heading_color }};
+    font-family: {{ section.settings.heading_font }};
+    font-size: {{ section.settings.heading_size }}px;
+  }
+  .faq-item {
+    border-bottom: 1px solid #e0e0e0;
+    padding: 15px 0;
+  }
+  .faq-question {
+    cursor: pointer;
+    position: relative;
+    color: {{ section.settings.question_color }};
+    font-family: {{ section.settings.question_font }};
+    font-size: {{ section.settings.question_size }}px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .faq-question::after {
+    content: '\002B'; /* Unicode Plus Sign */
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    margin-left: 15px;
+    transition: transform 0.1s ease, opacity 0.1s ease;
+  }
+  .faq-item.active .faq-question::after {
+    transform: rotate(45deg);
+  }
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.1s ease, opacity 0.1s ease;
+    opacity: 0;
+    margin-top: 0;
+    color: {{ section.settings.answer_color }};
+    font-family: {{ section.settings.answer_font }};
+    font-size: {{ section.settings.answer_size }}px;
+  }
+  .faq-item.active .faq-answer {
+    max-height: 500px;
+    opacity: 1;
+    margin-top: 10px;
+  }
+</style>
+
+<div class="faq-section">
+  <h2>{{ section.settings.faq_heading }}</h2>
+  {% for block in section.blocks %}
+    <div class="faq-item">
+      <div class="faq-question">{{ block.settings.question }}</div>
+      <div class="faq-answer">{{ block.settings.answer }}</div>
+    </div>
+  {% endfor %}
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const items = document.querySelectorAll('.faq-item');
+    items.forEach(item => {
+      const question = item.querySelector('.faq-question');
+      question.addEventListener('click', function() {
+        if(item.classList.contains('active')) {
+          item.classList.remove('active');
+        } else {
+          items.forEach(i => i.classList.remove('active'));
+          item.classList.add('active');
+        }
+      });
+    });
+  });
+</script>

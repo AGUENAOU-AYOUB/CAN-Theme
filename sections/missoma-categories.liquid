@@ -1,0 +1,760 @@
+<div class="missoma-categories-grid-section" id="missoma-categories-grid-{{ section.id }}">
+  <div
+    class="missoma-grid-container"
+    style="
+      gap: {{ section.settings.grid_gap }}px;
+      max-width: {{ section.settings.max_width }}px;
+      margin-top: {{ section.settings.margin_top }}px;
+      margin-bottom: {{ section.settings.margin_bottom }}px;
+      padding-left: {{ section.settings.padding_horizontal }}px;
+      padding-right: {{ section.settings.padding_horizontal }}px;
+    "
+  >
+    {% for block in section.blocks %}
+      {% if block.type == 'category' %}
+        <div class="missoma-category-panel" {{ block.shopify_attributes }}>
+          <div
+            class="missoma-image-container"
+            style="
+              {% if section.settings.image_aspect_ratio == 'custom' %}
+                padding-bottom: {{ section.settings.custom_image_ratio }}%;
+              {% else %}
+                padding-bottom: {{ section.settings.image_aspect_ratio | replace: ':', '/' | times: 100 }}%;
+              {% endif %}
+              border-radius: {{ section.settings.image_border_radius }}px;
+            "
+          >
+            {% if block.settings.background_image != blank %}
+              <img
+                src="{{ block.settings.background_image | img_url: 'master' }}"
+                alt="{{ block.settings.category_title | escape }}"
+                class="missoma-panel-image"
+                loading="lazy"
+              >
+            {% else %}
+              <div
+                class="missoma-placeholder-image"
+                style="background-color: {{ block.settings.placeholder_color }}"
+              ></div>
+            {% endif %}
+            <div
+              class="missoma-overlay"
+              style="background-color: rgba(0, 0, 0, {{ block.settings.overlay_opacity }})"
+            ></div>
+            <div
+              class="missoma-category-content"
+              style="
+                padding: {{ section.settings.content_padding }}px;
+                text-align: {{ section.settings.text_alignment }};
+                {% if section.settings.text_alignment == 'center' %}
+                  left: 0;
+                  width: 100%;
+                {% elsif section.settings.text_alignment == 'right' %}
+                  right: {{ section.settings.content_padding }}px;
+                  left: auto;
+                {% else %}
+                  left: {{ section.settings.content_padding }}px;
+                {% endif %}
+              "
+            >
+              <h2
+                class="missoma-category-title"
+                style="
+                  color: {{ block.settings.text_color }};
+                  font-size: {{ section.settings.heading_size }}px;
+                  font-weight: {{ section.settings.heading_font_weight }};
+                  letter-spacing: {{ section.settings.heading_letter_spacing }}px;
+                  margin-bottom: {{ section.settings.heading_margin_bottom }}px;
+                  font-family: {{ section.settings.heading_font_family }};
+                "
+              >
+                {{ block.settings.category_title }}
+              </h2>
+              <a
+                href="{{ block.settings.button_link }}"
+                class="missoma-shop-now"
+                style="
+                  color: {{ block.settings.text_color }};
+                  border-bottom: {{ section.settings.button_border_width }}px solid {{ block.settings.text_color }};
+                  font-size: {{ section.settings.button_size }}px;
+                  font-weight: {{ section.settings.button_font_weight }};
+                  letter-spacing: {{ section.settings.button_letter_spacing }}px;
+                  font-family: {{ section.settings.button_font_family }};
+                "
+              >
+                {{ block.settings.button_text }}
+              </a>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  #missoma-categories-grid-{{ section.id }} {
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    display: block;
+  }
+
+  #missoma-categories-grid-{{ section.id }} .missoma-grid-container {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    margin: 0 auto;
+  }
+
+  #missoma-categories-grid-{{ section.id }} .missoma-category-panel {
+    position: relative;
+    overflow: hidden;
+    {% if section.settings.add_box_shadow %}
+      box-shadow: 0 {{ section.settings.shadow_vertical_offset }}px {{ section.settings.shadow_blur }}px rgba(0, 0, 0, {{ section.settings.shadow_opacity }});
+    {% endif %}
+  }
+
+  #missoma-categories-grid-{{ section.id }} .missoma-image-container {
+    position: relative;
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+  }
+
+  #missoma-categories-grid-{{ section.id }} .missoma-panel-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform {{ section.settings.hover_transition_duration }}s ease;
+  }
+
+  {% if section.settings.enable_image_zoom %}
+  #missoma-categories-grid-{{ section.id }} .missoma-category-panel:hover .missoma-panel-image {
+    transform: scale({{ section.settings.image_zoom_factor }});
+  }
+  {% endif %}
+
+  #missoma-categories-grid-{{ section.id }} .missoma-placeholder-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  #missoma-categories-grid-{{ section.id }} .missoma-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition: background-color {{ section.settings.hover_transition_duration }}s ease;
+  }
+
+  {% if section.settings.darken_overlay_on_hover %}
+  #missoma-categories-grid-{{ section.id }} .missoma-category-panel:hover .missoma-overlay {
+    background-color: rgba(0, 0, 0, {{ section.settings.overlay_opacity_hover }}) !important;
+  }
+  {% endif %}
+
+  #missoma-categories-grid-{{ section.id }} .missoma-category-content {
+    position: absolute;
+    bottom: {{ section.settings.content_bottom_position }}px;
+    z-index: 2;
+  }
+
+  #missoma-categories-grid-{{ section.id }} .missoma-category-title {
+    text-transform: {{ section.settings.heading_text_transform }};
+    margin: 0 0 {{ section.settings.heading_margin_bottom }}px 0;
+    line-height: {{ section.settings.heading_line_height }};
+    transition: transform {{ section.settings.hover_transition_duration }}s ease;
+  }
+
+  #missoma-categories-grid-{{ section.id }} .missoma-shop-now {
+    display: inline-block;
+    text-decoration: none;
+    padding-bottom: {{ section.settings.button_padding_bottom }}px;
+    transition: all {{ section.settings.hover_transition_duration }}s ease;
+    line-height: {{ section.settings.button_line_height }};
+  }
+
+  #missoma-categories-grid-{{ section.id }} .missoma-shop-now:hover {
+    border-color: transparent;
+    opacity: {{ section.settings.button_hover_opacity }};
+    transform: translateY(-{{ section.settings.button_hover_lift }}px);
+    color: {{ section.settings.button_hover_color }};
+  }
+
+  @media screen and (max-width: 767px) {
+    #missoma-categories-grid-{{ section.id }} .missoma-grid-container {
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
+    }
+
+    #missoma-categories-grid-{{ section.id }} .missoma-category-title {
+      font-size: {{ section.settings.heading_size_mobile }}px;
+    }
+
+    #missoma-categories-grid-{{ section.id }} .missoma-shop-now {
+      font-size: {{ section.settings.button_size_mobile }}px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Missoma Categories",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 800,
+      "max": 2000,
+      "step": 50,
+      "default": 1600,
+      "label": "Maximum width"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0,
+      "label": "Top margin"
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0,
+      "label": "Bottom margin"
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 20,
+      "label": "Horizontal padding"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 0,
+      "label": "Space between panels"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label": "Number of columns on desktop"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1 column"
+        },
+        {
+          "value": "2",
+          "label": "2 columns"
+        }
+      ],
+      "default": "1",
+      "label": "Number of columns on mobile"
+    },
+    {
+      "type": "header",
+      "content": "Image Settings"
+    },
+    {
+      "type": "select",
+      "id": "image_aspect_ratio",
+      "options": [
+        {
+          "value": "1:1",
+          "label": "1:1 | Square"
+        },
+        {
+          "value": "3:4",
+          "label": "3:4 | Portrait"
+        },
+        {
+          "value": "4:3",
+          "label": "4:3 | Landscape"
+        },
+        {
+          "value": "16:9",
+          "label": "16:9 | Widescreen"
+        },
+        {
+          "value": "custom",
+          "label": "Custom ratio"
+        }
+      ],
+      "default": "3:4",
+      "label": "Image aspect ratio"
+    },
+    {
+      "type": "range",
+      "id": "custom_image_ratio",
+      "min": 50,
+      "max": 200,
+      "step": 5,
+      "default": 100,
+      "label": "Custom image ratio",
+      "info": "Percentage determines height (100% = square)"
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 0,
+      "label": "Image border radius"
+    },
+    {
+      "type": "checkbox",
+      "id": "add_box_shadow",
+      "default": false,
+      "label": "Add box shadow"
+    },
+    {
+      "type": "range",
+      "id": "shadow_opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.2,
+      "label": "Shadow opacity"
+    },
+    {
+      "type": "range",
+      "id": "shadow_vertical_offset",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 4,
+      "label": "Shadow vertical offset"
+    },
+    {
+      "type": "range",
+      "id": "shadow_blur",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "default": 10,
+      "label": "Shadow blur"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_image_zoom",
+      "default": false,
+      "label": "Enable image zoom on hover"
+    },
+    {
+      "type": "range",
+      "id": "image_zoom_factor",
+      "min": 1.0,
+      "max": 1.5,
+      "step": 0.1,
+      "default": 1.1,
+      "label": "Image zoom factor"
+    },
+    {
+      "type": "header",
+      "content": "Text Settings"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "label": "Text alignment"
+    },
+    {
+      "type": "range",
+      "id": "content_padding",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "default": 30,
+      "label": "Content padding"
+    },
+    {
+      "type": "range",
+      "id": "content_bottom_position",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 30,
+      "label": "Content bottom position"
+    },
+    {
+      "type": "header",
+      "content": "Heading Settings"
+    },
+    {
+      "type": "text",
+      "id": "heading_font_family",
+      "default": "var(--font-heading-family)",
+      "label": "Heading font family",
+      "info": "Use 'var(--font-heading-family)' for theme default"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 16,
+      "max": 60,
+      "step": 1,
+      "default": 28,
+      "label": "Heading size on desktop"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 14,
+      "max": 40,
+      "step": 1,
+      "default": 22,
+      "label": "Heading size on mobile"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        },
+        {
+          "value": "800",
+          "label": "Extra Bold"
+        }
+      ],
+      "default": "600",
+      "label": "Heading font weight"
+    },
+    {
+      "type": "select",
+      "id": "heading_text_transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "UPPERCASE"
+        },
+        {
+          "value": "lowercase",
+          "label": "lowercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "uppercase",
+      "label": "Heading text transform"
+    },
+    {
+      "type": "range",
+      "id": "heading_letter_spacing",
+      "min": 0,
+      "max": 5,
+      "step": 0.1,
+      "default": 0.5,
+      "label": "Heading letter spacing (px)"
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "min": 0.8,
+      "max": 2,
+      "step": 0.1,
+      "default": 1.2,
+      "label": "Heading line height"
+    },
+    {
+      "type": "range",
+      "id": "heading_margin_bottom",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "default": 8,
+      "label": "Space below heading"
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "text",
+      "id": "button_font_family",
+      "default": "var(--font-body-family)",
+      "label": "Button font family",
+      "info": "Use 'var(--font-body-family)' for theme default"
+    },
+    {
+      "type": "range",
+      "id": "button_size",
+      "min": 12,
+      "max": 30,
+      "step": 1,
+      "default": 16,
+      "label": "Button text size on desktop"
+    },
+    {
+      "type": "range",
+      "id": "button_size_mobile",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "default": 14,
+      "label": "Button text size on mobile"
+    },
+    {
+      "type": "select",
+      "id": "button_font_weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "400",
+      "label": "Button font weight"
+    },
+    {
+      "type": "range",
+      "id": "button_letter_spacing",
+      "min": 0,
+      "max": 5,
+      "step": 0.1,
+      "default": 0,
+      "label": "Button letter spacing (px)"
+    },
+    {
+      "type": "range",
+      "id": "button_line_height",
+      "min": 0.8,
+      "max": 2,
+      "step": 0.1,
+      "default": 1.4,
+      "label": "Button line height"
+    },
+    {
+      "type": "range",
+      "id": "button_border_width",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 1,
+      "label": "Button border width"
+    },
+    {
+      "type": "range",
+      "id": "button_padding_bottom",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 2,
+      "label": "Button padding bottom"
+    },
+    {
+      "type": "header",
+      "content": "Hover Effects"
+    },
+    {
+      "type": "range",
+      "id": "hover_transition_duration",
+      "min": 0.1,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.3,
+      "label": "Transition duration (seconds)"
+    },
+    {
+      "type": "checkbox",
+      "id": "darken_overlay_on_hover",
+      "default": false,
+      "label": "Darken overlay on hover"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity_hover",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.3,
+      "label": "Overlay opacity on hover"
+    },
+    {
+      "type": "range",
+      "id": "button_hover_opacity",
+      "min": 0.5,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.8,
+      "label": "Button hover opacity"
+    },
+    {
+      "type": "range",
+      "id": "button_hover_lift",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 2,
+      "label": "Button hover lift (px)"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Button hover color",
+      "default": "#ffffff",
+      "info": "Leave blank to use text color"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "text",
+          "id": "category_title",
+          "default": "NEW IN: STUDS",
+          "label": "Category title"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "default": "Shop Solid Gold",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "image_picker",
+          "id": "background_image",
+          "label": "Background image"
+        },
+        {
+          "type": "color",
+          "id": "placeholder_color",
+          "default": "#8B4513",
+          "label": "Placeholder color (if no image)"
+        },
+        {
+          "type": "range",
+          "id": "overlay_opacity",
+          "min": 0,
+          "max": 0.9,
+          "step": 0.1,
+          "default": 0.1,
+          "label": "Overlay opacity"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "default": "#ffffff",
+          "label": "Text color"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Missoma Categories",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "category_title": "NEW IN: STUDS",
+            "button_text": "Shop Solid Gold",
+            "placeholder_color": "#8B4513"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "category_title": "READY. SET. STACK.",
+            "button_text": "Shop Bracelets",
+            "placeholder_color": "#00008B"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "category_title": "THE WEDDING STUDIO",
+            "button_text": "Shop Now",
+            "placeholder_color": "#E0F0FF"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

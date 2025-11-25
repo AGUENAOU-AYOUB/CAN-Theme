@@ -1,0 +1,639 @@
+<div
+  class="customer-service-section page-width"
+  style="
+    padding-top: {{ section.settings.section_padding_top }}px;
+    padding-bottom: {{ section.settings.section_padding_bottom }}px;
+    background-color: {{ section.settings.background_color }};
+  "
+>
+  <div class="customer-service-grid">
+    <!-- Left Sidebar Menu -->
+    <div
+      class="customer-service-menu"
+      style="
+        font-family: {{ section.settings.menu_font_family.family }};
+        font-size: {{ section.settings.menu_font_size }}px;
+      "
+    >
+      <h2
+        style="
+          color: {{ section.settings.menu_heading_color }};
+          font-size: {{ section.settings.menu_heading_size }}px;
+          margin-bottom: {{ section.settings.menu_heading_margin }}px;
+          font-weight: {{ section.settings.menu_heading_weight }};
+        "
+      >
+        {{ section.settings.menu_heading }}
+      </h2>
+
+      <ul class="customer-service-links" style="color: {{ section.settings.menu_text_color }};">
+        {% for link in section.settings.footer_menu.links %}
+          <li>
+            <a
+              href="{{ link.url }}"
+              style="
+                color: {{ section.settings.menu_link_color }};
+                padding: {{ section.settings.menu_link_padding }}px 0;
+              "
+              class="cs-menu-link"
+            >
+              {{- link.title -}}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Right Content Area -->
+    <div
+      class="customer-service-content"
+      style="
+        font-family: {{ section.settings.content_font_family.family }};
+        color: {{ section.settings.content_text_color }};
+      "
+    >
+      <!-- Overview Section -->
+      <div class="cs-section">
+        <h2
+          style="
+            color: {{ section.settings.content_heading_color }};
+            font-size: {{ section.settings.content_heading_size }}px;
+            margin-bottom: {{ section.settings.content_heading_margin }}px;
+            font-weight: {{ section.settings.content_heading_weight }};
+          "
+        >
+          {{ section.settings.overview_heading }}
+        </h2>
+
+        <p
+          style="
+            font-size: {{ section.settings.content_text_size }}px;
+            line-height: {{ section.settings.content_line_height }};
+          "
+        >
+          {{ section.settings.overview_text }}
+        </p>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="cs-section">
+        <!-- Email -->
+        <div class="cs-contact-item">
+          <h3
+            style="
+              color: {{ section.settings.subheading_color }};
+              font-size: {{ section.settings.subheading_size }}px;
+              margin-bottom: {{ section.settings.subheading_margin }}px;
+            "
+          >
+            {{ section.settings.email_heading }}
+          </h3>
+          <a
+            href="mailto:{{ section.settings.email_address }}"
+            style="
+              color: {{ section.settings.contact_link_color }};
+              font-size: {{ section.settings.contact_text_size }}px;
+            "
+          >
+            {{- section.settings.email_address -}}
+          </a>
+        </div>
+
+        <!-- Phone -->
+        <div class="cs-contact-item">
+          <h3
+            style="
+              color: {{ section.settings.subheading_color }};
+              font-size: {{ section.settings.subheading_size }}px;
+              margin-bottom: {{ section.settings.subheading_margin }}px;
+            "
+          >
+            {{ section.settings.phone_heading }}
+          </h3>
+          <a
+            href="tel:{{ section.settings.phone_number }}"
+            style="
+              color: {{ section.settings.contact_link_color }};
+              font-size: {{ section.settings.contact_text_size }}px;
+            "
+          >
+            {{- section.settings.phone_number -}}
+          </a>
+        </div>
+
+        <!-- Hours -->
+        <div class="cs-contact-item">
+          <h3
+            style="
+              color: {{ section.settings.subheading_color }};
+              font-size: {{ section.settings.subheading_size }}px;
+              margin-bottom: {{ section.settings.subheading_margin }}px;
+            "
+          >
+            {{ section.settings.hours_heading }}
+          </h3>
+
+          <div
+            class="cs-hours-grid"
+            style="
+              font-size: {{ section.settings.hours_text_size }}px;
+              color: {{ section.settings.hours_text_color }};
+            "
+          >
+            {% for block in section.blocks %}
+              {% if block.type == 'hours' %}
+                <div class="cs-hours-row">
+                  <span class="cs-day">{{ block.settings.day }}</span>
+                  <span class="cs-time">{{ block.settings.hours }}</span>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .customer-service-section {
+    margin: 0 auto;
+  }
+
+  .customer-service-grid {
+    display: grid;
+    grid-template-columns: minmax(200px, 1fr) minmax(300px, 3fr);
+    gap: 60px;
+  }
+
+  .customer-service-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .cs-menu-link {
+    display: block;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .cs-menu-link:hover {
+    opacity: 0.7;
+  }
+
+  .cs-section {
+    margin-bottom: 40px;
+  }
+
+  .cs-contact-item {
+    margin-bottom: 30px;
+  }
+
+  .cs-hours-grid {
+    display: grid;
+    gap: 10px;
+  }
+
+  .cs-hours-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media screen and (max-width: 989px) {
+    .customer-service-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .customer-service-menu {
+      border-bottom: 1px solid {{ section.settings.mobile_divider_color }};
+      padding-bottom: 20px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Add smooth scroll for menu links
+    const menuLinks = document.querySelectorAll('.cs-menu-link');
+
+    menuLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+
+        if (href.startsWith('#')) {
+          e.preventDefault();
+          const target = document.querySelector(href);
+
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        }
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Customer Service",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Section Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Section Padding Bottom",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Menu Settings"
+    },
+    {
+      "type": "text",
+      "id": "menu_heading",
+      "label": "Menu Heading",
+      "default": "CUSTOMER SERVICE"
+    },
+    {
+      "type": "font_picker",
+      "id": "menu_font_family",
+      "label": "Menu Font Family",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "range",
+      "id": "menu_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Menu Font Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "menu_heading_size",
+      "min": 16,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Menu Heading Size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "menu_heading_margin",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Menu Heading Margin Bottom",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "menu_heading_weight",
+      "label": "Menu Heading Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "color",
+      "id": "menu_heading_color",
+      "label": "Menu Heading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "menu_text_color",
+      "label": "Menu Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "menu_link_color",
+      "label": "Menu Link Color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "menu_link_padding",
+      "min": 5,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Menu Link Padding",
+      "default": 8
+    },
+    {
+      "type": "link_list",
+      "id": "footer_menu",
+      "label": "Footer Menu",
+      "default": "footer"
+    },
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "text",
+      "id": "overview_heading",
+      "label": "Overview Heading",
+      "default": "Overview"
+    },
+    {
+      "type": "textarea",
+      "id": "overview_text",
+      "label": "Overview Text",
+      "default": "Our customer service team is available Monday-Friday 9am - 6pm. We aim to respond to each inquiry within 48 hours."
+    },
+    {
+      "type": "font_picker",
+      "id": "content_font_family",
+      "label": "Content Font Family",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "range",
+      "id": "content_heading_size",
+      "min": 16,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Content Heading Size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "content_heading_margin",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Content Heading Margin",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "content_heading_weight",
+      "label": "Content Heading Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "color",
+      "id": "content_heading_color",
+      "label": "Content Heading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "content_text_color",
+      "label": "Content Text Color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "content_text_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Content Text Size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "content_line_height",
+      "min": 1,
+      "max": 2,
+      "step": 0.1,
+      "label": "Content Line Height",
+      "default": 1.5
+    },
+    {
+      "type": "header",
+      "content": "Contact Information Settings"
+    },
+    {
+      "type": "text",
+      "id": "email_heading",
+      "label": "Email Heading",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "email_address",
+      "label": "Email Address",
+      "default": "support@example.com"
+    },
+    {
+      "type": "text",
+      "id": "phone_heading",
+      "label": "Phone Heading",
+      "default": "Telephone"
+    },
+    {
+      "type": "text",
+      "id": "phone_number",
+      "label": "Phone Number",
+      "default": "1-888-255-0640"
+    },
+    {
+      "type": "text",
+      "id": "hours_heading",
+      "label": "Hours Heading",
+      "default": "Customer Service Hours (EST)"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Subheading Size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "subheading_margin",
+      "min": 0,
+      "max": 30,
+      "step": 5,
+      "unit": "px",
+      "label": "Subheading Margin",
+      "default": 10
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "contact_link_color",
+      "label": "Contact Link Color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "contact_text_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Contact Text Size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "hours_text_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Hours Text Size",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "hours_text_color",
+      "label": "Hours Text Color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "mobile_divider_color",
+      "label": "Mobile Divider Color",
+      "default": "#E5E5E5"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "hours",
+      "name": "Business Hours",
+      "settings": [
+        {
+          "type": "text",
+          "id": "day",
+          "label": "Day",
+          "default": "Monday"
+        },
+        {
+          "type": "text",
+          "id": "hours",
+          "label": "Hours",
+          "default": "9am - 5:30pm"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Customer Service",
+      "blocks": [
+        {
+          "type": "hours",
+          "settings": {
+            "day": "Monday",
+            "hours": "9am - 5:30pm"
+          }
+        },
+        {
+          "type": "hours",
+          "settings": {
+            "day": "Tuesday",
+            "hours": "9am - 5:30pm"
+          }
+        },
+        {
+          "type": "hours",
+          "settings": {
+            "day": "Wednesday",
+            "hours": "9am - 5:30pm"
+          }
+        },
+        {
+          "type": "hours",
+          "settings": {
+            "day": "Thursday",
+            "hours": "9am - 5:30pm"
+          }
+        },
+        {
+          "type": "hours",
+          "settings": {
+            "day": "Friday",
+            "hours": "9am - 5:30pm"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

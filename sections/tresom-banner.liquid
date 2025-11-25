@@ -1,0 +1,702 @@
+{% comment %}
+  Tresom Banner Section
+  - Three-panel layout with video center and image sides
+  - Side panels: Title gets pushed up when "Découvrir" appears on hover
+  - Center panel: "Découvrir" underline only appears on hover
+  - Futura font applied to all text elements
+  - Fully responsive design for mobile and desktop
+{% endcomment %}
+
+<style>
+  .tresom-banner-container {
+    width: 100%;
+    max-width: {{ section.settings.section_width }}px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: {{ section.settings.margin_top }}px;
+    margin-bottom: {{ section.settings.margin_bottom }}px;
+  }
+
+  .tresom-banner {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: {{ section.settings.gap }}px;
+  }
+
+  .tresom-banner__panel {
+    position: relative;
+    overflow: hidden;
+    flex: 1;
+    cursor: pointer;
+  }
+
+  .tresom-banner__content {
+    position: absolute;
+    {% if section.settings.side_content_position == 'top' %}
+      top: {{ section.settings.content_padding_bottom }}px;
+      bottom: auto;
+    {% elsif section.settings.side_content_position == 'center' %}
+      top: 50%;
+      bottom: auto;
+      transform: translateY(-50%);
+    {% else %}
+      bottom: {{ section.settings.content_padding_bottom }}px;
+      top: auto;
+    {% endif %}
+    left: 0;
+    width: 100%;
+    padding: 0 {{ section.settings.content_padding_horizontal }}px;
+    color: {{ section.settings.text_color }};
+    text-align: center;
+    z-index: 2;
+  }
+
+  /* Center panel content positioning */
+  .tresom-banner__center-panel .tresom-banner__content {
+    {% if section.settings.center_content_position == 'top' %}
+      top: {{ section.settings.content_padding_bottom }}px;
+      bottom: auto;
+    {% elsif section.settings.center_content_position == 'center' %}
+      top: 50%;
+      bottom: auto;
+      transform: translateY(-50%);
+    {% else %}
+      bottom: {{ section.settings.content_padding_bottom }}px;
+      top: auto;
+    {% endif %}
+  }
+
+  .tresom-banner__heading {
+    font-family: 'Futura', {{ section.settings.heading_font_family }};
+    font-size: {{ section.settings.heading_font_size }}px;
+    font-weight: {{ section.settings.heading_font_weight }};
+    margin-bottom: 0;
+    color: {{ section.settings.heading_color }};
+    transition: transform 0.25s ease, margin-bottom 0.25s ease;
+  }
+
+  /* Push title up on hover */
+  .tresom-banner__side-panel:hover .tresom-banner__heading {
+    transform: translateY(-8px);
+    margin-bottom: 5px;
+  }
+
+  .tresom-banner__link {
+    display: inline-block;
+    font-family: 'Futura', {{ section.settings.link_font_family }};
+    font-size: {{ section.settings.link_font_size }}px;
+    color: {{ section.settings.link_color }};
+    text-decoration: none;
+    position: relative;
+    transition: color 0.3s ease;
+    padding-bottom: 2px;
+  }
+
+  .tresom-banner__link:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: {{ section.settings.link_color }};
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.25s ease-out;
+  }
+
+  .tresom-banner__link:hover:after {
+    transform: scaleX(1);
+  }
+
+  .tresom-banner__image,
+  .tresom-banner__video {
+    width: 100%;
+    height: {{ section.settings.banner_height }}px;
+    object-fit: cover;
+  }
+
+  .tresom-banner__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 50%);
+    z-index: 1;
+  }
+
+  /* Side panel hover effects with title push-up */
+  .tresom-banner__side-panel .tresom-banner__discover {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: opacity 0.25s ease, visibility 0.25s ease, transform 0.25s ease;
+  }
+
+  .tresom-banner__side-panel:hover .tresom-banner__discover {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  /* Ensure underline appears with text */
+  .tresom-banner__side-panel:hover .tresom-banner__link:after {
+    transform: scaleX(1);
+    transition-delay: 0.05s;
+  }
+
+  @media screen and (max-width: 768px) {
+    .tresom-banner {
+      flex-direction: column;
+      gap: {{ section.settings.mobile_gap }}px;
+    }
+
+    .tresom-banner__image,
+    .tresom-banner__video {
+      height: {{ section.settings.mobile_banner_height }}px;
+    }
+
+    .tresom-banner__heading {
+      font-size: {{ section.settings.mobile_heading_font_size }}px;
+    }
+
+    .tresom-banner__link {
+      font-size: {{ section.settings.mobile_link_font_size }}px;
+    }
+
+    .tresom-banner__content {
+      padding: 0 {{ section.settings.mobile_content_padding_horizontal }}px;
+      {% if section.settings.side_content_position == 'top' %}
+        top: {{ section.settings.mobile_content_padding_bottom }}px;
+        bottom: auto;
+      {% elsif section.settings.side_content_position == 'center' %}
+        top: 50%;
+        bottom: auto;
+        transform: translateY(-50%);
+      {% else %}
+        bottom: {{ section.settings.mobile_content_padding_bottom }}px;
+        top: auto;
+      {% endif %}
+    }
+
+    /* Adjust center panel content for mobile */
+    .tresom-banner__center-panel .tresom-banner__content {
+      {% if section.settings.center_content_position == 'top' %}
+        top: {{ section.settings.mobile_content_padding_bottom }}px;
+        bottom: auto;
+      {% elsif section.settings.center_content_position == 'center' %}
+        top: 50%;
+        bottom: auto;
+        transform: translateY(-50%);
+      {% else %}
+        bottom: {{ section.settings.mobile_content_padding_bottom }}px;
+        top: auto;
+      {% endif %}
+    }
+  }
+</style>
+
+<div class="tresom-banner-container">
+  <div class="tresom-banner">
+    {% comment %} Left Panel {% endcomment %}
+    <div class="tresom-banner__panel tresom-banner__side-panel">
+      <a href="{{ section.settings.left_link_url }}" class="tresom-banner__panel-link">
+        {% if section.settings.left_image != blank %}
+          <img
+            src="{{ section.settings.left_image | img_url: 'master' }}"
+            alt="{{ section.settings.left_heading }}"
+            class="tresom-banner__image"
+            loading="lazy"
+          >
+        {% else %}
+          <div class="tresom-banner__image" style="background-color: #f4f4f4;"></div>
+        {% endif %}
+
+        <div class="tresom-banner__overlay"></div>
+
+        <div class="tresom-banner__content">
+          {% if section.settings.left_heading != blank %}
+            <h2 class="tresom-banner__heading">{{ section.settings.left_heading }}</h2>
+          {% endif %}
+
+          {% if section.settings.left_link_text != blank and section.settings.left_link_url != blank %}
+            <div class="tresom-banner__discover">
+              <span class="tresom-banner__link">
+                {{ section.settings.left_link_text }}
+              </span>
+            </div>
+          {% endif %}
+        </div>
+      </a>
+    </div>
+
+    {% comment %} Center Panel (Video) {% endcomment %}
+    <div class="tresom-banner__panel tresom-banner__center-panel">
+      <a href="{{ section.settings.center_link_url }}" class="tresom-banner__panel-link">
+        {% if section.settings.center_video_url != blank %}
+          <video
+            class="tresom-banner__video"
+            autoplay
+            muted
+            loop
+            playsinline
+          >
+            <source src="{{ section.settings.center_video_url }}" type="video/mp4">
+          </video>
+        {% elsif section.settings.center_image != blank %}
+          <img
+            src="{{ section.settings.center_image | img_url: 'master' }}"
+            alt="{{ section.settings.center_heading }}"
+            class="tresom-banner__image"
+            loading="lazy"
+          >
+        {% else %}
+          <div class="tresom-banner__image" style="background-color: #f4f4f4;"></div>
+        {% endif %}
+
+        <div class="tresom-banner__overlay"></div>
+
+        <div class="tresom-banner__content">
+          {% if section.settings.center_heading != blank %}
+            <h2 class="tresom-banner__heading">{{ section.settings.center_heading }}</h2>
+          {% endif %}
+
+          {% if section.settings.center_link_text != blank and section.settings.center_link_url != blank %}
+            <span class="tresom-banner__link">
+              {{ section.settings.center_link_text }}
+            </span>
+          {% endif %}
+        </div>
+      </a>
+    </div>
+
+    {% comment %} Right Panel {% endcomment %}
+    <div class="tresom-banner__panel tresom-banner__side-panel">
+      <a href="{{ section.settings.right_link_url }}" class="tresom-banner__panel-link">
+        {% if section.settings.right_image != blank %}
+          <img
+            src="{{ section.settings.right_image | img_url: 'master' }}"
+            alt="{{ section.settings.right_heading }}"
+            class="tresom-banner__image"
+            loading="lazy"
+          >
+        {% else %}
+          <div class="tresom-banner__image" style="background-color: #f4f4f4;"></div>
+        {% endif %}
+
+        <div class="tresom-banner__overlay"></div>
+
+        <div class="tresom-banner__content">
+          {% if section.settings.right_heading != blank %}
+            <h2 class="tresom-banner__heading">{{ section.settings.right_heading }}</h2>
+          {% endif %}
+
+          {% if section.settings.right_link_text != blank and section.settings.right_link_url != blank %}
+            <div class="tresom-banner__discover">
+              <span class="tresom-banner__link">
+                {{ section.settings.right_link_text }}
+              </span>
+            </div>
+          {% endif %}
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Additional styles to fix link behavior */
+  .tresom-banner__panel-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Ensure Futura font is loaded */
+  @font-face {
+    font-family: 'Futura';
+    src: url('{{ "futura.woff2" | asset_url }}') format('woff2'),
+         url('{{ "futura.woff" | asset_url }}') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Tresom Banner",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "options": [
+        {
+          "value": "1200",
+          "label": "Standard (1200px)"
+        },
+        {
+          "value": "1400",
+          "label": "Wide (1400px)"
+        },
+        {
+          "value": "1600",
+          "label": "Extra Wide (1600px)"
+        },
+        {
+          "value": "100%",
+          "label": "Full Width"
+        }
+      ],
+      "default": "100%"
+    },
+    {
+      "type": "range",
+      "id": "banner_height",
+      "min": 300,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "label": "Banner Height",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "mobile_banner_height",
+      "min": 200,
+      "max": 600,
+      "step": 10,
+      "unit": "px",
+      "label": "Mobile Banner Height",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Gap Between Panels",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "mobile_gap",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Gap Between Panels",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Margin",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Margin",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "content_padding_horizontal",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Content Horizontal Padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "content_padding_bottom",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Content Bottom Padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_content_padding_horizontal",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Mobile Content Horizontal Padding",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_content_padding_bottom",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Mobile Content Bottom Padding",
+      "default": 30
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Content Position Settings"
+    },
+    {
+      "type": "select",
+      "id": "side_content_position",
+      "label": "Side Panels Content Position",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "bottom"
+    },
+    {
+      "type": "select",
+      "id": "center_content_position",
+      "label": "Center Panel Content Position",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Heading Settings"
+    },
+    {
+      "type": "font_picker",
+      "id": "heading_font_family",
+      "label": "Fallback Heading Font",
+      "default": "helvetica_n4",
+      "info": "Futura will be used if available, otherwise this font will be used"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "min": 16,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading Font Size",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_font_size",
+      "min": 14,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Heading Font Size",
+      "default": 22
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight",
+      "label": "Heading Font Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semibold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Link Settings"
+    },
+    {
+      "type": "font_picker",
+      "id": "link_font_family",
+      "label": "Fallback Link Font",
+      "default": "helvetica_n4",
+      "info": "Futura will be used if available, otherwise this font will be used"
+    },
+    {
+      "type": "range",
+      "id": "link_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Link Font Size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "mobile_link_font_size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Mobile Link Font Size",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Left Panel"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_image",
+      "label": "Left Image"
+    },
+    {
+      "type": "text",
+      "id": "left_heading",
+      "label": "Left Heading",
+      "default": "Dior Caro Bucket"
+    },
+    {
+      "type": "text",
+      "id": "left_link_text",
+      "label": "Left Link Text",
+      "default": "Découvrir"
+    },
+    {
+      "type": "url",
+      "id": "left_link_url",
+      "label": "Left Link URL"
+    },
+    {
+      "type": "header",
+      "content": "Center Panel"
+    },
+    {
+      "type": "image_picker",
+      "id": "center_image",
+      "label": "Center Image (Fallback if no video)"
+    },
+    {
+      "type": "url",
+      "id": "center_video_url",
+      "label": "Center Video URL (MP4)",
+      "info": "Upload your MP4 video to Shopify Files and paste the URL here"
+    },
+    {
+      "type": "text",
+      "id": "center_heading",
+      "label": "Center Heading",
+      "default": "Nouveaux sacs : symboles d'excellence"
+    },
+    {
+      "type": "text",
+      "id": "center_link_text",
+      "label": "Center Link Text",
+      "default": "Découvrir"
+    },
+    {
+      "type": "url",
+      "id": "center_link_url",
+      "label": "Center Link URL"
+    },
+    {
+      "type": "header",
+      "content": "Right Panel"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_image",
+      "label": "Right Image"
+    },
+    {
+      "type": "text",
+      "id": "right_heading",
+      "label": "Right Heading",
+      "default": "Nano Dior Toujours Vertical"
+    },
+    {
+      "type": "text",
+      "id": "right_link_text",
+      "label": "Right Link Text",
+      "default": "Découvrir"
+    },
+    {
+      "type": "url",
+      "id": "right_link_url",
+      "label": "Right Link URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Tresom Banner",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

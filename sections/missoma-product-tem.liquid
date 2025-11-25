@@ -1,0 +1,1792 @@
+<div
+  class="missoma-product-section"
+  data-section-id="{{ section.id }}"
+  data-section-type="product"
+  style="margin-top: {{ section.settings.top_margin }}px; margin-bottom: {{ section.settings.bottom_margin }}px;"
+>
+  <div class="missoma-product-container">
+    <div class="missoma-product-gallery">
+      <div class="missoma-product-gallery__main">
+        {% if product.images.size > 0 %}
+          <div class="missoma-product-gallery__slider">
+            {% for image in product.images %}
+              <div class="missoma-product-gallery__slide">
+                <img
+                  src="{{ image | img_url: '1000x' }}"
+                  alt="{{ image.alt | escape }}"
+                  class="missoma-product-gallery__image"
+                  data-index="{{ forloop.index0 }}"
+                  loading="{{ forloop.first | ternary: 'eager', 'lazy' }}"
+                  style=" aspect-ratio : 1;"
+                >
+              </div>
+            {% endfor %}
+          </div>
+
+          <div class="missoma-product-gallery__nav">
+            <button
+              class="missoma-product-gallery__nav-button missoma-product-gallery__nav-prev"
+              aria-label="Previous image"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            <div class="missoma-product-gallery__counter">
+              <span class="missoma-product-gallery__current">1</span> /
+              <span class="missoma-product-gallery__total">{{ product.images.size }}</span>
+            </div>
+            <button
+              class="missoma-product-gallery__nav-button missoma-product-gallery__nav-next"
+              aria-label="Next image"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Carousel dots for desktop -->
+          <div class="missoma-product-gallery__dots">
+            {% for image in product.images %}
+              <button
+                class="missoma-product-gallery__dot{% if forloop.first %} missoma-product-gallery__dot--active{% endif %}"
+                data-index="{{ forloop.index0 }}"
+                aria-label="View image {{ forloop.index }}"
+              ></button>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="missoma-product-gallery__placeholder">
+            {{ 'product-1' | placeholder_svg_tag: 'missoma-product-gallery__placeholder-svg' }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="missoma-product-details">
+      <h1 class="missoma-product-title">{{ product.title }}</h1>
+
+      <div class="missoma-product-price">
+  {%- assign v = product.selected_or_first_available_variant -%}
+
+  <span class="visually-hidden visually-hidden--inline">
+    {{ 'products.product.price.regular_price' | t }}
+  </span>
+{% comment %}
+  
+
+      <span
+        class="missoma-product-price__compare"
+        style="{% if v.compare_at_price <= v.price or v.compare_at_price == blank %}display:none{% endif %}; font-size:20px; font-weight:500; color:#000; margin-right:10px;"
+      >
+        <s class="price-item price-item--regular">
+          {{ v.compare_at_price | money }}
+        </s>
+      </span>
+{% endcomment %}
+  <span class="missoma-product-price__amount">
+    {{ v.price | money }}
+  </span>
+</div>
+
+
+      {% if section.settings.show_reviews %}
+        <div class="missoma-product-rating">
+          <div class="missoma-product-rating__stars">
+            {% for i in (1..5) %}
+              <span class="missoma-product-rating__star">★</span>
+            {% endfor %}
+          </div>
+          <span class="missoma-product-rating__count"
+            >({{ product.metafields.reviews.rating_count | default: 0 }})</span
+          >
+        </div>
+      {% endif %}
+{% comment %}
+      <div class="missoma-product-short-description">
+        <p>{{ product.description | strip_html | truncatewords: 30 }}</p>
+        <a href="#product-details-tab" class="missoma-product-description__read-more">
+          {{- section.settings.read_more_text -}}
+        </a>
+      </div>
+{% endcomment %}
+
+
+      <div class="missoma-product-options" >
+        <div class="missoma-product-options__header" {% if product.has_only_default_variant %}style="display: none;"{% endif %}>
+          <span class="missoma-product-options__label">{{ section.settings.choose_option_text }}</span>
+          {% if section.settings.show_size_guide %}
+            <a href="{{ section.settings.size_guide_url }}" class="missoma-product-options__size-guide">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3 3H21V21H3V3Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"/>
+                <path d="M8.5 10L15.5 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                <path d="M8.5 14L15.5 14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+              </svg>
+              {{ section.settings.size_guide_text }}
+            </a>
+          {% endif %}
+        </div>
+
+        <form
+          method="post"
+          action="/cart/add"
+          id="product-form-{{ section.id }}"
+          accept-charset="UTF-8"
+          class="missoma-product-form"
+          enctype="multipart/form-data"
+        >
+          <input type="hidden" name="form_type" value="product">
+          <input type="hidden" name="utf8" value="✓">
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+
+          {% for option in product.options_with_values %}
+            <div class="missoma-product-options__option" data-option-index="{{ forloop.index0 }}" {% if product.has_only_default_variant %}style="display: none;"{% endif %}>
+              <div class="missoma-product-options__selector" data-option-name="{{ option.name | handleize }}">
+                <div class="missoma-product-options__selected">
+                  <span class="missoma-product-options__selected-text">{{ option.selected_value }}</span>
+                  <svg
+                    class="missoma-product-options__arrow"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M9 6L15 12L9 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+  
+          <button
+            type="submit"
+            name="add"
+            class="missoma-product-form__submit"
+            {% unless product.available %}
+              disabled="disabled"
+            {% endunless %}
+          >
+            <span class="missoma-product-form__submit-text">
+              {% if product.available %}
+                {{ section.settings.add_to_cart_text | default: 'Add To Bag' }}
+              {% else %}
+                {{ 'products.product.sold_out' | t }}
+              {% endif %}
+            </span>
+            <span class="missoma-product-form__submit-loading">
+              <svg class="missoma-product-form__loading-icon" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.542 1.487A21.507 21.507 0 00.5 22c0 11.874 9.626 21.5 21.5 21.5 9.847 0 18.364-6.675 20.809-16.072a1.5 1.5 0 00-2.904-.756C37.803 34.755 30.473 40.5 22 40.5 11.783 40.5 3.5 32.217 3.5 22c0-8.137 5.3-15.247 12.942-17.65a1.5 1.5 0 10-.9-2.863z" fill="currentColor"/>
+              </svg>
+            </span>
+          </button>
+                  <!-- Maintenance notice under the Add to Cart button -->
+          <div class="dev-notice dev-notice--product" role="status" aria-live="polite">
+            <span class="dev-notice__icon" aria-hidden="true">⚠️</span>
+            <span class="dev-notice__text">
+              <strong>Site en maintenance :</strong>
+              certaines informations, notamment les prix, peuvent être inexactes.
+              Merci de confirmer le tarif via
+              <a class="dev-notice__link" href="https://wa.me/212656260117" target="_blank" rel="noopener">WhatsApp</a>
+              avant toute commande.
+            </span>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="missoma-product-tabs" id="product-details-tab">
+        <div class="missoma-product-tab" data-tab="details">
+          <button class="missoma-product-tab__header">
+            <span class="missoma-product-tab__title">{{ section.settings.product_details_title }}</span>
+          </button>
+          <div class="missoma-product-tab__content">
+            <div class="missoma-product-tab__content-inner">
+              {{ product.description | default: section.settings.product_details | newline_to_br }}
+            </div>
+          </div>
+        </div>
+
+        <div class="missoma-product-tab" data-tab="care">
+          <button class="missoma-product-tab__header">
+            <span class="missoma-product-tab__title">{{ section.settings.care_title }}</span>
+          </button>
+          <div class="missoma-product-tab__content">
+            <div class="missoma-product-tab__content-inner">
+              {{ product.metafields.product.care | default: section.settings.care_instructions | newline_to_br }}
+            </div>
+          </div>
+        </div>
+{% comment %} Extra drawer: Conditions générales (metafield + fallback) {% endcomment %}
+<div class="missoma-product-tab" data-tab="conditions">
+  <button class="missoma-product-tab__header">
+    <span class="missoma-product-tab__title">
+      {{ section.settings.conditions_title }}
+    </span>
+  </button>
+  <div class="missoma-product-tab__content">
+    <div class="missoma-product-tab__content-inner">
+      {{
+        product.metafields.product.conditions_generales
+        | default: section.settings.conditions_info
+        | newline_to_br
+      }}
+    </div>
+  </div>
+</div>
+
+        <div class="missoma-product-tab" data-tab="sustainability">
+          <button class="missoma-product-tab__header">
+            <span class="missoma-product-tab__title">{{ section.settings.sustainability_title }}</span>
+          </button>
+          <div class="missoma-product-tab__content">
+            <div class="missoma-product-tab__content-inner">
+              {{
+                product.metafields.product.sustainability
+                | default: section.settings.sustainability_info
+                | newline_to_br
+              }}
+            </div>
+          </div>
+        </div>
+
+        <div class="missoma-product-tab" data-tab="shipping">
+          <button class="missoma-product-tab__header">
+            <span class="missoma-product-tab__title">{{ section.settings.shipping_title }}</span>
+          </button>
+          <div class="missoma-product-tab__content">
+            <div class="missoma-product-tab__content-inner">
+              {{ product.metafields.product.shipping | default: section.settings.shipping_info | newline_to_br }}
+            </div>
+          </div>
+        </div>
+
+        {% if section.settings.show_reviews %}
+          <div class="missoma-product-tab" data-tab="reviews">
+            <button class="missoma-product-tab__header">
+              <span class="missoma-product-tab__title">
+                {{- section.settings.reviews_title }} ({{ product.metafields.reviews.rating_count | default: 0 }})</span
+              >
+            </button>
+            <div class="missoma-product-tab__content">
+              <div class="missoma-product-tab__content-inner">
+                {% if section.settings.enable_reviews %}
+                  <div id="missoma-product-reviews">
+                    <!-- Reviews content will be loaded here -->
+                    {% if product.metafields.reviews.rating_count == 0
+                      or product.metafields.reviews.rating_count == null
+                    %}
+                      <p>{{ section.settings.no_reviews_text }}</p>
+                    {% endif %}
+                  </div>
+                {% else %}
+                  <p>{{ section.settings.reviews_disabled_text }}</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Cart Drawer -->
+<div class="missoma-cart-drawer">
+  <div class="missoma-cart-drawer__overlay"></div>
+  <div class="missoma-cart-drawer__content">
+    <div class="missoma-cart-drawer__header">
+      <h2 class="missoma-cart-drawer__title">{{ section.settings.cart_drawer_title }}</h2>
+      <button class="missoma-cart-drawer__close" aria-label="Close cart">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="missoma-cart-drawer__body">
+      <div class="missoma-cart-drawer__empty" style="display: none;">
+        <p>{{ section.settings.empty_cart_text }}</p>
+      </div>
+
+      <div class="missoma-cart-drawer__items">
+        <!-- Cart items will be loaded here -->
+      </div>
+    </div>
+
+    <div class="missoma-cart-drawer__footer">
+      <div class="missoma-cart-drawer__subtotal">
+        <span class="missoma-cart-drawer__subtotal-label">{{ section.settings.subtotal_text }}</span>
+        <span class="missoma-cart-drawer__subtotal-value">{{ cart.total_price | money }}</span>
+      </div>
+
+      <a href="/cart" class="missoma-cart-drawer__checkout-button">
+        {{ section.settings.checkout_text }}
+      </a>
+
+      <a href="/cart" class="missoma-cart-drawer__view-cart">
+        {{ section.settings.view_cart_text }}
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Variant Selection Drawer -->
+<div class="missoma-variant-drawer">
+  <div class="missoma-variant-drawer__overlay"></div>
+  <div class="missoma-variant-drawer__content">
+    <div class="missoma-variant-drawer__header">
+      <h2 class="missoma-variant-drawer__title">
+        Sélectionner <span class="missoma-variant-drawer__option-name"></span>
+      </h2>
+      <button class="missoma-variant-drawer__close" aria-label="Close variant selection">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="missoma-variant-drawer__body">
+      <div class="missoma-variant-drawer__options">
+        <!-- Variant options will be loaded here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Warning style */
+/* Maintenance notice (product) */
+.dev-notice{
+  display:flex; align-items:flex-start; gap:10px;
+  background:#fff3cd; color:#5c4700; border:1px solid #ffe8a1;
+  padding:12px 14px; border-radius:8px; font-size:14px; line-height:1.5;
+  margin-top:12px; word-break:break-word;
+}
+.dev-notice__icon{ font-size:18px; line-height:1; margin-top:1px; }
+.dev-notice__link{ color:inherit; text-decoration:underline; }
+@media (max-width:480px){
+  .dev-notice{ font-size:13px; padding:10px 12px; }
+}
+  
+
+
+
+
+  /* Base styles for the Missoma product section */
+  .missoma-product-section {
+    font-family: {{ section.settings.font_family }}, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    max-width: {{ section.settings.container_width }}px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 20px;
+  }
+
+  .missoma-product-container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Product Gallery */
+  .missoma-product-gallery {
+    width: 100%;
+    position: relative;
+    margin-bottom: 30px;
+  }
+
+  .missoma-product-gallery__slider {
+    position: relative;
+    overflow: hidden;
+    background-color: {{ section.settings.gallery_background_color }};
+  }
+
+  .missoma-product-gallery__slide {
+    width: 100%;
+    display: none;
+    text-align: center;
+  }
+
+  .missoma-product-gallery__slide:first-child {
+    display: block;
+  }
+
+  .missoma-product-gallery__image {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 600px;
+    object-fit: contain;
+    margin: 0 auto;
+  }
+
+  .missoma-product-gallery__nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  .missoma-product-gallery__nav-button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    color: {{ section.settings.nav_button_color }};
+  }
+
+  .missoma-product-gallery__counter {
+    font-size: 14px;
+  }
+
+  /* Carousel dots */
+  .missoma-product-gallery__dots {
+    display: none;
+    justify-content: center;
+    margin-top: 15px;
+    gap: 8px;
+  }
+
+  .missoma-product-gallery__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #d4d4d4;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .missoma-product-gallery__dot--active {
+    background-color: #000000;
+  }
+
+  /* Product Details */
+  .missoma-product-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 0 15px;
+    letter-spacing: 0.5px;
+    color: {{ section.settings.title_color }};
+  }
+
+  .missoma-product-price {
+    margin-bottom: 15px;
+  }
+
+  .missoma-product-price__amount {
+    font-size: 20px;
+    font-weight: 500;
+    color: {{ section.settings.price_color }};
+  }
+
+  .missoma-product-rating {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  .missoma-product-rating__stars {
+    display: flex;
+    margin-right: 5px;
+  }
+
+  .missoma-product-rating__star {
+    color: {{ section.settings.star_color }};
+    font-size: 16px;
+  }
+
+  .missoma-product-rating__count {
+    font-size: 14px;
+    color: #666;
+  }
+
+  .missoma-product-short-description {
+    margin-bottom: 25px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: {{ section.settings.text_color }};
+  }
+
+  .missoma-product-description__read-more {
+    display: inline-block;
+    color: {{ section.settings.link_color }};
+    text-decoration: underline;
+    font-weight: 500;
+    margin-top: 5px;
+  }
+
+  /* Product Options */
+  .missoma-product-options {
+    margin-bottom: 30px;
+  }
+
+  .missoma-product-options__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  .missoma-product-options__label {
+    font-weight: 500;
+    color: {{ section.settings.text_color }};
+  }
+
+  .missoma-product-options__size-guide {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: {{ section.settings.link_color }};
+    font-size: 14px;
+  }
+
+  .missoma-product-options__size-guide svg {
+    margin-right: 5px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .missoma-product-options__option {
+    margin-bottom: 10px;
+  }
+
+  .missoma-product-options__selector {
+    position: relative;
+  }
+
+  .missoma-product-options__selected {
+    border: 1px solid {{ section.settings.border_color }};
+    padding: 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: {{ section.settings.option_background_color }};
+  }
+
+  .missoma-product-options__selected-text {
+    font-weight: 400;
+  }
+
+  .missoma-product-options__arrow {
+    width: 16px;
+    height: 16px;
+  }
+
+  .missoma-product-form__submit {
+    width: 100%;
+    background-color: {{ section.settings.button_background_color }};
+    color: {{ section.settings.button_text_color }};
+    border: none;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .missoma-product-form__submit:hover {
+    background-color: {{ section.settings.button_hover_color }};
+  }
+
+  .missoma-product-form__submit:disabled {
+    background-color: {{ section.settings.button_disabled_color }};
+    cursor: not-allowed;
+  }
+
+  .missoma-product-form__submit-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: {{ section.settings.button_background_color }};
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+  }
+
+  .missoma-product-form__submit--loading .missoma-product-form__submit-text {
+    opacity: 0;
+  }
+
+  .missoma-product-form__submit--loading .missoma-product-form__submit-loading {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .missoma-product-form__loading-icon {
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Product Tabs */
+  .missoma-product-tabs {
+    margin-top: 40px;
+  }
+
+  .missoma-product-tab {
+    border-bottom: 1px solid {{ section.settings.border_color }};
+  }
+
+  .missoma-product-tab__header {
+    width: 100%;
+    background: transparent;
+    border: none;
+    text-align: left;
+    padding: 15px 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    color: {{ section.settings.text_color }};
+  }
+
+  .missoma-product-tab__header::after {
+    content: '+';
+    position: absolute;
+    right: 0;
+    font-size: 20px;
+    transition: transform 0.3s;
+  }
+
+  .missoma-product-tab--active .missoma-product-tab__header::after {
+    transform: rotate(45deg);
+  }
+
+  .missoma-product-tab__title {
+    font-weight: 500;
+  }
+
+  .missoma-product-tab__content {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.3s;
+  }
+
+  .missoma-product-tab--active .missoma-product-tab__content {
+    height: auto;
+  }
+
+  .missoma-product-tab__content-inner {
+    padding: 0 0 15px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: {{ section.settings.text_color }};
+  }
+
+  /* Cart Drawer */
+  .missoma-cart-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    visibility: hidden;
+  }
+
+  .missoma-cart-drawer--active {
+    visibility: visible;
+  }
+
+  .missoma-cart-drawer__overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .missoma-cart-drawer--active .missoma-cart-drawer__overlay {
+    opacity: 1;
+  }
+
+  .missoma-cart-drawer__content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 400px;
+    background-color: {{ section.settings.drawer_background_color }};
+    transform: translateX(100%);
+    transition: transform 0.3s;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .missoma-cart-drawer--active .missoma-cart-drawer__content {
+    transform: translateX(0);
+  }
+
+  .missoma-cart-drawer__header {
+    padding: 20px;
+    border-bottom: 1px solid {{ section.settings.border_color }};
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .missoma-cart-drawer__title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: {{ section.settings.text_color }};
+  }
+
+  .missoma-cart-drawer__close {
+    background: transparent;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    color: {{ section.settings.text_color }};
+  }
+
+  .missoma-cart-drawer__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+
+  .missoma-cart-drawer__empty {
+    text-align: center;
+    padding: 30px 0;
+    color: {{ section.settings.text_color }};
+  }
+
+  .missoma-cart-drawer__items {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .missoma-cart-drawer__item {
+    display: flex;
+    gap: 15px;
+  }
+
+  .missoma-cart-drawer__item-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+  }
+
+  .missoma-cart-drawer__item-details {
+    flex: 1;
+  }
+
+  .missoma-cart-drawer__item-title {
+    margin: 0 0 5px;
+    font-size: 14px;
+    font-weight: 500;
+    color: {{ section.settings.text_color }};
+  }
+
+  .missoma-cart-drawer__item-variant {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+  }
+
+  .missoma-cart-drawer__item-price {
+    font-size: 14px;
+    font-weight: 500;
+    color: {{ section.settings.price_color }};
+  }
+
+  .missoma-cart-drawer__item-remove {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 12px;
+    text-decoration: underline;
+    color: {{ section.settings.link_color }};
+    margin-top: 5px;
+  }
+
+  .missoma-cart-drawer__footer {
+    padding: 20px;
+    border-top: 1px solid {{ section.settings.border_color }};
+  }
+
+  .missoma-cart-drawer__subtotal {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    font-weight: 500;
+    color: {{ section.settings.text_color }};
+  }
+
+  .missoma-cart-drawer__checkout-button {
+    display: block;
+    width: 100%;
+    background-color: {{ section.settings.button_background_color }};
+    color: {{ section.settings.button_text_color }};
+    border: none;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    margin-bottom: 10px;
+    transition: background-color 0.2s;
+  }
+
+  .missoma-cart-drawer__checkout-button:hover {
+    background-color: {{ section.settings.button_hover_color }};
+  }
+
+  .missoma-cart-drawer__view-cart {
+    display: block;
+    text-align: center;
+    color: {{ section.settings.link_color }};
+    text-decoration: underline;
+    font-size: 14px;
+  }
+
+  /* Variant Selection Drawer */
+  .missoma-variant-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    visibility: hidden;
+  }
+
+  .missoma-variant-drawer--active {
+    visibility: visible;
+  }
+
+  .missoma-variant-drawer__overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .missoma-variant-drawer--active .missoma-variant-drawer__overlay {
+    opacity: 1;
+  }
+
+  .missoma-variant-drawer__content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 400px;
+    background-color: {{ section.settings.drawer_background_color }};
+    transform: translateX(100%);
+    transition: transform 0.3s;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .missoma-variant-drawer--active .missoma-variant-drawer__content {
+    transform: translateX(0);
+  }
+
+  .missoma-variant-drawer__header {
+    padding: 20px;
+    border-bottom: 1px solid {{ section.settings.border_color }};
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .missoma-variant-drawer__title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: {{ section.settings.text_color }};
+  }
+
+  .missoma-variant-drawer__close {
+    background: transparent;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    color: {{ section.settings.text_color }};
+  }
+
+  .missoma-variant-drawer__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+
+  .missoma-variant-drawer__options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .missoma-variant-drawer__option {
+    border: 1px solid {{ section.settings.border_color }};
+    padding: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .missoma-variant-drawer__option:hover {
+    background-color: {{ section.settings.option_hover_color }};
+  }
+
+  .missoma-variant-drawer__option--selected {
+    border-color: {{ section.settings.text_color }};
+    background-color: {{ section.settings.option_selected_color }};
+  }
+
+  /* Responsive styles */
+  @media (min-width: 768px) {
+    .missoma-product-container {
+      flex-direction: row;
+      gap: 50px;
+      align-items: flex-start;
+    }
+
+    .missoma-product-gallery {
+      width: 55%;
+      margin-bottom: 0;
+      position: sticky;
+      top: 20px;
+    }
+
+    .missoma-product-details {
+      width: 45%;
+    }
+
+    .missoma-product-title {
+      font-size: 28px;
+    }
+
+    .missoma-cart-drawer__content,
+    .missoma-variant-drawer__content {
+      max-width: 450px;
+    }
+
+    .missoma-product-gallery__image {
+      max-height: 800px;
+    }
+
+    /* Desktop carousel styles */
+    .missoma-product-gallery__dots {
+      display: flex;
+    }
+
+    .missoma-product-gallery__slide {
+      display: none;
+    }
+
+    .missoma-product-gallery__slide:first-child {
+      display: block;
+    }
+
+    .missoma-product-gallery__nav {
+      display: flex;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .missoma-product-gallery__image {
+      max-height: 400px;
+    }
+  }
+  .missoma-product-form__submit {
+    display: none !important;
+}
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const sectionId = '{{ section.id }}';
+    const productSection = document.querySelector(`[data-section-id="${sectionId}"]`);
+    
+    if (!productSection) return;
+    
+    // Product Gallery Slider
+    const initGallery = () => {
+      const slider = productSection.querySelector('.missoma-product-gallery__slider');
+      const slides = productSection.querySelectorAll('.missoma-product-gallery__slide');
+      const prevBtn = productSection.querySelector('.missoma-product-gallery__nav-prev');
+      const nextBtn = productSection.querySelector('.missoma-product-gallery__nav-next');
+      const currentEl = productSection.querySelector('.missoma-product-gallery__current');
+      const dots = productSection.querySelectorAll('.missoma-product-gallery__dot');
+      
+      if (!slider || slides.length <= 1) return;
+      
+      let currentIndex = 0;
+      
+      // Show the current slide
+      const showSlide = (index) => {
+        slides.forEach((slide, i) => {
+          slide.style.display = i === index ? 'block' : 'none';
+        });
+        
+        if (currentEl) {
+          currentEl.textContent = index + 1;
+        }
+        
+        // Update dots
+        dots.forEach((dot, i) => {
+          if (i === index) {
+            dot.classList.add('missoma-product-gallery__dot--active');
+          } else {
+            dot.classList.remove('missoma-product-gallery__dot--active');
+          }
+        });
+      };
+      
+      // Initialize the slider
+      showSlide(currentIndex);
+      
+      // Event listeners for navigation
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+          currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+          showSlide(currentIndex);
+        });
+      }
+      
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          currentIndex = (currentIndex + 1) % slides.length;
+          showSlide(currentIndex);
+        });
+      }
+      
+      // Dot navigation
+      dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => {
+          currentIndex = i;
+          showSlide(currentIndex);
+        });
+      });
+      
+      // Touch swipe functionality
+      let touchStartX = 0;
+      let touchEndX = 0;
+      
+      slider.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+      }, { passive: true });
+      
+      slider.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      }, { passive: true });
+      
+      const handleSwipe = () => {
+        const threshold = 50;
+        if (touchEndX < touchStartX - threshold) {
+          // Swipe left
+          currentIndex = (currentIndex + 1) % slides.length;
+          showSlide(currentIndex);
+        } else if (touchEndX > touchStartX + threshold) {
+          // Swipe right
+          currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+          showSlide(currentIndex);
+        }
+      };
+    };
+    
+    // Product Tabs
+    const initTabs = () => {
+      const tabs = productSection.querySelectorAll('.missoma-product-tab');
+      
+      tabs.forEach(tab => {
+        const header = tab.querySelector('.missoma-product-tab__header');
+        const content = tab.querySelector('.missoma-product-tab__content');
+        
+        if (!header || !content) return;
+        
+        header.addEventListener('click', () => {
+          const isActive = tab.classList.contains('missoma-product-tab--active');
+          
+          // Close all tabs
+          tabs.forEach(t => {
+            t.classList.remove('missoma-product-tab--active');
+            const c = t.querySelector('.missoma-product-tab__content');
+            if (c) c.style.height = '0';
+          });
+          
+          // Open the clicked tab if it wasn't already active
+          if (!isActive) {
+            tab.classList.add('missoma-product-tab--active');
+            content.style.height = content.scrollHeight + 'px';
+          }
+        });
+      });
+      
+      // Open the first tab by default
+      if (tabs.length > 0) {
+        const firstTab = tabs[0];
+        const firstContent = firstTab.querySelector('.missoma-product-tab__content');
+        
+        if (firstContent) {
+          firstTab.classList.add('missoma-product-tab--active');
+          firstContent.style.height = firstContent.scrollHeight + 'px';
+        }
+      }
+    };
+    
+    // Variant Selection Drawer
+    const initVariantDrawer = () => {
+  const variantDrawer = document.querySelector('.missoma-variant-drawer');
+  const variantDrawerOverlay = document.querySelector('.missoma-variant-drawer__overlay');
+  const variantDrawerClose = document.querySelector('.missoma-variant-drawer__close');
+  const variantSelectors = productSection.querySelectorAll('.missoma-product-options__selector');
+  const variantOptions = document.querySelector('.missoma-variant-drawer__options');
+  const variantOptionName = document.querySelector('.missoma-variant-drawer__option-name');
+  const variantIdInput = productSection.querySelector('input[name="id"]');
+  
+  if (!variantDrawer || !variantSelectors.length) return;
+  
+  // Get the product variants
+  const productVariants = {{ product.variants | json }};
+  const productOptions = {{ product.options_with_values | json }};
+  
+  // Initialize variant selectors
+  variantSelectors.forEach((selector, optionIndex) => {
+    const selected = selector.querySelector('.missoma-product-options__selected');
+    
+    // Open variant drawer on click
+    selected.addEventListener('click', () => {
+      if (variantOptionName) {
+        variantOptionName.textContent = productOptions[optionIndex].name;
+      }
+      
+      if (variantOptions) {
+        variantOptions.innerHTML = '';
+        
+        productOptions[optionIndex].values.forEach(value => {
+          const option = document.createElement('div');
+          option.className = 'missoma-variant-drawer__option';
+          option.setAttribute('data-value', value);
+          
+          if (selected.querySelector('.missoma-product-options__selected-text').textContent === value) {
+            option.classList.add('missoma-variant-drawer__option--selected');
+          }
+          
+          option.textContent = value;
+          
+          // Handle option selection
+          option.addEventListener('click', () => {
+            selected.querySelector('.missoma-product-options__selected-text').textContent = value;
+            variantDrawer.classList.remove('missoma-variant-drawer--active');
+            
+            const selectedOptions = [];
+            productSection.querySelectorAll('.missoma-product-options__selected-text').forEach((el, i) => {
+              selectedOptions[i] = el.textContent;
+            });
+            
+            const matchingVariant = productVariants.find(variant => {
+              return variant.options.every((opt, i) => opt === selectedOptions[i]);
+            });
+            
+            if (matchingVariant) {
+              variantIdInput.value = matchingVariant.id;
+              
+              // ► Update main price
+              const priceElement = productSection.querySelector('.missoma-product-price__amount');
+              if (priceElement && matchingVariant.price) {
+                priceElement.textContent = formatMoney(matchingVariant.price);
+              }
+
+              // ► Update compare-at price
+              const compareWrap = productSection.querySelector('.missoma-product-price__compare');
+              if (compareWrap) {
+                const shouldShow =
+                  matchingVariant.compare_at_price &&
+                  Number(matchingVariant.compare_at_price) > Number(matchingVariant.price);
+
+                if (shouldShow) {
+                  const sEl = compareWrap.querySelector('.price-item');
+                  if (sEl) sEl.textContent = formatMoney(matchingVariant.compare_at_price);
+                  compareWrap.style.display = 'inline';
+                } else {
+                  compareWrap.style.display = 'none';
+                }
+              }
+              
+              // Availability
+              const submitButton = productSection.querySelector('.missoma-product-form__submit');
+              if (submitButton) {
+                if (matchingVariant.available) {
+                  submitButton.disabled = false;
+                  submitButton.querySelector('.missoma-product-form__submit-text').textContent = 
+                    '{{ section.settings.add_to_cart_text | default: "Add To Bag" }}';
+                } else {
+                  submitButton.disabled = true;
+                  submitButton.querySelector('.missoma-product-form__submit-text').textContent = 
+                    '{{ "products.product.sold_out" | t }}';
+                }
+              }
+              
+              // Featured image
+              if (matchingVariant.featured_image) {
+                const slides = productSection.querySelectorAll('.missoma-product-gallery__slide');
+                const dots = productSection.querySelectorAll('.missoma-product-gallery__dot');
+                const variantImageIndex = matchingVariant.featured_image.position - 1;
+                
+                if (slides.length > variantImageIndex) {
+                  slides.forEach((slide, i) => {
+                    slide.style.display = i === variantImageIndex ? 'block' : 'none';
+                  });
+                  
+                  dots.forEach((dot, i) => {
+                    dot.classList.toggle('missoma-product-gallery__dot--active', i === variantImageIndex);
+                  });
+                  
+                  const currentEl = productSection.querySelector('.missoma-product-gallery__current');
+                  if (currentEl) {
+                    currentEl.textContent = variantImageIndex + 1;
+                  }
+                }
+              }
+            }
+          });
+          
+          variantOptions.appendChild(option);
+        });
+      }
+      
+      variantDrawer.classList.add('missoma-variant-drawer--active');
+    });
+  });
+  
+  if (variantDrawerOverlay) {
+    variantDrawerOverlay.addEventListener('click', () => {
+      variantDrawer.classList.remove('missoma-variant-drawer--active');
+    });
+  }
+  
+  if (variantDrawerClose) {
+    variantDrawerClose.addEventListener('click', () => {
+      variantDrawer.classList.remove('missoma-variant-drawer--active');
+    });
+  }
+};
+
+    
+    // Cart Drawer
+    const initCartDrawer = () => {
+      const cartDrawer = document.querySelector('.missoma-cart-drawer');
+      const cartDrawerOverlay = document.querySelector('.missoma-cart-drawer__overlay');
+      const cartDrawerClose = document.querySelector('.missoma-cart-drawer__close');
+      const addToCartForm = productSection.querySelector('.missoma-product-form');
+      const addToCartButton = productSection.querySelector('.missoma-product-form__submit');
+      
+      if (!cartDrawer || !addToCartForm) return;
+      
+      // Open cart drawer when adding to cart
+      addToCartForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Show loading state
+        addToCartButton.classList.add('missoma-product-form__submit--loading');
+        
+        // Get form data
+        const formData = new FormData(addToCartForm);
+        
+        // Add to cart via AJAX
+        fetch('/cart/add.js', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Update cart drawer content
+          updateCartDrawer();
+          
+          // Open cart drawer
+          cartDrawer.classList.add('missoma-cart-drawer--active');
+          
+          // Remove loading state
+          addToCartButton.classList.remove('missoma-product-form__submit--loading');
+        })
+        .catch(error => {
+          console.error('Error adding to cart:', error);
+          addToCartButton.classList.remove('missoma-product-form__submit--loading');
+        });
+      });
+      
+      // Close cart drawer when clicking overlay or close button
+      if (cartDrawerOverlay) {
+        cartDrawerOverlay.addEventListener('click', () => {
+          cartDrawer.classList.remove('missoma-cart-drawer--active');
+        });
+      }
+      
+      if (cartDrawerClose) {
+        cartDrawerClose.addEventListener('click', () => {
+          cartDrawer.classList.remove('missoma-cart-drawer--active');
+        });
+      }
+      
+      // Update cart drawer content
+      const updateCartDrawer = () => {
+        fetch('/cart.js')
+          .then(response => response.json())
+          .then(cart => {
+            const cartItemsContainer = document.querySelector('.missoma-cart-drawer__items');
+            const cartEmpty = document.querySelector('.missoma-cart-drawer__empty');
+            const subtotalValue = document.querySelector('.missoma-cart-drawer__subtotal-value');
+            
+            if (!cartItemsContainer || !cartEmpty || !subtotalValue) return;
+            
+            // Update subtotal - fixed to avoid HTML tags showing
+            subtotalValue.textContent = formatMoney(cart.total_price);
+            
+            // Check if cart is empty
+            if (cart.item_count === 0) {
+              cartItemsContainer.style.display = 'none';
+              cartEmpty.style.display = 'block';
+              return;
+            }
+            
+            // Show cart items
+            cartItemsContainer.style.display = 'block';
+            cartEmpty.style.display = 'none';
+            
+            // Clear current items
+            cartItemsContainer.innerHTML = '';
+            
+            // Add each item to the drawer
+            cart.items.forEach(item => {
+              const itemElement = document.createElement('div');
+              itemElement.className = 'missoma-cart-drawer__item';
+              
+              // Fixed to avoid HTML tags showing in price
+              const formattedPrice = formatMoney(item.price);
+              
+              itemElement.innerHTML = `
+                <img class="missoma-cart-drawer__item-image" src="${item.image}" alt="${item.title}">
+                <div class="missoma-cart-drawer__item-details">
+                  <h3 class="missoma-cart-drawer__item-title">${item.product_title}</h3>
+                  <div class="missoma-cart-drawer__item-variant">${item.variant_title || ''}</div>
+                  <div class="missoma-cart-drawer__item-price">${formattedPrice}</div>
+                  <button class="missoma-cart-drawer__item-remove" data-variant-id="${item.variant_id}">
+                    ${window.theme?.strings?.remove || 'Remove'}
+                  </button>
+                </div>
+              `;
+              
+              cartItemsContainer.appendChild(itemElement);
+            });
+            
+            // Add event listeners to remove buttons
+            const removeButtons = document.querySelectorAll('.missoma-cart-drawer__item-remove');
+            removeButtons.forEach(button => {
+              button.addEventListener('click', () => {
+                const variantId = button.getAttribute('data-variant-id');
+                
+                // Remove item from cart
+                fetch('/cart/change.js', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    id: variantId,
+                    quantity: 0
+                  })
+                })
+                .then(response => response.json())
+                .then(cart => {
+                  // Update cart drawer
+                  updateCartDrawer();
+                })
+                .catch(error => {
+                  console.error('Error removing item:', error);
+                });
+              });
+            });
+          })
+          .catch(error => {
+            console.error('Error fetching cart:', error);
+          });
+      };
+    };
+    
+    // Format money helper function - fixed to avoid HTML tags showing
+    function formatMoney(cents) {
+      if (typeof cents !== 'number') {
+        cents = Number.parseFloat(String(cents).replace(/[^0-9.]/g, ''));
+      }
+      
+      const value = (cents / 100).toFixed(2);
+      return value + ' dh';
+    }
+    
+    // Initialize all components
+    initGallery();
+    initTabs();
+    initVariantDrawer();
+    initReadMore();
+    initCartDrawer();
+    
+    // No need to handle window resize differently - we'll use the same carousel on both mobile and desktop
+  });
+  
+</script>
+
+{% schema %}
+{
+  "name": "Missoma Product",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "min": 800,
+      "max": 1600,
+      "step": 50,
+      "default": 1200,
+      "label": "Container Width"
+    },
+    {
+      "type": "range",
+      "id": "top_margin",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0,
+      "label": "Top Margin"
+    },
+    {
+      "type": "range",
+      "id": "bottom_margin",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0,
+      "label": "Bottom Margin"
+    },
+    {
+      "type": "text",
+      "id": "font_family",
+      "default": "Arial",
+      "label": "Font Family"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "default": "#000000",
+      "label": "Title Color"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "default": "#333333",
+      "label": "Text Color"
+    },
+    {
+      "type": "color",
+      "id": "price_color",
+      "default": "#000000",
+      "label": "Price Color"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "default": "#000000",
+      "label": "Link Color"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "default": "#e5e5e5",
+      "label": "Border Color"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "default": "#d4d4d4",
+      "label": "Star Color"
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "default": "#000000",
+      "label": "Button Background Color"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "default": "#ffffff",
+      "label": "Button Text Color"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "default": "#333333",
+      "label": "Button Hover Color"
+    },
+    {
+      "type": "color",
+      "id": "button_disabled_color",
+      "default": "#999999",
+      "label": "Button Disabled Color"
+    },
+    {
+      "type": "color",
+      "id": "gallery_background_color",
+      "default": "#ffffff",
+      "label": "Gallery Background Color"
+    },
+    {
+      "type": "color",
+      "id": "nav_button_color",
+      "default": "#000000",
+      "label": "Navigation Button Color"
+    },
+    {
+      "type": "color",
+      "id": "option_background_color",
+      "default": "#ffffff",
+      "label": "Option Background Color"
+    },
+    {
+      "type": "color",
+      "id": "dropdown_background_color",
+      "default": "#ffffff",
+      "label": "Dropdown Background Color"
+    },
+    {
+      "type": "color",
+      "id": "option_hover_color",
+      "default": "#f5f5f5",
+      "label": "Option Hover Color"
+    },
+    {
+      "type": "color",
+      "id": "option_selected_color",
+      "default": "#f0f0f0",
+      "label": "Option Selected Color"
+    },
+    {
+      "type": "color",
+      "id": "drawer_background_color",
+      "default": "#ffffff",
+      "label": "Drawer Background Color"
+    },
+    {
+      "type": "header",
+      "content": "Product Options"
+    },
+    {
+      "type": "text",
+      "id": "add_to_cart_text",
+      "default": "Add To Bag",
+      "label": "Add to Cart Button Text"
+    },
+    {
+      "type": "text",
+      "id": "choose_option_text",
+      "default": "Choose Option:",
+      "label": "Choose Option Text"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_size_guide",
+      "default": true,
+      "label": "Show Size Guide"
+    },
+    {
+      "type": "text",
+      "id": "size_guide_text",
+      "default": "Size Guide",
+      "label": "Size Guide Text"
+    },
+    {
+      "type": "url",
+      "id": "size_guide_url",
+      "label": "Size Guide URL"
+    },
+    {
+      "type": "text",
+      "id": "read_more_text",
+      "default": "Read more",
+      "label": "Read More Text"
+    },
+    {
+      "type": "header",
+      "content": "Product Tabs"
+    },
+    {
+      "type": "text",
+      "id": "product_details_title",
+      "default": "Product Details",
+      "label": "Product Details Tab Title"
+    },
+    {
+      "type": "textarea",
+      "id": "product_details",
+      "label": "Default Product Details",
+      "info": "Will be used if product has no description"
+    },
+    {
+      "type": "text",
+      "id": "care_title",
+      "default": "Care",
+      "label": "Care Tab Title"
+    },
+    {
+      "type": "textarea",
+      "id": "care_instructions",
+      "label": "Default Care Instructions",
+      "info": "Will be used if product has no metafield data"
+    },
+    {
+      "type": "text",
+      "id": "sustainability_title",
+      "default": "Sustainability",
+      "label": "Sustainability Tab Title"
+    },
+    {
+      "type": "textarea",
+      "id": "sustainability_info",
+      "label": "Default Sustainability Info",
+      "info": "Will be used if product has no metafield data"
+    },
+    {
+      "type": "text",
+      "id": "shipping_title",
+      "default": "Shipping & Returns",
+      "label": "Shipping Tab Title"
+    },
+    {
+      "type": "textarea",
+      "id": "shipping_info",
+      "label": "Default Shipping & Returns Info",
+      "info": "Will be used if product has no metafield data"
+    },
+    {
+      "type": "header",
+      "content": "Reviews"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_reviews",
+      "default": true,
+      "label": "Show Reviews"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_reviews",
+      "default": true,
+      "label": "Enable Reviews Tab"
+    },
+    {
+      "type": "text",
+      "id": "reviews_title",
+      "default": "Reviews",
+      "label": "Reviews Tab Title"
+    },
+    {
+      "type": "text",
+      "id": "no_reviews_text",
+      "default": "No reviews yet. Be the first to leave a review!",
+      "label": "No Reviews Text"
+    },
+    {
+      "type": "text",
+      "id": "reviews_disabled_text",
+      "default": "Reviews are currently disabled for this product.",
+      "label": "Reviews Disabled Text"
+    },
+    {
+      "type": "header",
+      "content": "Cart Drawer"
+    },
+    {
+      "type": "text",
+      "id": "cart_drawer_title",
+      "default": "Your Bag",
+      "label": "Cart Drawer Title"
+    },
+    {
+      "type": "text",
+      "id": "empty_cart_text",
+      "default": "Your bag is empty",
+      "label": "Empty Cart Text"
+    },
+    {
+      "type": "text",
+      "id": "subtotal_text",
+      "default": "Subtotal",
+      "label": "Subtotal Text"
+    },
+    {
+      "type": "text",
+      "id": "checkout_text",
+      "default": "Checkout",
+      "label": "Checkout Button Text"
+    },
+    {
+      "type": "text",
+      "id": "view_cart_text",
+      "default": "View Bag",
+      "label": "View Cart Text"
+    },
+    {
+  "type": "text",
+  "id": "conditions_title",
+  "label": "Conditions tab title",
+  "default": "Conditions générales"
+},
+{
+  "type": "textarea",
+  "id": "conditions_info",
+  "label": "Default Conditions content (fallback)",
+  "info": "Used when the product metafield product.conditions_generales is empty."
+}
+
+  ],
+  "presets": [
+    {
+      "name": "Missoma Product",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}
+
+

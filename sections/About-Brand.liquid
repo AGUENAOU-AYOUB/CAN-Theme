@@ -1,0 +1,129 @@
+{% schema %}
+{
+  "name": "About Brand Section",
+  "tag": "section",
+  "class": "section-about-brand",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_heading",
+      "label": "Heading",
+      "default": "ABOUT"
+    },
+    {
+      "type": "textarea",
+      "id": "section_text",
+      "label": "Body Text",
+      "default": "Established in 2015 by siblings Paola and Humbert Sasplugas following Paola’s childhood passion for jewelry, PDPAOLA has grown from a digitally native brand to a brand with a global presence. Our journey began with a mission to create jewelry that transcends trends and serves as the gateway to a world of self-expression.\n\nAt the heart of PDPAOLA lies our team of more than 200 talented and passionate individuals. Our head office and design studio are located in Barcelona, where we bring our vision to life: creating a brand that goes beyond the jewelry world."
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading Font Size (px)",
+      "min": 14,
+      "max": 48,
+      "step": 1,
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "body_font_size",
+      "label": "Body Font Size (px)",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Body Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content Block Position",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Content Max Width (px)",
+      "min": 600,
+      "max": 1400,
+      "step": 50,
+      "default": 1000
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Brand Section",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+
+{% style %}
+  .section-about-brand {
+    display: flex;
+    justify-content:
+      {% if section.settings.content_alignment == 'left' %}
+        flex-start;
+      {% elsif section.settings.content_alignment == 'center' %}
+        center;
+      {% elsif section.settings.content_alignment == 'right' %}
+        flex-end;
+      {% endif %};
+    padding: 60px 20px;
+    width: 100%;
+  }
+
+  .section-about-brand .about-container {
+    max-width: {{ section.settings.max_width }}px;
+    width: 100%;
+    text-align: {{ section.settings.text_alignment }};
+    color: {{ section.settings.text_color }};
+  }
+
+  .section-about-brand .about-heading {
+    font-size: {{ section.settings.heading_font_size }}px;
+    font-weight: bold;
+    color: {{ section.settings.heading_color }};
+    margin-bottom: 20px;
+  }
+
+  .section-about-brand .about-text {
+    font-size: {{ section.settings.body_font_size }}px;
+    white-space: pre-line;
+    line-height: 1.7;
+  }
+{% endstyle %}
+
+<div class="about-container">
+  <div class="about-heading">{{ section.settings.section_heading }}</div>
+  <div class="about-text">{{ section.settings.section_text }}</div>
+</div>

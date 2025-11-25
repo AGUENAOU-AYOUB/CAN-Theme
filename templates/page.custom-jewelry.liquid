@@ -1,0 +1,325 @@
+<!-- Formulaire de Personnalisation de Bijoux Premium (Version Sécurisée) -->
+<div class="jewelry-customization-wrapper">
+  <div class="form-header">
+    <h1 class="form-title">Certains bijoux naissent d’un simple éclat du cœur.</h1>
+    <p class="form-subtitle">Certains bijoux naissent d’un simple éclat du cœur. Une idée, un souvenir, un geste d’amour…</p>
+    <p class="form-subtitle">Racontez-nous ce que vous imaginez. Joignez une image, un croquis, quelques mots, vos mesures, ou même une émotion.</p>
+    <p class="form-subtitle">Nous, on s’occupe de lui donner vie.</p>
+  </div>
+
+  {% if form.posted_successfully? %}
+    <div class="success-modal" id="success-modal">
+      <div class="success-content">
+        <div class="success-icon">✨</div>
+        <h2>Votre Vision Prend Forme</h2>
+        <p>Merci d'avoir fait appel à nous pour créer votre pièce de rêve. Nos maîtres artisans examineront votre concept et vous contacteront dans les 24 heures.</p>
+        <button onclick="closeSuccessModal()" class="btn-close-success">Continuer vos achats</button>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="form-container">
+    <div class="form-panel">
+      {% form 'contact' %}
+        <input type="hidden" name="contact[form_type]" value="jewelry_customization">
+
+        <!-- SECTION 1: Coordonnées -->
+        <div class="form-section">
+          <h3 class="section-title">1. Vos Coordonnées</h3>
+          <div class="contact-grid">
+            <!-- SECURITY: Added autocomplete attributes for better security and UX. -->
+            <input type="text" name="contact[name]" value="{{ form.name | escape }}" class="form-input" placeholder="Nom Complet" required autocomplete="name">
+            <input type="email" name="contact[email]" value="{{ form.email | escape }}" class="form-input" placeholder="Adresse E-mail" required autocomplete="email">
+            <input type="tel" name="contact[phone]" class="form-input" placeholder="Numéro de Téléphone" autocomplete="tel">
+            <input type="text" name="contact[address]" class="form-input" placeholder="Adresse Complète" autocomplete="street-address">
+          </div>
+        </div>
+        
+        <!-- SECTION 2: Gravure -->
+        <div class="form-section">
+            <h3 class="section-title">2. Gravure <span class="optional">(Facultatif)</span></h3>
+            <div class="engraving-input-group">
+                <input type="text" id="engraving" name="contact[engraving]" class="form-input" placeholder="Texte à graver" maxlength="50" autocomplete="off">
+                <div id="char-count" class="character-counter">0/50</div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: Images -->
+        <div class="form-section">
+          <h3 class="section-title">3. Images d'Inspiration <span class="optional">(Facultatif)</span></h3>
+          <div class="upload-area" id="upload-area">
+            <div class="upload-content">
+              <div class="upload-icon">📷</div>
+              <p>Glissez des images ici ou <span class="upload-link">parcourez</span></p>
+            </div>
+            <input type="file" id="image-upload-input" multiple accept="image/jpeg,image/png,image/gif,image/webp" style="display: none;">
+            <div class="uploaded-images" id="uploaded-images-container"></div>
+          </div>
+          <input type="hidden" name="contact[images]" id="cloudinary-links-input">
+        </div>
+
+        <!-- SECTION 4: Instructions -->
+        <div class="form-section">
+          <h3 class="section-title">4. Instructions Spéciales <span class="optional">(Facultatif)</span></h3>
+          <textarea name="contact[body]" class="form-textarea" placeholder="Décrivez-nous votre vision, vos demandes spéciales ou tout autre détail..." rows="3">{{ form.body | escape }}</textarea>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submit-btn">
+          <span class="btn-text">Créer Mon Bijou</span>
+          <span class="btn-loading" style="display: none;">✨ Création en cours...</span>
+        </button>
+      {% endform %}
+    </div>
+  </div>
+</div>
+
+<style>
+/* --- STYLES (Button colors updated) --- */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+:root {
+  --brand-color: #a4845c;
+  --brand-gradient: linear-gradient(135deg, #a4845c, #b8956d);
+  --light-gray: #f0f0f0;
+  --medium-gray: #e8e8e8;
+  --dark-gray: #666;
+  --text-color: #2c2c2c;
+  --bg-color: #f8f6f3;
+  --border-radius: 12px;
+}
+* { box-sizing: border-box; }
+
+.jewelry-customization-wrapper {
+  font-family: 'Inter', sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background: transparent;
+}
+.form-header { text-align: center; margin-bottom: 30px; }
+
+.form-title { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 700; color: var(--text-color); margin-bottom: 8px; }
+.form-subtitle { font-size: 1.2rem; color: var(--dark-gray); font-weight: 300; margin: 0; }
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin-bottom: 15px;
+}
+.form-container { display: block; }
+.form-panel { background: white; border-radius: 20px; padding: 40px; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08); }
+.form-section { margin-bottom: 30px; }
+.optional { font-size: 0.8rem; color: #999; font-weight: 400; font-family: 'Inter', sans-serif; }
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px 30px;
+}
+
+.form-input, .form-textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--medium-gray);
+  border-radius: var(--border-radius);
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.2s ease;
+}
+.form-input:focus, .form-textarea:focus { outline: none; border-color: var(--brand-color); box-shadow: 0 0 0 3px rgba(164, 132, 92, 0.15); }
+
+.engraving-input-group { position: relative; }
+.character-counter { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); font-size: 0.85rem; color: #aaa; }
+
+.upload-area { border: 2px dashed var(--medium-gray); border-radius: var(--border-radius); padding: 20px; text-align: center; transition: all 0.2s ease; cursor: pointer; background: #fafafa; }
+.upload-area:hover, .upload-area.dragover { border-color: var(--brand-color); background: #fdfaf6; }
+.upload-content { pointer-events: none; }
+.upload-icon { font-size: 2rem; margin-bottom: 5px; color: var(--brand-color); }
+.upload-link { color: var(--brand-color); font-weight: 500; text-decoration: underline; }
+.uploaded-images { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 10px; margin-top: 15px; }
+.uploaded-image { position: relative; border-radius: 8px; overflow: hidden; aspect-ratio: 1; background-color: var(--light-gray); }
+.uploaded-image img { width: 100%; height: 100%; object-fit: cover; }
+.remove-image { position: absolute; top: 4px; right: 4px; background: rgba(0, 0, 0, 0.6); color: white; border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; font-size: 11px; line-height: 20px; text-align:center; padding: 0; }
+.uploaded-image.uploading::before { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.7); backdrop-filter: blur(2px); }
+.uploaded-image.uploading::after { content: ''; position: absolute; top: 50%; left: 50%; width: 24px; height: 24px; margin: -12px 0 0 -12px; border: 3px solid rgba(164, 132, 92, 0.3); border-top-color: var(--brand-color); border-radius: 50%; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.btn-submit {
+  width: 100%;
+  padding: 16px;
+  /* UPDATED: Changed background to black */
+  background: black;
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 10px;
+}
+.btn-submit:hover {
+  /* UPDATED: Change to brand color on hover */
+  background: var(--brand-color);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(164, 132, 92, 0.25);
+}
+.btn-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; background: black; }
+
+.success-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(8px); }
+.success-content { background: white; padding: 40px; border-radius: 20px; text-align: center; max-width: 450px; margin: 20px; }
+.success-icon { font-size: 3rem; margin-bottom: 15px; }
+.success-content h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--text-color); margin-bottom: 10px; }
+
+.btn-close-success {
+  /* UPDATED: Set background to black for consistency */
+  background: black;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background 0.2s ease;
+}
+/* ADDED: Hover effect for consistency */
+.btn-close-success:hover {
+  background: var(--brand-color);
+}
+
+@media (max-width: 768px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  .form-panel { padding: 20px; }
+  .form-title { font-size: 2.2rem; }
+}
+</style>
+
+<script>
+// --- SCRIPT (No changes needed) ---
+const CLOUDINARY_CLOUD_NAME = 'dauakzabl';  
+const CLOUDINARY_UPLOAD_PRESET = 'Customize azor'; 
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (CLOUDINARY_CLOUD_NAME === 'YOUR_CLOUD_NAME_HERE' || CLOUDINARY_UPLOAD_PRESET === 'YOUR_UPLOAD_PRESET_HERE') {
+    alert('Warning for store owner: The Cloudinary "Cloud Name" and "Upload Preset" are not set in the script. Please edit the theme code to add them.');
+  }
+  initEngravingCounter();
+  initImageUpload();
+  initFormSubmission();
+  const successModal = document.getElementById('success-modal');
+  {% if form.posted_successfully? %}
+    if (successModal) {
+      successModal.style.display = 'flex';
+    }
+  {% endif %}
+});
+function initEngravingCounter() {
+  const engravingInput = document.getElementById('engraving');
+  const charCount = document.getElementById('char-count');
+  if (!engravingInput) return;
+  engravingInput.addEventListener('input', function() {
+    const length = this.value.length;
+    charCount.textContent = `${length}/50`;
+  });
+}
+function initImageUpload() {
+  const uploadArea = document.getElementById('upload-area');
+  const fileInput = document.getElementById('image-upload-input');
+  const container = document.getElementById('uploaded-images-container');
+  const linksInput = document.getElementById('cloudinary-links-input');
+  if (!uploadArea) return;
+  let uploadedCloudinaryLinks = [];
+  uploadArea.addEventListener('click', () => fileInput.click());
+  ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+    uploadArea.addEventListener(eventName, e => { e.preventDefault(); e.stopPropagation(); }, false);
+  });
+  ['dragenter', 'dragover'].forEach(eventName => {
+    uploadArea.addEventListener(eventName, () => uploadArea.classList.add('dragover'), false);
+  });
+  ['dragleave', 'drop'].forEach(eventName => {
+    uploadArea.addEventListener(eventName, () => uploadArea.classList.remove('dragover'), false);
+  });
+  uploadArea.addEventListener('drop', e => handleFiles(e.dataTransfer.files), false);
+  fileInput.addEventListener('change', e => handleFiles(e.target.files), false);
+  const handleFiles = (files) => {
+    Array.from(files).forEach(file => {
+      if (file.size > 10 * 1024 * 1024) { alert(`Le fichier doit faire moins de 10 Mo : ${file.name}`); return; }
+      if (!file.type.startsWith('image/')) { alert(`Veuillez sélectionner uniquement des fichiers image : ${file.name}`); return; }
+      uploadToCloudinary(file);
+    });
+  };
+  const uploadToCloudinary = async (file) => {
+    const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`;
+    const thumbnailDiv = createThumbnail(URL.createObjectURL(file), true);
+    container.appendChild(thumbnailDiv);
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    try {
+      const response = await fetch(url, { method: 'POST', body: formData });
+      const data = await response.json();
+      if (data.secure_url) {
+        const cloudinaryLink = data.secure_url;
+        uploadedCloudinaryLinks.push(cloudinaryLink);
+        linksInput.value = uploadedCloudinaryLinks.join(' ');
+        thumbnailDiv.classList.remove('uploading');
+        thumbnailDiv.dataset.url = cloudinaryLink;
+      } else { throw new Error(data.error.message || 'Unknown Cloudinary API error'); }
+    } catch (error) {
+      console.error('Cloudinary upload failed:', error);
+      alert(`L'envoi de l'image "${file.name}" a échoué. Veuillez réessayer.`);
+      container.removeChild(thumbnailDiv);
+    }
+  };
+  const createThumbnail = (src, isLoading = false) => {
+    const div = document.createElement('div');
+    div.className = 'uploaded-image';
+    if (isLoading) div.classList.add('uploading');
+    const img = document.createElement('img');
+    img.src = src;
+    img.onload = () => URL.revokeObjectURL(img.src);
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'remove-image';
+    removeBtn.innerHTML = '×';
+    removeBtn.type = 'button';
+    removeBtn.onclick = (e) => {
+      e.stopPropagation();
+      const urlToRemove = div.dataset.url;
+      if (urlToRemove) {
+        uploadedCloudinaryLinks = uploadedCloudinaryLinks.filter(link => link !== urlToRemove);
+        linksInput.value = uploadedCloudinaryLinks.join(' ');
+      }
+      container.removeChild(div);
+    };
+    div.appendChild(img);
+    div.appendChild(removeBtn);
+    return div;
+  };
+}
+function initFormSubmission() {
+  const form = document.querySelector('form[action*="contact"]');
+  const submitBtn = document.getElementById('submit-btn');
+  if (form && submitBtn) {
+    form.addEventListener('submit', function(e) {
+      if (document.querySelector('.uploaded-image.uploading')) {
+        e.preventDefault();
+        alert("Veuillez attendre la fin de l'envoi de toutes les images avant de soumettre.");
+        return;
+      }
+      const btnText = submitBtn.querySelector('.btn-text');
+      const btnLoading = submitBtn.querySelector('.btn-loading');
+      btnText.style.display = 'none';
+      btnLoading.style.display = 'inline';
+      submitBtn.disabled = true;
+    });
+  }
+}
+function closeSuccessModal() {
+  const modal = document.getElementById('success-modal');
+  if (modal) { modal.style.display = 'none'; }
+}
+</script>

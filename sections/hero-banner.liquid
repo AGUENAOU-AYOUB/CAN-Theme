@@ -1,0 +1,453 @@
+{% schema %}
+{
+  "name": "Hero Banner",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "min": 400,
+      "max": 1000,
+      "step": 50,
+      "unit": "px",
+      "label": "Section Height",
+      "default": 800
+    },
+    {
+      "type": "range",
+      "id": "section_max_width",
+      "min": 1200,
+      "max": 2400,
+      "step": 100,
+      "unit": "px",
+      "label": "Maximum Section Width",
+      "default": 1600
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Margin",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Margin",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Horizontal Padding",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Image"
+    },
+    {
+      "type": "url",
+      "id": "image_link",
+      "label": "Image Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_image_zoom",
+      "label": "Enable Image Zoom on Hover",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size",
+      "default": 48
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "UPGRADE YOUR STACK"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Subheading Size",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Bottom Link Settings"
+    },
+    {
+      "type": "url",
+      "id": "bottom_link",
+      "label": "Bottom Link URL"
+    },
+    {
+      "type": "text",
+      "id": "bottom_link_text",
+      "label": "Bottom Link Text",
+      "default": "Shop New Arrivals"
+    },
+    {
+      "type": "header",
+      "content": "Content Placement"
+    },
+    {
+      "type": "select",
+      "id": "content_position_x",
+      "label": "Horizontal Position",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "content_position_y",
+      "label": "Vertical Position",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "middle",
+          "label": "Middle"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "bottom"
+    },
+    {
+      "type": "range",
+      "id": "content_padding",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Content Padding",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Shop New Arrivals"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Settings"
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "min": 300,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "label": "Mobile Section Height",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_size",
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Heading Size",
+      "default": 32
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Banner",
+      "category": "Image"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  .hero-banner-wrapper {
+    margin-top: {{ section.settings.margin_top }}px;
+    margin-bottom: {{ section.settings.margin_bottom }}px;
+    padding-left: {{ section.settings.padding_horizontal }}px;
+    padding-right: {{ section.settings.padding_horizontal }}px;
+  }
+
+  .hero-banner {
+    position: relative;
+    width: 100%;
+    max-width: {{ section.settings.section_max_width }}px;
+    margin: 0 auto;
+    height: {{ section.settings.section_height }}px;
+    overflow: hidden;
+  }
+
+  .hero-image-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    {% if section.settings.enable_image_zoom %}
+    transition: transform 0.3s ease-out;
+    {% endif %}
+  }
+
+  .hero-content {
+    position: absolute;
+    z-index: 2;
+    padding: {{ section.settings.content_padding }}px;
+    color: #ffffff;
+    {% case section.settings.content_position_x %}
+      {% when 'left' %}
+        left: 0;
+        text-align: left;
+      {% when 'center' %}
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+      {% when 'right' %}
+        right: 0;
+        text-align: right;
+    {% endcase %}
+
+    {% case section.settings.content_position_y %}
+      {% when 'top' %}
+        top: 0;
+      {% when 'middle' %}
+        top: 50%;
+        transform: {% if section.settings.content_position_x == 'center' %}translate(-50%, -50%){% else %}translateY(-50%){% endif %};
+      {% when 'bottom' %}
+        bottom: 0;
+    {% endcase %}
+  }
+
+  .hero-heading {
+    font-size: {{ section.settings.heading_size }}px;
+    font-weight: 300;
+    margin: 0;
+    font-family: "Canela", serif;
+    line-height: 1.2;
+  }
+
+  .hero-subheading {
+    font-size: {{ section.settings.subheading_size }}px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-top: 1rem;
+    font-family: "Helvetica Neue", sans-serif;
+  }
+
+  .hero-button {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 2rem;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: opacity 0.3s ease;
+  }
+
+  .hero-button:hover {
+    opacity: 0.8;
+  }
+
+  .hero-button svg {
+    margin-left: 0.5rem;
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+  }
+
+  .hero-button:hover svg {
+    transform: translateX(5px);
+  }
+
+  .bottom-link {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px 0;
+    text-decoration: none;
+    color: #000000;
+    font-size: 14px;
+    font-family: "Helvetica Neue", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+    transition: opacity 0.3s ease;
+  }
+
+  .bottom-link svg {
+    margin-left: 8px;
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+  }
+
+  .bottom-link:hover {
+    opacity: 0.7;
+  }
+
+  .bottom-link:hover svg {
+    transform: translateX(5px);
+  }
+
+  @media screen and (max-width: 768px) {
+    .hero-banner {
+      height: {{ section.settings.mobile_height }}px;
+    }
+
+    .hero-heading {
+      font-size: {{ section.settings.mobile_heading_size }}px;
+    }
+
+    .hero-subheading {
+      font-size: calc({{ section.settings.subheading_size }}px * 0.875);
+    }
+
+    .hero-content {
+      padding: calc({{ section.settings.content_padding }}px * 0.75);
+    }
+
+    .hero-banner-wrapper {
+      padding-left: calc({{ section.settings.padding_horizontal }}px * 0.5);
+      padding-right: calc({{ section.settings.padding_horizontal }}px * 0.5);
+    }
+  }
+
+  /* Image hover effect */
+  {% if section.settings.enable_image_zoom %}
+  .hero-image-link:hover .hero-image {
+    transform: scale(1.05);
+  }
+  {% endif %}
+</style>
+
+<div class="hero-banner-wrapper">
+  <div class="hero-banner">
+    {%- if section.settings.hero_image -%}
+      <a href="{{ section.settings.image_link | default: section.settings.button_link }}" class="hero-image-link">
+        {%- assign img_url = section.settings.hero_image | image_url: width: 2000 -%}
+        {%- assign img_sizes = '(min-width: 769px) '
+          | append: section.settings.section_max_width
+          | append: 'px, 100vw'
+        -%}
+        <img
+          src="{{ img_url }}"
+          loading="lazy"
+          class="hero-image"
+          sizes="{{ img_sizes }}"
+          srcset="
+            {{ section.settings.hero_image | image_url: width: 375 }} 375w,
+            {{ section.settings.hero_image | image_url: width: 550 }} 550w,
+            {{ section.settings.hero_image | image_url: width: 750 }} 750w,
+            {{ section.settings.hero_image | image_url: width: 1100 }} 1100w,
+            {{ section.settings.hero_image | image_url: width: 1500 }} 1500w,
+            {{ section.settings.hero_image | image_url: width: 2000 }} 2000w
+          "
+          alt="{{ section.settings.hero_image.alt | escape }}"
+        >
+      </a>
+    {%- endif -%}
+
+    <div class="hero-content">
+      {%- if section.settings.heading != blank -%}
+        <h1 class="hero-heading">{{ section.settings.heading }}</h1>
+      {%- endif -%}
+
+      {%- if section.settings.subheading != blank -%}
+        <div class="hero-subheading">{{ section.settings.subheading }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.button_link != blank and section.settings.button_text != blank -%}
+        <a href="{{ section.settings.button_link }}" class="hero-button">
+          {{ section.settings.button_text }}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if section.settings.bottom_link != blank and section.settings.bottom_link_text != blank -%}
+    <a href="{{ section.settings.bottom_link }}" class="bottom-link">
+      {{ section.settings.bottom_link_text }}
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M5 12h14M12 5l7 7-7 7"/>
+      </svg>
+    </a>
+  {%- endif -%}
+</div>

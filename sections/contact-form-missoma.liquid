@@ -1,0 +1,261 @@
+<section class="contact-form-section">
+  <div class="contact-form-wrapper align-{{ section.settings.horizontal_alignment }}">
+    <div class="heading-wrapper align-{{ section.settings.heading_alignment }}">
+      {% if section.settings.heading != blank %}
+        <h2>{{ section.settings.heading }}</h2>
+      {% endif %}
+      {% if section.settings.subtext != blank %}
+        <p>{{ section.settings.subtext }}</p>
+      {% endif %}
+    </div>
+
+    {% form 'contact', id: 'contact_form', class: 'contact-form' %}
+      {% if form.posted_successfully? %}
+        <p class="form-success-message">
+          Votre message s’est glissé dans notre écrin. Nous vous recontacterons sous peu.
+        </p>
+      {% else %}
+        <div class="form-field half-width">
+          <input type="text" id="ContactFormName" name="contact[name]" placeholder=" " required>
+          <label for="ContactFormName">Votre Nom</label>
+        </div>
+
+        <div class="form-field half-width">
+          <input type="email" id="ContactFormEmail" name="contact[email]" placeholder=" " required>
+          <label for="ContactFormEmail">Votre Email</label>
+        </div>
+
+        <div class="form-field">
+          <input type="tel" id="ContactFormPhone" name="contact[phone]" placeholder=" ">
+          <label for="ContactFormPhone">Votre Téléphone</label>
+        </div>
+
+        <div class="form-field">
+          <input type="text" id="ContactFormSubject" name="contact[subject]" placeholder=" ">
+          <label for="ContactFormSubject">Sujet</label>
+        </div>
+
+        <div class="form-field">
+          <input type="text" id="ContactFormOrder" name="contact[order_number]" placeholder=" ">
+          <label for="ContactFormOrder">Numéro De Commande (optionnel)</label>
+        </div>
+
+        <div class="form-field">
+          <textarea id="ContactFormMessage" name="contact[body]" placeholder=" " required></textarea>
+          <label for="ContactFormMessage">Message</label>
+        </div>
+
+        <button type="submit">Envoyer</button>
+      {% endif %}
+    {% endform %}
+  </div>
+</section>
+
+<style>
+  .contact-form-section {
+    padding: 40px 20px;
+    font-family: inherit;
+  }
+
+  .contact-form-wrapper {
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .contact-form-wrapper.align-left { margin-left: 0; margin-right: auto; }
+  .contact-form-wrapper.align-center { margin: 0 auto; }
+  .contact-form-wrapper.align-right { margin-left: auto; margin-right: 0; }
+
+  .heading-wrapper { margin-bottom: 30px; }
+  .heading-wrapper.align-left { text-align: left; }
+  .heading-wrapper.align-center { text-align: center; }
+  .heading-wrapper.align-right { text-align: right; }
+
+  .contact-form-section h2 {
+    margin-bottom: 10px;
+    color: {{ section.settings.heading_color }};
+    font-size: {{ section.settings.heading_size }}px;
+    font-weight: 700;
+  }
+
+  .contact-form-section p {
+    line-height: 1.6;
+    font-size: 16px;
+  }
+
+  .form-success-message {
+    color: green;
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: bold;
+  }
+
+  .contact-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .form-field {
+    position: relative;
+    flex: 1 1 100%;
+    min-width: 100%;
+  }
+
+  .form-field.half-width {
+    flex: 1 1 calc(50% - 10px);
+  }
+
+  .form-field input,
+  .form-field textarea {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    padding: 24px 12px 8px;
+    font-size: 16px;
+    background: transparent;
+    outline: none;
+    font-family: inherit;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+    box-shadow: none !important;
+  }
+
+  .form-field input:focus,
+  .form-field textarea:focus {
+    border-color: #000;
+    background: transparent;
+    box-shadow: none !important;
+  }
+
+  .form-field label {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: {{ section.settings.label_font_size }}px;
+    color: #333;
+    pointer-events: none;
+    transition: 0.2s ease all;
+    background: transparent;
+    padding: 0 4px;
+  }
+
+  .form-field input:focus + label,
+  .form-field input:not(:placeholder-shown) + label,
+  .form-field textarea:focus + label,
+  .form-field textarea:not(:placeholder-shown) + label {
+    top: 6px;
+    font-size: 12px;
+    color: #000;
+    transform: none;
+  }
+
+  .contact-form textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  .contact-form button {
+    padding: 16px 32px;
+    background-color: rgba(34, 34, 34, 0.7);
+    color: white;
+    border: 1px solid rgba(34, 34, 34, 0.8);
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    border-radius:3px;
+    margin-top: 20px;
+  }
+
+  .contact-form button:hover {
+    background-color: transparent;
+    color: #222;
+    border-color: #222;
+    box-shadow: inset 0 0 0 1px #222;
+  }
+
+  @media (max-width: 768px) {
+    .form-field.half-width {
+      flex: 1 1 100%;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Custom Contact Form",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Contact Us"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "For questions about orders, shipping & returns, account help and products, chat to us or fill out the form below."
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading Font Size",
+      "default": 32,
+      "min": 16,
+      "max": 64,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "label_font_size",
+      "label": "Label Font Size",
+      "default": 16,
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "horizontal_alignment",
+      "label": "Form Alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading Text Alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Contact Form"
+    }
+  ]
+}
+{% endschema %}
