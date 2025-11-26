@@ -3690,3 +3690,7 @@ details-disclosure > details {
 .logo--white {
   filter: brightness(0) invert(1);
 }
+
+.header__menu-item:hover {
+  color: #006233 !important;
+}
