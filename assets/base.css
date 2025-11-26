@@ -350,9 +350,11 @@ h5,
 
 h6,
 .h6 {
-  color: rgba(var(--color-foreground), 0.75);
-  margin-block-start: 1.67em;
-  margin-block-end: 1.67em;
+  font-size: calc(var(--font-heading-scale) * 1rem);
+}
+
+.font-heading-bold {
+  font-weight: var(--font-heading-weight-bold);
 }
 
 blockquote {
@@ -3676,9 +3678,15 @@ details-disclosure > details {
 .cg-btn-primary[disabled] { opacity: .5; cursor: not-allowed; }
 .cg-btn-secondary { background: #f3f3f3; color: #111; border-color: #ddd; }
 
-/* Global override: set background color for all sections */
-.section,
-.shopify-section,
-section {
-  background-color: #B22222 !important;
+.hero-star-pattern {
+  background-color: #a31621;
+  background-image:
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23ffffff" d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>'),
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%2300a86b" d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>');
+  background-position: 0 0, 12px 12px;
+  background-size: 24px 24px;
+}
+
+.logo--white {
+  filter: brightness(0) invert(1);
 }
