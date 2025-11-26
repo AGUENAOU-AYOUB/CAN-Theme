@@ -3675,3 +3675,10 @@ details-disclosure > details {
 .cg-btn-primary { background: #111; color: #fff; }
 .cg-btn-primary[disabled] { opacity: .5; cursor: not-allowed; }
 .cg-btn-secondary { background: #f3f3f3; color: #111; border-color: #ddd; }
+
+/* Global override: set background color for all sections */
+.section,
+.shopify-section,
+section {
+  background-color: #B22222 !important;
+}
