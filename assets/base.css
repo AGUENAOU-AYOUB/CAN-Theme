@@ -2800,9 +2800,7 @@ details[open] > .header__submenu {
   color: rgba(var(--color-foreground), 0.75);
 }
 
-.header__menu-item:hover {
-  color: rgb(var(--color-foreground));
-}
+
 
 .header__menu-item span {
   transition: text-decoration var(--duration-short) ease;
@@ -2827,7 +2825,7 @@ details[open] > .header__menu-item .icon-caret {
 
 .header__active-menu-item {
   transition: text-decoration-thickness var(--duration-short) ease;
-  color: rgb(var(--color-foreground));
+  color: rgb(#f4f4f4);
   text-decoration: underline;
   text-underline-offset: 0.3rem;
 }

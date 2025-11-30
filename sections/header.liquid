@@ -24,65 +24,91 @@
 
 
 <style>
-  header-drawer {
-    justify-self: start;
-    margin-left: -1.2rem;
-  }
 
-  {%- if section.settings.sticky_header_type == 'reduce-logo-size' -%}
-    .scrolled-past-header .header__heading-logo-wrapper {
-      width: 75%;
+
+
+
+header-drawer {
+  justify-self: start;
+  margin-left: -1.2rem;
+}
+
+{%- if section.settings.sticky_header_type == 'reduce-logo-size' -%}
+  .scrolled-past-header .header__heading-logo-wrapper {
+    width: 75%;
+  }
+{%- endif -%}
+
+{%- if section.settings.menu_type_desktop != "drawer" -%}
+  @media screen and (min-width: 990px) {
+    header-drawer {
+      display: none;
     }
-  {%- endif -%}
+  }
+{%- endif -%}
+<style>
+header-drawer {
+  justify-self: start;
+  margin-left: -1.2rem;
+}
 
-  {%- if section.settings.menu_type_desktop != "drawer" -%}
-    @media screen and (min-width: 990px) {
-      header-drawer {
-        display: none;
-      }
+{%- if section.settings.sticky_header_type == 'reduce-logo-size' -%}
+  .scrolled-past-header .header__heading-logo-wrapper {
+    width: 75%;
+  }
+{%- endif -%}
+
+{%- if section.settings.menu_type_desktop != "drawer" -%}
+  @media screen and (min-width: 990px) {
+    header-drawer {
+      display: none;
     }
-  {%- endif -%}
-
-  .menu-drawer-container {
-    display: flex;
   }
+{%- endif -%}
 
-  .list-menu {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
+.menu-drawer-container {
+  display: flex;
+}
 
-  .list-menu--inline {
-    display: inline-flex;
-    flex-wrap: wrap;
-  }
+.list-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
 
-  summary.list-menu__item {
-    padding-right: 2.7rem;
-  }
+.list-menu--inline {
+  display: inline-flex;
+  flex-wrap: wrap;
+}
 
-  .list-menu__item {
-    display: flex;
-    align-items: center;
-    line-height: calc(1 + 0.3 / var(--font-body-scale));
-  }
+summary.list-menu__item {
+  padding-right: 2.7rem;
+}
 
+.list-menu__item {
+  display: flex;
+  align-items: center;
+  line-height: calc(1 + 0.3 / var(--font-body-scale));
+}
+
+.list-menu__item--link {
+  text-decoration: none;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+  line-height: calc(1 + 0.8 / var(--font-body-scale));
+}
+
+@media screen and (min-width: 750px) {
   .list-menu__item--link {
-    text-decoration: none;
-    padding-bottom: 1rem;
-    padding-top: 1rem;
-    line-height: calc(1 + 0.8 / var(--font-body-scale));
+    padding-bottom: 0.5rem;
+    padding-top: 0.5rem;
+    
   }
+  
+}
 
-  @media screen and (min-width: 750px) {
-    .list-menu__item--link {
-      padding-bottom: 0.5rem;
-      padding-top: 0.5rem;
-    }
-  }
-  {%- comment -%} mega-menu-images-style {%- endcomment -%}
-  .mega_menu_img img{
+{%- comment -%} mega-menu-images-style {%- endcomment -%}
+.mega_menu_img img{
   max-width:100%;
   height: auto;
   display: block;
@@ -92,12 +118,15 @@
   text-decoration: none;
   transition: transform var(--duration-long) ease;
 }
+
 .mega_menu_img{
   padding-bottom: 20px;
 }
+
 .mega_menu_img .mega-menu__link{
   padding-top: 0;
 }
+
 .mega_menu_img div{
   text-align: center;
   overflow: hidden;
@@ -106,45 +135,53 @@
 }
 
 .mega_menu_img .title{
- padding-top: 0.8rem;
- font-size: 1.5rem;
+  padding-top: 0.8rem;
+  font-size: 1.5rem;
 }
+
 .mega_menu_img img{
   transition: transform 0.5s ease;
 }
+
 .mega_menu_img:hover img{
-transform: scale(1.03);
+  transform: scale(1.03);
 }
+
 .mega-menu__list {
-    gap: 0;
-    display: flex;
-    padding: 0;
-    flex-wrap: wrap;
-    justify-content: center;
-    row-gap: 20px;
+  gap: 0;
+  display: flex;
+  padding: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+  row-gap: 20px;
 }
+
 @media (min-width: 768px) {
   .mega-menu__list > li{
-      list-style: none;
-      display: block;
-      flex: 0 0 20%;
-      max-width: 25%;
-      padding-right: 15px;  
+    list-style: none;
+    display: block;
+    flex: 0 0 20%;
+    max-width: 25%;
+    padding-right: 15px;  
   }
 }
+
 .mega_menu_img.slide{
-    flex: 0 0 260px;
-    max-width: 100%;
-    margin: 0;
-    padding-right: 15px;
-    scroll-snap-align: start;
+  flex: 0 0 260px;
+  max-width: 100%;
+  margin: 0;
+  padding-right: 15px;
+  scroll-snap-align: start;
 }
+
 .mega_menu_img.slide:first-child{
-    padding-left: 0;
+  padding-left: 0;
 }
+
 .js .menu-drawer__submenu{
   z-index: 2;
 }
+
 .swiper{
   margin-top: 15px; 
   padding: 0 3rem;
@@ -153,8 +190,295 @@ transform: scale(1.03);
 .swiper .mega-menu__link .title{
   text-align: start;
 }
-</style>
 
+/* Custom Header Color Scheme */
+.header-wrapper.color-scheme-2,
+.header-wrapper {
+  background-color: #810001 !important;
+  box-shadow: 1px 1px 20px 10px #2020205b;
+}
+
+//* ---------- Decorative pattern: responsive, pinned to header bottom ---------- */
+/* Make header-wrapper itself transparent and apply the solid background on .header.
+   This ensures pseudo-elements are visible (pattern) while header content remains above. */
+.header-wrapper {
+  background-color: transparent !important;
+  position: relative;
+  z-index: 0;
+  overflow: visible;
+}
+
+/* Keep red background on the inner .header so content still looks correct */
+.header {
+  position: relative;
+  background-color: #810001 !important; /* same red */
+  z-index: 2; /* make sure content is above the pseudo-elements */
+  overflow: visible;
+}
+
+/* hide leftover image tag if present */
+.corner-decoration { display:none !important; }
+
+/* tuning variables: tile size scales with viewport so each SVG shrinks/grows proportionally */
+:root{
+  --tile-size: clamp(12px, 3.2vw, 56px);    /* controls single SVG tile size */
+  --pattern-width: clamp(120px, 16vw, 420px);/* how far the pattern intrudes from edges */
+  --solid-edge-percent: 4%;
+  --fade-stop: 56%;
+}
+
+/* Both pseudo-elements pinned to the bottom of the wrapper */
+.header-wrapper::before,
+.header-wrapper::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  top: auto;
+  height: 100%;
+  pointer-events: none;
+
+  /* make sure pseudo sits above the wrapper background but below header content */
+  z-index: 1;
+
+  background-image: url('{{ "back-pattern-white.svg" | asset_url }}');
+  background-repeat: repeat;
+
+  /* keep tiles square and driven by --tile-size so motif keeps shape across breakpoints */
+  background-size: var(--tile-size) var(--tile-size);
+  background-position-y: bottom;
+  transition: background-image ease 0.5s ;
+}
+.header-wrapper:hover::before,
+.header-wrapper:hover::after {
+  background-image: url('{{ "back-pattern-green.svg" | asset_url }}');
+}
+
+/* LEFT: solid bottom-left -> fade toward top-right */
+.header-wrapper::before {
+  left: 0;
+  width: var(--pattern-width);
+  background-position: left bottom;
+
+  -webkit-mask-image: linear-gradient(
+    to top right,
+    black 0%,
+    black var(--solid-edge-percent),
+    rgba(0,0,0,0) var(--fade-stop),
+    rgba(0,0,0,0) 100%
+  );
+  mask-image: linear-gradient(
+    to top right,
+    black 0%,
+    black var(--solid-edge-percent),
+    rgba(0,0,0,0) var(--fade-stop),
+    rgba(0,0,0,0) 100%
+  );
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* RIGHT: solid bottom-right -> fade toward top-left (inward-facing) */
+.header-wrapper::after {
+  right: 0;
+  width: var(--pattern-width);
+  background-position: right bottom;
+  transform: none; /* keep original orientation so it faces inward */
+
+  -webkit-mask-image: linear-gradient(
+    to top left,
+    black 0%,
+    black var(--solid-edge-percent),
+    rgba(0,0,0,0) var(--fade-stop),
+    rgba(0,0,0,0) 100%
+  );
+  mask-image: linear-gradient(
+    to top left,
+    black 0%,
+    black var(--solid-edge-percent),
+    rgba(0,0,0,0) var(--fade-stop),
+    rgba(0,0,0,0) 100%
+  );
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* Slight mobile tweak so the triangle shape remains visually identical on very narrow screens */
+@media (max-width: 600px) {
+  :root {
+    --tile-size: clamp(10px, 5.0vw, 34px);
+    --pattern-width: clamp(90px, 28vw, 180px);
+    --fade-stop: 50%;
+    --solid-edge-percent: 6%;
+  }
+}
+
+/* if you need it behind header content, reduce z-index */
+.header--place-behind .corner-decoration { z-index: 0; }
+/* White text for all header elements with semi-bold font */
+.header__menu-item,
+.header__heading-link,
+.header__active-menu-item,
+.list-menu__item,
+.header h1,
+.header h2,
+.header span {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+.header a{
+  color: #273141 !important;
+  font-weight: 600 !important
+}
+
+.mega-menu__li{
+  border: solid 1px red;
+}
+/* White icons */
+.header__icon svg,
+.header__icon path,
+.header__icon .svg-wrapper,
+.header__icon--menu svg,
+.header__icon--search svg,
+.header__icon--account svg,
+.header__icon--cart svg {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+}
+
+.header__icon:hover svg ,
+.header__icon:hover path ,
+.header__icon:hover .svg-wrapper ,
+.header__icon--menu:hover svg ,
+.header__icon--search:hover svg ,
+.header__icon--account:hover svg ,
+.header__icon--cart:hover svg {
+  color: #25DA72 !important;
+  fill: #25DA72 !important;
+}
+
+/* White logo filter (if using a dark logo) */
+.header__heading-logo {
+  filter: brightness(0) invert(1);
+}
+
+/* White cart count bubble */
+.cart-count-bubble {
+  background-color: #ffffff !important;
+  color: #810001 !important;
+  font-weight: 600 !important;
+}
+
+/* Full-width dropdown menu */
+.header__inline-menu .mega-menu {
+  position: static;
+}
+
+details.mega-menu {
+  position: static;
+}
+
+.mega-menu__content {
+  background-color: #f6f8f9 !important;
+  width: 100vw !important;
+  left: 50% !important;
+  right: 50% !important;
+  margin-left: -50vw !important;
+  margin-right: -50vw !important;
+  position: absolute !important;
+  border: 1px solid #dee2e6;
+}
+
+/* Center the content inside full-width dropdown */
+.mega-menu__list.page-width {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Mobile menu drawer */
+.menu-drawer {
+  background-color: #ffffff !important;
+  
+}
+
+.menu-drawer__submenu {
+  background-color: #ffffff !important;
+}
+
+.menu-drawer__menu-item,
+.menu-drawer__navigation a,
+.menu-drawer__navigation span {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+@media (max-width:990px){
+ .header a{
+  color: #273141 !important;
+  font-weight: 600 !important
+}
+.header__menu-item,
+.header__heading-link,
+.header__active-menu-item,
+.list-menu__item,
+.header h1,
+.header h2,
+.header span {
+  color: #273141 !important;
+  font-weight: 600 !important;
+}
+
+}
+
+/* Hover effect for dropdown menu items - #25DA72 */
+.mega-menu__link:hover {
+  color: #25DA72 !important;
+  transition: color 0.3s ease;
+}
+
+/* Only change color of the specific menu item being hovered */
+.header__menu-item:hover {
+  transition: color 0.3s ease;
+}
+
+.header__menu-item:hover > span {
+  color: #25DA72 !important;
+}
+
+.header__active-menu-item:hover {
+  color: #25DA72 !important;
+}
+
+.menu-drawer__menu-item:hover,
+.menu-drawer__navigation a:hover {
+  color: #25DA72 !important;
+  transition: color 0.3s ease;
+}
+
+/* Only hover the specific list item link */
+.list-menu__item:hover > a,
+.list-menu__item > a:hover {
+  color: #25DA72 !important;
+  transition: color 0.3s ease;
+}
+
+/* Only the specific submenu item being hovered */
+.menu-drawer__submenu .list-menu__item:hover > a,
+.mega-menu__list li:hover > .mega-menu__link {
+  color: #25DA72 !important;
+}
+
+.mega_menu_img:hover .title {
+  color: #25DA72 !important;
+  transition: color 0.3s ease;
+}
+
+/* Only change the icon of the specific menu item being hovered */
+.header__menu-item:hover > svg {
+  fill: #25DA72 !important;
+  transition: fill 0.3s ease;
+}
+</style>
 {%- style -%}
   .header {
     padding: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px 3rem {{ section.settings.padding_bottom | times: 0.5 | round: 0 }}px 3rem;
@@ -203,8 +527,16 @@ transform: scale(1.03);
     endif
   -%}
   <header class="header header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width{% if section.settings.menu_type_desktop == 'drawer' %} drawer-menu{% endif %}{% if section.settings.menu != blank %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if localization_forms %} header--has-localizations{% endif %}">
-    
+    <!-- decorative bottom-left SVG: replace 'your-image.svg' with the actual asset filename -->
+<img
+  class="corner-decoration"
+  src="{{ 'back-pattern-white.svg' | asset_url }}"
+  alt=""
+  aria-hidden="true"
+/>
+
      {%- if section.settings.menu != blank -%}
+
 {% comment %}
   Renders a header drawer menu for mobile and desktop.
 
@@ -619,7 +951,7 @@ transform: scale(1.03);
                 tabindex="-1"
               >
                 <ul
-                  class="mega-menu__list page-width{% if link.levels == 1 %} mega-menu__list--condensed{% endif %}"
+                  class="mega-menu__list page-width{% if link.levels == 1 %}  mega-menu__list--condensed{% endif %}"
                   role="list"
                 >
                   {%- for childlink in link.links -%}
@@ -1071,13 +1403,13 @@ transform: scale(1.03);
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "t:sections.all.colors.label",
-      "default": "scheme-1"
+      "default": "scheme-2"
     },
     {
       "type": "color_scheme",
       "id": "menu_color_scheme",
       "label": "t:sections.header.settings.menu_color_scheme.label",
-      "default": "scheme-1"
+      "default": "scheme-2"
     },
     {
       "type": "header",
