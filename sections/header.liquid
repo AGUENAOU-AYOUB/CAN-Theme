@@ -1049,7 +1049,7 @@ details.mega-menu {
                 {% capture sizes %}(max-width: {{ settings.logo_width | times: 2 }}px) 50vw, {{ settings.logo_width }}px{% endcapture %}
                 {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
                 {{ settings.logo | image_url: width: 600 | image_tag:
-                  class: 'header__heading-logo motion-reduce',
+                  class: 'header__heading-logo motion-reduce logo--white',
                   widths: widths,
                   height: logo_height,
                   width: settings.logo_width,
@@ -1201,7 +1201,7 @@ details.mega-menu {
                 {% capture sizes %}(min-width: 750px) {{ settings.logo_width }}px, 50vw{% endcapture %}
                 {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
                 {{ settings.logo | image_url: width: 600 | image_tag:
-                  class: 'header__heading-logo',
+                  class: 'header__heading-logo logo--white',
                   widths: widths,
                   height: logo_height,
                   width: settings.logo_width,
