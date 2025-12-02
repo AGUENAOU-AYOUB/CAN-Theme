@@ -335,7 +335,7 @@
 <style>
   .luxury-collection {
     padding: {{ section.settings.vertical_padding }}px {{ section.settings.horizontal_padding }}px;
-    background-color: #fff;
+    background-color: rgba(255, 0, 0, 0);
     margin: {{ section.settings.top_margin }}px auto {{ section.settings.bottom_margin }}px;
     {% if section.settings.section_width == 'full' %}
       max-width: 100%;
@@ -356,20 +356,22 @@
 
   .luxury-collection__title {
     font-size: {% if section.settings.heading_size == 'small' %}1.5rem{% elsif section.settings.heading_size == 'large' %}2.5rem{% else %}2rem{% endif %};
-    font-weight: 300;
-    color: #1a1a1a;
+    font-weight: bold;
+    color: #C10117;
     margin-bottom: 1rem;
-    font-family: "Helvetica Neue", sans-serif;
+    font-family: "poppins", sans-serif;
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
 
   .luxury-collection__description {
     font-size: 1rem;
-    color: #666;
+    font-weight: 500 !important;
+    color: #77818C;
     line-height: 1.6;
     max-width: 800px;
     margin: 0 {% if section.settings.heading_alignment == 'center' %}auto{% elsif section.settings.heading_alignment == 'right' %}0 0 auto{% else %}0 auto 0 0{% endif %};
+     font-family: "poppins", sans-serif;
   }
 
   .luxury-collection__grid {
@@ -377,12 +379,14 @@
     grid-template-columns: repeat({{ section.settings.products_per_row }}, 1fr);
     gap: 1rem;
     padding: 0 2rem;
+    background: transparent;
   }
 
   /* Carousel Styles */
   .luxury-collection__carousel {
     position: relative;
     padding: 0 2rem;
+     font-family: "poppins", sans-serif;
   }
 
   .luxury-collection__carousel .slick-track {
@@ -455,14 +459,14 @@
   .product-card {
     position: relative;
     text-align: center;
-    background: #fff;
+    background: transparent;
   }
 
   .product-card__image-wrapper {
     position: relative;
     padding-bottom: {% if section.settings.image_ratio == 'portrait' %}125%{% else %}100%{% endif %};
     overflow: hidden;
-    background-color: #f8f8f8;
+    background-color: transparent;
     cursor: pointer;
   }
 
@@ -496,6 +500,8 @@
     opacity: 1;
     transition: opacity 0.3s ease;
     cursor: pointer;
+     background: #ffffff;
+    
   }
 
   .product-card__title {
@@ -533,9 +539,14 @@
 
   .product-card__price {
     font-size: 1.4rem;
-    color: #1a1a1a;
+    color: #010001;
     font-weight: 400;
+
   }
+
+.product-card__price:hover{
+  color: #0cc668;
+}
 
   .filters-toolbar {
     display: flex;
@@ -586,7 +597,7 @@
   }
 
   .quick-view__button {
-    background: {{ section.settings.quick_view_bg_color }};
+    background: #810001;
     color: {{ section.settings.quick_view_text_color }};
     border: none;
     padding: 0.75rem 1.5rem;
@@ -607,7 +618,7 @@
   }
 
   .quick-view__button:hover {
-    background-color: {{ section.settings.quick_view_bg_color | color_modify: 'alpha', 0.9 }};
+    background-color: #C10117;
   }
 
   /* Heart icon styles */

@@ -749,10 +749,66 @@ summary::-webkit-details-marker {
 */
 
 /* Dangerous for a11y - Use with care */
+/* <-- paste this at the VERY END of base.css (or in a file loaded after base.css) --> */
+
 .focus-none {
+  /* keep the focus-none behavior (use with care) */
   box-shadow: none !important;
   outline: 0 !important;
+
+  /* soft gray background */
+  background-color: #ffffff;
+  position: relative;
+  overflow: hidden;
 }
+
+/* white tiled pattern using the green SVG as a mask (so motif renders white) */
+.focus-none::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+
+  /* paint the tiled motif white (adjust alpha to taste) */
+  background-color: #f3f3f3;
+
+  /* tile behavior */
+  background-repeat: repeat;
+  background-position: right bottom;
+
+  /* tune tile density */
+  --pattern-size: clamp(10px, 2.8vw, 40px);
+  background-size: var(--pattern-size) var(--pattern-size);
+
+  /* use the SVG file as a mask so the motif becomes white regardless of the SVG fill */
+  /* path when assets live at /assets/ */
+  -webkit-mask-image: url('/assets/back-pattern-green.svg');
+  -webkit-mask-repeat: repeat;
+  -webkit-mask-size: var(--pattern-size) var(--pattern-size);
+  -webkit-mask-position: right bottom;
+
+  mask-image: url('/assets/back-pattern-green.svg');
+  mask-repeat: repeat;
+  mask-size: var(--pattern-size) var(--pattern-size);
+  mask-position: right bottom;
+
+  /* tiny blur for softness (optional) */
+  filter: blur(2px);
+  opacity: 0.5;
+}
+
+/* keep content above the pattern */
+.focus-none > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* smaller tiles on mobile */
+@media (max-width: 768px) {
+  .focus-none::after { --pattern-size: clamp(8px, 4.2vw, 20px); background-color: rgba(255,255,255,0.10); }
+}
+
 
 .focus-offset:focus-visible {
   outline: 0.2rem solid rgba(var(--color-foreground), 0.5);
@@ -3595,7 +3651,7 @@ details-disclosure > details {
   100% {
     transform: translateX(100%) scaleX(0);
   }
-
+}
 #menu-drawer {
     position: fixed;
     top: 0;

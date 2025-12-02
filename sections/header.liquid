@@ -117,22 +117,32 @@ summary.list-menu__item {
   object-fit: cover;
   text-decoration: none;
   transition: transform var(--duration-long) ease;
+    
 }
 
 .mega_menu_img{
   padding-bottom: 20px;
+
+
 }
 
 .mega_menu_img .mega-menu__link{
   padding-top: 0;
 }
 
-.mega_menu_img div{
+
+
+
+
+.mega_menu_img  div{
   text-align: center;
   overflow: hidden;
   padding: 0;
   margin: 0;
+  
 }
+
+
 
 .mega_menu_img .title{
   padding-top: 0.8rem;
@@ -141,6 +151,7 @@ summary.list-menu__item {
 
 .mega_menu_img img{
   transition: transform 0.5s ease;
+  overflow: hidden;
 }
 
 .mega_menu_img:hover img{
@@ -198,7 +209,8 @@ summary.list-menu__item {
   box-shadow: 1px 1px 20px 10px #2020205b;
 }
 
-//* ---------- Decorative pattern: responsive, pinned to header bottom ---------- */
+/* ---------- Decorative pattern: responsive, pinned to header bottom ---------- */
+
 /* Make header-wrapper itself transparent and apply the solid background on .header.
    This ensures pseudo-elements are visible (pattern) while header content remains above. */
 .header-wrapper {
@@ -236,7 +248,7 @@ summary.list-menu__item {
   top: auto;
   height: 100%;
   pointer-events: none;
-
+  opacity: 0.4;
   /* make sure pseudo sits above the wrapper background but below header content */
   z-index: 1;
 
@@ -305,12 +317,158 @@ summary.list-menu__item {
 /* Slight mobile tweak so the triangle shape remains visually identical on very narrow screens */
 @media (max-width: 600px) {
   :root {
-    --tile-size: clamp(10px, 5.0vw, 34px);
+    --tile-size: clamp(5px, 2.0vw, 12px);
     --pattern-width: clamp(90px, 28vw, 180px);
     --fade-stop: 50%;
     --solid-edge-percent: 6%;
   }
 }
+
+
+/* pattern tiles for mega menu corners (uses back-pattern.svg from assets) */
+.mega-menu__content {
+  position: relative; /* needed for pseudo-elements */
+  overflow: visible;  /* allow pseudo to extend */
+}
+
+/* tuning variables (override if you already have these named differently) */
+.mega-menu__pattern-tile-size { --mm-tile-size: clamp(10px, 2.6vw, 48px); }
+.mega-menu__content {
+  --mm-tile-size: clamp(12px, 3.2vw, 56px);
+  --mm-pattern-width: clamp(90px, 16vw, 420px);
+  --mm-solid-edge-percent: 4%;
+  --mm-fade-stop: 56%;
+}
+
+/* create left & right tiled pseudo-elements that fade toward the center */
+.mega-menu__content::before,
+.mega-menu__content::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  top: auto;
+  height: 100%;
+  width: var(--mm-pattern-width);
+  pointer-events: none;
+  z-index: 1; /* sits under content inside the mega-menu */
+  background-image: url('{{ "back-pattern.svg" | asset_url }}');
+  background-repeat: repeat;
+  background-size: var(--mm-tile-size) var(--mm-tile-size);
+  background-position-y: bottom;
+}
+
+/* left corner: fade to top-right */
+.mega-menu__content::before {
+  left: 0;
+  background-position: left bottom;
+  -webkit-mask-image: linear-gradient(
+    to top right,
+    black 0%,
+    black var(--mm-solid-edge-percent),
+    rgba(0,0,0,0) var(--mm-fade-stop)
+  );
+  mask-image: linear-gradient(
+    to top right,
+    black 0%,
+    black var(--mm-solid-edge-percent),
+    rgba(0,0,0,0) var(--mm-fade-stop)
+  );
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* right corner: fade to top-left */
+.mega-menu__content::after {
+  right: 0;
+  background-position: right bottom;
+  -webkit-mask-image: linear-gradient(
+    to top left,
+    black 0%,
+    black var(--mm-solid-edge-percent),
+    rgba(0,0,0,0) var(--mm-fade-stop)
+  );
+  mask-image: linear-gradient(
+    to top left,
+    black 0%,
+    black var(--mm-solid-edge-percent),
+    rgba(0,0,0,0) var(--mm-fade-stop)
+  );
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* make sure content sits above the pattern */
+.mega-menu__content > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* smaller & subtler on small devices */
+@media (max-width: 600px) {
+  .mega-menu__content {
+    --mm-tile-size: clamp(6px, 4.0vw, 20px);
+    --mm-pattern-width: clamp(60px, 28vw, 160px);
+    --mm-fade-stop: 70%;
+    --mm-solid-edge-percent: 6%;
+  }
+}
+
+
+/* --------------------------
+   Mobile drawer: bottom-left pattern
+   -------------------------- */
+/* --------------------------
+   Mobile drawer: full-width bottom pattern (tiles across whole bottom)
+   -------------------------- */
+@media (max-width: 990px) {
+  .menu-drawer__navigation {
+    position: relative; /* container for pseudo */
+    --md-tile-size: clamp(6px, 4.0vw, 20px);      /* single SVG tile size */
+    --md-strip-height: clamp(48px, 12vw, 120px);  /* vertical size of the bottom strip */
+    --md-fade-stop: 20%;                          /* where solid becomes transparent */
+    --md-solid-edge: 0%;                          /* keep very bottom solid if desired */
+    overflow: visible;
+  }
+
+  .menu-drawer__navigation::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;                 /* full width */
+    bottom: 0;                /* pinned to bottom */
+    height: var(--md-strip-height);
+    pointer-events: none;
+    z-index: 0;               /* behind menu content inside navigation */
+    background-image: url('{{ "back-pattern.svg" | asset_url }}');
+    background-repeat: repeat; /* tiles repeat both axes */
+    background-position: left bottom;
+    background-size: var(--md-tile-size) var(--md-tile-size);
+
+    /* fade upward from the top of the strip to transparent */
+    -webkit-mask-image: linear-gradient(
+      to top,
+      black 0%,
+      black calc(var(--md-fade-stop)),
+      rgba(0,0,0,0) 100%
+    );
+    mask-image: linear-gradient(
+      to top,
+      black 0%,
+      black calc(var(--md-fade-stop)),
+      rgba(0,0,0,0) 100%
+    );
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
+
+  /* ensure menu content (links, localization, etc.) sits above the pattern */
+  .menu-drawer__navigation > * {
+    position: relative;
+    z-index: 1;
+    /* If any sub-elements need to overlap the strip, increase their z-index further */
+  }
+}
+
 
 /* if you need it behind header content, reduce z-index */
 .header--place-behind .corner-decoration { z-index: 0; }
@@ -429,6 +587,8 @@ details.mega-menu {
 }
 
 }
+.header .mega_menu_img .pictures > div { border-radius:20px; overflow:hidden; }
+
 
 /* Hover effect for dropdown menu items - #25DA72 */
 .mega-menu__link:hover {
@@ -665,8 +825,8 @@ details.mega-menu {
                                     {%- for block in section.blocks -%}
                                     {%- if link.title == block.settings.link_name -%}
                                       <li class="mega_menu_img slide swiper-slide">
-                                        <a class="mega-menu__link" href="{{ block.settings.link_url}}">
-                                          <div>
+                                        <a class="mega-menu__link pictures " href="{{ block.settings.link_url}}">
+                                          <div >
                                           {{ block.settings.link_image | image_url: width: 500  | image_tag  }} 
                                           </div>
                                           <div class="title">{{ block.settings.link_title}}</div>

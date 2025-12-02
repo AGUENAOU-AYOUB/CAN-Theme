@@ -102,13 +102,13 @@
   .missoma-popup-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1}
   .missoma-popup{position:relative;z-index:2;background:#fff;max-width:{{ section.settings.popup_width }}px;width:90%;display:flex;box-shadow:0 4px 20px rgba(0,0,0,.15);transform:translateY(20px);transition:transform .3s}
   .missoma-popup-container.active .missoma-popup{transform:translateY(0)}
-  .missoma-popup-close{position:absolute;top:15px;right:15px;background:none;border:none;cursor:pointer;z-index:3;color:{{ section.settings.close_button_color }};width:24px;height:24px;display:flex;align-items:center;justify-content:center}
+  .missoma-popup-close{position:absolute;top:15px;right:15px;background:none;border:none;cursor:pointer;z-index:3;color:#ffffff;width:24px;height:24px;display:flex;align-items:center;justify-content:center}
   .missoma-popup-content{display:flex;width:100%}
   .missoma-popup-image{width:50%;overflow:hidden}
   .missoma-popup-image img{width:100%;height:100%;object-fit:cover}
-  .missoma-popup-text{width:50%;padding:40px;display:flex;flex-direction:column;justify-content:center}
-  .missoma-popup-text h2{font-size:{{ section.settings.heading_font_size }}px;font-weight:600;margin-bottom:15px;color:{{ section.settings.heading_color }}}
-  .missoma-popup-description{font-size:{{ section.settings.text_font_size }}px;margin-bottom:20px;color:{{ section.settings.text_color }}}
+  .missoma-popup-text{width:50%;padding:40px;display:flex;flex-direction:column;justify-content:center; background-color: #810001;color: #ffffff}
+  .missoma-popup-text h2{font-size:{{ section.settings.heading_font_size }}px;font-weight:600;margin-bottom:15px;color:#ffffff}
+  .missoma-popup-description{font-size:{{ section.settings.text_font_size }}px;margin-bottom:20px;color:#ffffff}
   .missoma-popup-country-selector{position:relative;margin-bottom:25px}
   .missoma-popup-select{width:100%;padding:12px 15px;border:1px solid {{ section.settings.input_border_color }};background:#fff;appearance:none;font-size:14px;color:{{ section.settings.text_color }}}
   .missoma-popup-select-icon{position:absolute;right:15px;top:50%;transform:translateY(-50%);pointer-events:none;font-size:10px}
@@ -118,10 +118,10 @@
   .missoma-popup-input.input--error{border-color:#dc2626}
   .missoma-popup-form-error{color:#dc2626;font-size:14px;margin-bottom:10px}
   .missoma-popup-form-success{color:#059669;font-size:14px;margin-bottom:10px}
-  .missoma-popup-button{background:{{ section.settings.button_background_color }};color:{{ section.settings.button_text_color }};border:none;padding:12px 15px;font-size:14px;font-weight:500;cursor:pointer;transition:background .3s}
-  .missoma-popup-button:hover{background:{{ section.settings.button_hover_background_color }}}
+  .missoma-popup-button{background:#0cc668;color:#ffffff;border:none;padding:12px 15px;font-size:14px;font-weight:500;cursor:pointer;transition:background .3s}
+  .missoma-popup-button:hover{background:#ffffff ; color: #810001}
   .missoma-popup-disclaimer{font-size:12px;color:{{ section.settings.disclaimer_color }};margin-top:15px}
-  .missoma-popup-no-thanks{background:none;border:none;color:{{ section.settings.no_thanks_color }};font-size:14px;text-decoration:underline;cursor:pointer;padding:0;margin-top:10px;align-self:center}
+  .missoma-popup-no-thanks{background:none;border:none;color:#0cc668;font-size:14px;text-decoration:underline;cursor:pointer;padding:0;margin-top:10px;align-self:center}
   @media screen and (max-width:767px){
     .missoma-popup-content{flex-direction:column}
     .missoma-popup-image,.missoma-popup-text{width:100%}
@@ -129,6 +129,64 @@
     .missoma-popup-text{padding:30px 20px}
     .missoma-popup{width:95%;margin:0 10px}
   }
+  /* Bottom-right decorative pattern inside the popup text */
+.missoma-popup-text {
+  position: relative;
+  overflow: hidden; /* ensures pattern stays inside corner */
+  
+  /* pattern sizing variables */
+  --popup-tile-size: clamp(8px, 2.2vw, 26px); /* size of each SVG tile (small) */
+  --popup-pattern-size: clamp(60px, 14vw, 180px); /* width of the corner area */
+  --popup-fade-stop: 55%; /* fade strength */
+}
+
+.missoma-popup-text::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  opacity: 0.3;
+  /* Make the pattern area wider and taller to avoid square feel */
+  width: calc(var(--popup-pattern-size) * 1.8);
+  height: calc(var(--popup-pattern-size) * 1.8);
+
+  background-image: url('{{ "back-pattern-white.svg" | asset_url }}');
+  background-repeat: repeat;
+  background-size: var(--popup-tile-size) var(--popup-tile-size);
+  background-position: right bottom;
+  pointer-events: none;
+  z-index: 0;
+
+  /* Much smoother, rounder mask */
+  -webkit-mask-image: radial-gradient(
+      circle at bottom right,
+      black 0%,
+      black 35%,
+      rgba(0,0,0,0) 75%
+  );
+  mask-image: radial-gradient(
+      circle at bottom right,
+      black 0%,
+      black 35%,
+      rgba(0,0,0,0) 75%
+  );
+}
+
+
+/* ensure popup content stays above pattern */
+.missoma-popup-text > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Extra small mobile tweak: make pattern even smaller */
+@media (max-width: 990px) {
+  .missoma-popup-text {
+    --popup-tile-size: clamp(6px, 3.8vw, 18px);
+    --popup-pattern-size: clamp(40px, 24vw, 120px);
+  }
+}
+
 </style>
 
 <script>
