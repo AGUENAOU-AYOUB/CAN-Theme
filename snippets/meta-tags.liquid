@@ -1,8 +1,9 @@
 {%- comment -%}
   Enhanced meta-tags.liquid
-  - Keeps your original OG logic
-  - Adds canonical, meta description, robots (index/follow by default)
-  - Provides robust og:image fallbacks and JSON-LD Organization snippet
+  - Robust canonical / description / robots
+  - Safe, absolute og:image selection + dimensions when available
+  - Twitter & Open Graph
+  - Minimal Organization JSON-LD
 {%- endcomment -%}
 
 {%- liquid
@@ -23,7 +24,7 @@
   assign canonical = canonical_url | default: request.original_url | default: request.origin
   assign safe_description = page_description | default: shop.meta_description | strip_newlines | escape
 
-  # Decide robots: noindex for password / checkout / cart / customer / account / search / preview themes
+  # Determine noindex conditions
   assign noindex_conditions = false
   if shop.password_enabled
     assign noindex_conditions = true
@@ -35,14 +36,24 @@
     assign noindex_conditions = true
   endif
 
-  # Determine og image: page_image > product.featured_image > settings.social_sharing_image > shop.logo
+  # Decide og image: page_image > product featured media preview > product.featured_image > settings.social_sharing_image > shop.logo
   assign og_image_candidate = page_image
-  if og_image_candidate == blank and request.page_type == 'product' and product and product.featured_media
-    assign og_image_candidate = product.featured_media.preview_image | default: product.featured_media
+
+  if og_image_candidate == blank and request.page_type == 'product' and product
+    # prefer featured_media.preview_image if available
+    if product.featured_media and product.featured_media.preview_image
+      assign og_image_candidate = product.featured_media.preview_image
+    elsif product.featured_image
+      assign og_image_candidate = product.featured_image
+    endif
   endif
+
   if og_image_candidate == blank
     assign og_image_candidate = settings.social_sharing_image | default: shop.logo
   endif
+
+  # choose a sensible size for social previews (1200x630 or 1024x1024 fallback)
+  assign og_image_size = '1200x630'
 %}
 
 {%- comment -%} Basic tags {%- endcomment -%}
@@ -67,14 +78,43 @@
 <meta property="og:type" content="{{ og_type }}">
 <meta property="og:description" content="{{ og_description | escape }}">
 
-{%- if og_image_candidate -%}
-  {%- assign og_image_url = og_image_candidate | img_url: '1024x1024' -%}
-  <meta property="og:image" content="{{ og_image_url | prepend: request.origin | replace: '//', '://' | replace_first: 'http:/', 'http://' | replace_first: 'https:/', 'https://' }}">
-  <meta name="twitter:image" content="{{ og_image_url | prepend: request.origin | replace: '//', '://' }}">
-  {%- comment -%} try to include dimensions if available (some objects expose width/height) {%- endcomment -%}
-  {%- if og_image_candidate.width and og_image_candidate.height -%}
-    <meta property="og:image:width" content="{{ og_image_candidate.width }}">
-    <meta property="og:image:height" content="{{ og_image_candidate.height }}">
+{%- if og_image_candidate and og_image_candidate != blank -%}
+  {%- comment -%}
+    Build an absolute image URL using img_url + absolute_url when available.
+    We try a social-friendly size first; fall back to a generic image URL if filters are not supported for the object.
+  {%- endcomment -%}
+
+  {%- assign attempt_image = '' -%}
+
+  {%- comment -%} If it's an image object with width/height or src accessible, try img_url -> absolute_url {%- endcomment -%}
+  {%- if og_image_candidate | img_url: og_image_size -%}
+    {%- assign attempt_image = og_image_candidate | img_url: og_image_size | absolute_url -%}
+  {%- endif -%}
+
+  {%- unless attempt_image -%}
+    {%- if og_image_candidate | img_url: '1024x1024' -%}
+      {%- assign attempt_image = og_image_candidate | img_url: '1024x1024' | absolute_url -%}
+    {%- endif -%}
+  {%- endunless -%}
+
+  {%- comment -%} Final fallback: if candidate is a string (URL) or resource path, try to build an absolute url. {%- endcomment -%}
+  {%- unless attempt_image -%}
+    {%- if og_image_candidate contains 'http' or og_image_candidate contains '//' -%}
+      {%- assign attempt_image = og_image_candidate -%}
+    {%- else -%}
+      {%- assign attempt_image = og_image_candidate | absolute_url -%}
+    {%- endif -%}
+  {%- endunless -%}
+
+  {%- if attempt_image != blank -%}
+    <meta property="og:image" content="{{ attempt_image }}">
+    <meta property="og:image:secure_url" content="{{ attempt_image }}">
+    <meta name="twitter:image" content="{{ attempt_image }}">
+    {%- comment -%} Try to include dimensions if available on the object {%- endcomment -%}
+    {%- if og_image_candidate.width and og_image_candidate.height -%}
+      <meta property="og:image:width" content="{{ og_image_candidate.width }}">
+      <meta property="og:image:height" content="{{ og_image_candidate.height }}">
+    {%- endif -%}
   {%- endif -%}
 {%- endif -%}
 
@@ -90,16 +130,16 @@
 <meta name="twitter:title" content="{{ og_title | escape }}">
 <meta name="twitter:description" content="{{ og_description | escape }}">
 
-{%- comment -%} Minimal Organization JSON-LD (helps brand presence in SERPs) {%- endcomment -%}
+{%- comment -%} Minimal Organization JSON-LD {%- endcomment -%}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": {{ shop.name | json }},
-  "url": {{ shop.url | json }},
-  {% if settings.social_twitter_link != blank %}
+  "url": {{ request.origin | json }},
+  {%- if settings.social_twitter_link != blank -%}
   "sameAs": [ {{ settings.social_twitter_link | json }} ],
-  {% endif %}
+  {%- endif -%}
   "logo": {{ (settings.social_sharing_image | default: shop.logo) | img_url: '600x600' | absolute_url | json }}
 }
 </script>
