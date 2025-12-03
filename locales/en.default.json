@@ -903,7 +903,7 @@
       "many": "Search: %{count} results found for \"%{terms}\""
     }
   }
-},
+,
 "customer_accounts": {
   "ui_components": {
     "autocompleteOptionsAvailable": {

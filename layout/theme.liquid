@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="">
     <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 
@@ -164,7 +165,7 @@
         --blog-card-image-padding: {{ settings.blog_card_image_padding | divided_by: 10.0 }}rem;
         --blog-card-corner-radius: {{ settings.blog_card_corner_radius | divided_by: 10.0 }}rem;
         --blog-card-text-alignment: {{ settings.blog_card_text_alignment }};
-        --blog-card-border-width: {{ settings.blog_card_border_thickness | divided_by: 10.0 }}rem;
+        --blog-card-border-width: {{ settings.blog_card_border_thickness }}px;
         --blog-card-border-opacity: {{ settings.blog_card_border_opacity | divided_by: 100.0 }};
         --blog-card-shadow-opacity: {{ settings.blog_card_shadow_opacity | divided_by: 100.0 }};
         --blog-card-shadow-visible: {% if settings.blog_card_shadow_opacity > 0 %}1{% else %}0{% endif %};
