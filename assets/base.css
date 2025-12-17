@@ -2703,18 +2703,28 @@ details[open] .modal-overlay {
 details[open] .modal-overlay::after {
   position: absolute;
   content: '';
-  background-color: rgb(var(--color-foreground), 0.5);
+  background-color: #00000046;
   top: 100%;
   left: 0;
   right: 0;
   height: 100vh;
 }
+/* FULL-WIDTH SEARCH MODAL FIX */
+.header-wrapper .search-modal {
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
 
 .search-modal {
   opacity: 0;
-  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  border-bottom: 0px solid #810001;
   min-height: calc(100% + var(--inputs-margin-offset) + (2 * var(--inputs-border-width)));
   height: 100%;
+   width: 100vw;
+  margin: 0 auto;
+  
 }
 
 .search-modal__content {
@@ -2726,6 +2736,7 @@ details[open] .modal-overlay::after {
   padding: 0 5rem 0 1rem;
   line-height: calc(1 + 0.8 / var(--font-body-scale));
   position: relative;
+  background-color: #810001;
 }
 
 .search-modal__content-bottom {

@@ -23,6 +23,7 @@
 {%- endif -%}
 
 <style>
+
   header-drawer {
     justify-self: start;
     margin-left: -1.2rem;
@@ -566,15 +567,15 @@
       assign localization_forms = true
     endif
   -%}
-  <div class="header-pattern-clipper"></div>
-  <header class="header header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width{% if section.settings.menu_type_desktop == 'drawer' %} drawer-menu{% endif %}{% if section.settings.menu != blank %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if localization_forms %} header--has-localizations{% endif %}">
-    <!-- decorative bottom-left SVG: replace 'your-image.svg' with the actual asset filename -->
+  <div class="header-pattern-clipper">  <!-- decorative bottom-left SVG: replace 'your-image.svg' with the actual asset filename -->
 <img
   class="corner-decoration"
   src="{{ 'back-pattern-white.svg' | asset_url }}"
   alt=""
   aria-hidden="true"
-/>
+/></div>
+  <header class="header header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width{% if section.settings.menu_type_desktop == 'drawer' %} drawer-menu{% endif %}{% if section.settings.menu != blank %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if localization_forms %} header--has-localizations{% endif %}">
+  
 
      {%- if section.settings.menu != blank -%}
 
