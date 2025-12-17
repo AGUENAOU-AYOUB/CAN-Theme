@@ -746,61 +746,46 @@ summary::-webkit-details-marker {
   box-shadow: 0 0 0.2rem 0 rgba(var(--color-foreground), 0.3);
 }
 
-/*
-  Focus ring - none
-*/
-
-/* Dangerous for a11y - Use with care */
-/* <-- paste this at the VERY END of base.css (or in a file loaded after base.css) --> */
+/* Focus ring - none (Updated with Background Pattern) */
 
 .focus-none {
-  /* keep the focus-none behavior (use with care) */
   box-shadow: none !important;
   outline: 0 !important;
-
-  /* soft gray background */
-  background-color: #ffffff;
+  /* Keep background white so the pattern sits on top of white */
+  background-color: #ffffff; 
   position: relative;
-  overflow: hidden;
+  overflow: hidden; /* Important: Cuts off the parts of the image sticking out */
 }
 
-/* white tiled pattern using the green SVG as a mask (so motif renders white) */
-.focus-none::after{
+.focus-none::after {
   content: "";
   position: absolute;
-  inset: 0;
   pointer-events: none;
   z-index: 0;
 
-  /* paint the tiled motif white (adjust alpha to taste) */
-  background-color: #f3f3f3;
+  /* Size */
+  width: clamp(300px, 60vw, 800px);
+  height: clamp(300px, 60vw, 800px);
 
-  /* tile behavior */
-  background-repeat: repeat;
-  background-position: right bottom;
+  /* Image */
+  background-image: url('Background-big.svg'); 
+  background-repeat: no-repeat;
+  background-size: contain;
 
-  /* tune tile density */
-  --pattern-size: clamp(10px, 2.8vw, 40px);
-  background-size: var(--pattern-size) var(--pattern-size);
-
-  /* use the SVG file as a mask so the motif becomes white regardless of the SVG fill */
-  /* path when assets live at /assets/ */
-  -webkit-mask-image: url('/assets/back-pattern-green.svg');
-  -webkit-mask-repeat: repeat;
-  -webkit-mask-size: var(--pattern-size) var(--pattern-size);
-  -webkit-mask-position: right bottom;
-
-  mask-image: url('/assets/back-pattern-green.svg');
-  mask-repeat: repeat;
-  mask-size: var(--pattern-size) var(--pattern-size);
-  mask-position: right bottom;
-
-  /* tiny blur for softness (optional) */
-  filter: blur(2px);
-  opacity: 0.5;
+  /* --- NEW POSITION: CENTER LEFT --- */
+  top: 50%;      /* Move down to the middle */
+  left: 0;       /* Stick to the left edge */
+  bottom: auto;  /* Remove bottom alignment */
+  
+  /* TRANSFORM EXPLANATION:
+     -50% (X): Moves it left by half its width (so the center of the image sits on the edge)
+     -50% (Y): Moves it up by half its height (to center it vertically) 
+  */
+  transform: translate(-50%, -50%);
+  
+  opacity: 1; 
 }
-
-/* keep content above the pattern */
+/* Ensure content sits above the pattern */
 .focus-none > * {
   position: relative;
   z-index: 1;
@@ -3669,6 +3654,29 @@ details-disclosure > details {
 @media screen and (max-width: 749px) {
     #menu-drawer {
         width: 80%;
+    }
+}
+/* FORCE HEADER TO STAY ON TOP */
+.section-header, 
+.shopify-section-group-header-group {
+    z-index: 1001 !important; /* Higher than the menu's default z-index */
+    position: relative;
+}
+
+/* PUSH MENU DOWN & ADJUST HEIGHT */
+@media screen and (max-width: 989px) {
+    #menu-drawer {
+        /* Increase this value until the menu clears the red header completely */
+        /* I increased it to 150px based on your screenshots */
+        top: 150px !important; 
+        
+        /* Adjust height to fill the rest of the screen */
+        height: calc(100% - 150px) !important;
+        
+        /* Ensure width is correct */
+        width: 80%;
+        left: 0;
+        z-index: 999; /* Lower than the header (1001) */
     }
 }
 /* Default desktop */

@@ -22,622 +22,502 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer="defer"></script>
 {%- endif -%}
 
-
 <style>
-
-
-
-
-header-drawer {
-  justify-self: start;
-  margin-left: -1.2rem;
-}
-
-{%- if section.settings.sticky_header_type == 'reduce-logo-size' -%}
-  .scrolled-past-header .header__heading-logo-wrapper {
-    width: 75%;
+  header-drawer {
+    justify-self: start;
+    margin-left: -1.2rem;
   }
-{%- endif -%}
 
-{%- if section.settings.menu_type_desktop != "drawer" -%}
-  @media screen and (min-width: 990px) {
-    header-drawer {
-      display: none;
+  {%- if section.settings.sticky_header_type == 'reduce-logo-size' -%}
+    .scrolled-past-header .header__heading-logo-wrapper {
+      width: 75%;
     }
-  }
-{%- endif -%}
-<style>
-header-drawer {
-  justify-self: start;
-  margin-left: -1.2rem;
-}
+  {%- endif -%}
 
-{%- if section.settings.sticky_header_type == 'reduce-logo-size' -%}
-  .scrolled-past-header .header__heading-logo-wrapper {
-    width: 75%;
-  }
-{%- endif -%}
-
-{%- if section.settings.menu_type_desktop != "drawer" -%}
-  @media screen and (min-width: 990px) {
-    header-drawer {
-      display: none;
+  {%- if section.settings.menu_type_desktop != "drawer" -%}
+    @media screen and (min-width: 990px) {
+      header-drawer {
+        display: none;
+      }
     }
+  {%- endif -%}
+
+  .menu-drawer-container {
+    display: flex;
   }
-{%- endif -%}
 
-.menu-drawer-container {
-  display: flex;
-}
-
-.list-menu {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.list-menu--inline {
-  display: inline-flex;
-  flex-wrap: wrap;
-}
-
-summary.list-menu__item {
-  padding-right: 2.7rem;
-}
-
-.list-menu__item {
-  display: flex;
-  align-items: center;
-  line-height: calc(1 + 0.3 / var(--font-body-scale));
-}
-
-.list-menu__item--link {
-  text-decoration: none;
-  padding-bottom: 1rem;
-  padding-top: 1rem;
-  line-height: calc(1 + 0.8 / var(--font-body-scale));
-}
-
-@media screen and (min-width: 750px) {
-  .list-menu__item--link {
-    padding-bottom: 0.5rem;
-    padding-top: 0.5rem;
-    
-  }
-  
-}
-
-{%- comment -%} mega-menu-images-style {%- endcomment -%}
-.mega_menu_img img{
-  max-width:100%;
-  height: auto;
-  display: block;
-  margin-right: auto;
-  margin-left: auto;
-  object-fit: cover;
-  text-decoration: none;
-  transition: transform var(--duration-long) ease;
-    
-}
-
-.mega_menu_img{
-  padding-bottom: 20px;
-
-
-}
-
-.mega_menu_img .mega-menu__link{
-  padding-top: 0;
-}
-
-
-
-
-
-.mega_menu_img  div{
-  text-align: center;
-  overflow: hidden;
-  padding: 0;
-  margin: 0;
-  
-}
-
-
-
-.mega_menu_img .title{
-  padding-top: 0.8rem;
-  font-size: 1.5rem;
-}
-
-.mega_menu_img img{
-  transition: transform 0.5s ease;
-  overflow: hidden;
-}
-
-.mega_menu_img:hover img{
-  transform: scale(1.03);
-}
-
-.mega-menu__list {
-  gap: 0;
-  display: flex;
-  padding: 0;
-  flex-wrap: wrap;
-  justify-content: center;
-  row-gap: 20px;
-}
-
-@media (min-width: 768px) {
-  .mega-menu__list > li{
+  .list-menu {
     list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .list-menu--inline {
+    display: inline-flex;
+    flex-wrap: wrap;
+  }
+
+  summary.list-menu__item {
+    padding-right: 2.7rem;
+  }
+
+  .list-menu__item {
+    display: flex;
+    align-items: center;
+    line-height: calc(1 + 0.3 / var(--font-body-scale));
+  }
+
+  .list-menu__item--link {
+    text-decoration: none;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+    line-height: calc(1 + 0.8 / var(--font-body-scale));
+  }
+
+  @media screen and (min-width: 750px) {
+    .list-menu__item--link {
+      padding-bottom: 0.5rem;
+      padding-top: 0.5rem;
+    }
+  }
+
+  /* Mega Menu Images Style */
+  .mega_menu_img img {
+    max-width: 100%;
+    height: auto;
     display: block;
-    flex: 0 0 20%;
-    max-width: 25%;
-    padding-right: 15px;  
+    margin-right: auto;
+    margin-left: auto;
+    object-fit: cover;
+    text-decoration: none;
+    transition: transform var(--duration-long) ease;
   }
-}
 
-.mega_menu_img.slide{
-  flex: 0 0 260px;
-  max-width: 100%;
-  margin: 0;
-  padding-right: 15px;
-  scroll-snap-align: start;
-}
-
-.mega_menu_img.slide:first-child{
-  padding-left: 0;
-}
-
-.js .menu-drawer__submenu{
-  z-index: 2;
-}
-
-.swiper{
-  margin-top: 15px; 
-  padding: 0 3rem;
-}  
-
-.swiper .mega-menu__link .title{
-  text-align: start;
-}
-
-/* Custom Header Color Scheme */
-.header-wrapper.color-scheme-2,
-.header-wrapper {
-  background-color: #810001 !important;
-  box-shadow: 1px 1px 20px 10px #2020205b;
-}
-
-/* ---------- Decorative pattern: responsive, pinned to header bottom ---------- */
-
-/* Make header-wrapper itself transparent and apply the solid background on .header.
-   This ensures pseudo-elements are visible (pattern) while header content remains above. */
-.header-wrapper {
-  background-color: #810001 !important;
-  position: relative;
-  z-index: 0;
-  overflow: visible;
-}
-
-/* Keep red background on the inner .header so content still looks correct */
-.header {
-  position: relative;
-  background-color: #810001 !important; /* same red */
-  z-index: 2; /* make sure content is above the pseudo-elements */
-  overflow: visible;
-}
-
-/* hide leftover image tag if present */
-.corner-decoration { display:none !important; }
-
-/* tuning variables: tile size scales with viewport so each SVG shrinks/grows proportionally */
-:root{
-  --tile-size: clamp(12px, 3.2vw, 56px);    /* controls single SVG tile size */
-  --pattern-width: clamp(120px, 16vw, 420px);/* how far the pattern intrudes from edges */
-  --solid-edge-percent: 4%;
-  --fade-stop: 56%;
-}
-
-/* Both pseudo-elements pinned to the bottom of the wrapper */
-.header-wrapper::before,
-.header-wrapper::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  top: auto;
-  height: 100%;
-  pointer-events: none;
-  opacity: 0.4;
-  /* make sure pseudo sits above the wrapper background but below header content */
-  z-index: 1;
-
-  background-image: url('{{ "back-pattern-white.svg" | asset_url }}');
-  background-repeat: repeat;
-
-  /* keep tiles square and driven by --tile-size so motif keeps shape across breakpoints */
-  background-size: var(--tile-size) var(--tile-size);
-  background-position-y: bottom;
-  transition: background-image ease 0.5s ;
-}
-.header-wrapper:hover::before,
-.header-wrapper:hover::after {
-  background-image: url('{{ "back-pattern-green.svg" | asset_url }}');
-}
-
-/* LEFT: solid bottom-left -> fade toward top-right */
-.header-wrapper::before {
-  left: 0;
-  width: var(--pattern-width);
-  background-position: left bottom;
-
-  -webkit-mask-image: linear-gradient(
-    to top right,
-    black 0%,
-    black var(--solid-edge-percent),
-    rgba(0,0,0,0) var(--fade-stop),
-    rgba(0,0,0,0) 100%
-  );
-  mask-image: linear-gradient(
-    to top right,
-    black 0%,
-    black var(--solid-edge-percent),
-    rgba(0,0,0,0) var(--fade-stop),
-    rgba(0,0,0,0) 100%
-  );
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-}
-
-/* RIGHT: solid bottom-right -> fade toward top-left (inward-facing) */
-.header-wrapper::after {
-  right: 0;
-  width: var(--pattern-width);
-  background-position: right bottom;
-  transform: none; /* keep original orientation so it faces inward */
-
-  -webkit-mask-image: linear-gradient(
-    to top left,
-    black 0%,
-    black var(--solid-edge-percent),
-    rgba(0,0,0,0) var(--fade-stop),
-    rgba(0,0,0,0) 100%
-  );
-  mask-image: linear-gradient(
-    to top left,
-    black 0%,
-    black var(--solid-edge-percent),
-    rgba(0,0,0,0) var(--fade-stop),
-    rgba(0,0,0,0) 100%
-  );
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-}
-
-/* Slight mobile tweak so the triangle shape remains visually identical on very narrow screens */
-@media (max-width: 600px) {
-  :root {
-    --tile-size: clamp(5px, 2.0vw, 12px);
-    --pattern-width: clamp(90px, 28vw, 180px);
-    --fade-stop: 50%;
-    --solid-edge-percent: 6%;
+  .mega_menu_img {
+    padding-bottom: 20px;
   }
-}
 
+  .mega_menu_img .mega-menu__link {
+    padding-top: 0;
+  }
 
-/* pattern tiles for mega menu corners (uses back-pattern.svg from assets) */
-.mega-menu__content {
-  position: relative; /* needed for pseudo-elements */
-  overflow: visible;  /* allow pseudo to extend */
-}
+  .mega_menu_img div {
+    text-align: center;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+  }
 
-/* tuning variables (override if you already have these named differently) */
-.mega-menu__pattern-tile-size { --mm-tile-size: clamp(10px, 2.6vw, 48px); }
-.mega-menu__content {
-  --mm-tile-size: clamp(12px, 3.2vw, 56px);
-  --mm-pattern-width: clamp(90px, 16vw, 420px);
-  --mm-solid-edge-percent: 4%;
-  --mm-fade-stop: 56%;
-}
+  .mega_menu_img .title {
+    padding-top: 0.8rem;
+    font-size: 1.5rem;
+  }
 
-/* create left & right tiled pseudo-elements that fade toward the center */
-.mega-menu__content::before,
-.mega-menu__content::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  top: auto;
-  height: 100%;
-  width: var(--mm-pattern-width);
-  pointer-events: none;
-  z-index: 1; /* sits under content inside the mega-menu */
-  background-image: url('{{ "back-pattern.svg" | asset_url }}');
-  background-repeat: repeat;
-  background-size: var(--mm-tile-size) var(--mm-tile-size);
-  background-position-y: bottom;
-}
+  .mega_menu_img img {
+    transition: transform 0.5s ease;
+    overflow: hidden;
+  }
 
-/* left corner: fade to top-right */
-.mega-menu__content::before {
-  left: 0;
-  background-position: left bottom;
-  -webkit-mask-image: linear-gradient(
-    to top right,
-    black 0%,
-    black var(--mm-solid-edge-percent),
-    rgba(0,0,0,0) var(--mm-fade-stop)
-  );
-  mask-image: linear-gradient(
-    to top right,
-    black 0%,
-    black var(--mm-solid-edge-percent),
-    rgba(0,0,0,0) var(--mm-fade-stop)
-  );
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-}
+  .mega_menu_img:hover img {
+    transform: scale(1.03);
+  }
 
-/* right corner: fade to top-left */
-.mega-menu__content::after {
-  right: 0;
-  background-position: right bottom;
-  -webkit-mask-image: linear-gradient(
-    to top left,
-    black 0%,
-    black var(--mm-solid-edge-percent),
-    rgba(0,0,0,0) var(--mm-fade-stop)
-  );
-  mask-image: linear-gradient(
-    to top left,
-    black 0%,
-    black var(--mm-solid-edge-percent),
-    rgba(0,0,0,0) var(--mm-fade-stop)
-  );
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-}
+  .mega-menu__list {
+    gap: 0;
+    display: flex;
+    padding: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 20px;
+  }
 
-/* make sure content sits above the pattern */
-.mega-menu__content > * {
-  position: relative;
-  z-index: 2;
-}
+  @media (min-width: 768px) {
+    .mega-menu__list > li {
+      list-style: none;
+      display: block;
+      flex: 0 0 20%;
+      max-width: 25%;
+      padding-right: 15px;
+    }
+  }
 
-/* smaller & subtler on small devices */
-@media (max-width: 600px) {
+  .mega_menu_img.slide {
+    flex: 0 0 260px;
+    max-width: 100%;
+    margin: 0;
+    padding-right: 15px;
+    scroll-snap-align: start;
+  }
+
+  .mega_menu_img.slide:first-child {
+    padding-left: 0;
+  }
+
+  .js .menu-drawer__submenu {
+    z-index: 2;
+  }
+
+  .swiper {
+    margin-top: 15px;
+    padding: 0 3rem;
+  }
+
+  .swiper .mega-menu__link .title {
+    text-align: start;
+  }
+
+  /* ==========================================================================
+     CUSTOM HEADER STYLES (Red Background + Patterns)
+     ========================================================================== */
+
+  /* 1. Main Wrapper: Sets the RED background and allows menu overflow */
+  .header-wrapper.color-scheme-2,
+  .header-wrapper {
+    background-color: #810001 !important; /* The Red Background */
+    box-shadow: 0px 20px 20px -5px #2020205b;
+    position: relative;
+    z-index: 0;
+    overflow: visible !important; /* Critical for dropdown menu */
+  }
+
+  /* 2. Clipper Div: Holds the Pattern SVGs and Cuts them off */
+  /* This sits on top of the red background but behind the text */
+  .header-pattern-clipper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* This cuts the SVG patterns at the edge */
+    z-index: 1;
+    pointer-events: none;
+    background-color: transparent !important;
+  }
+
+  /* 3. Header Content: Sits on top of everything */
+  .header {
+    position: relative;
+    background-color: transparent !important;
+    z-index: 5;
+  }
+
+  .corner-decoration {
+    display: none !important;
+  }
+
+  /* Pattern Settings (Attached to Clipper) */
+  .header-pattern-clipper::before,
+  .header-pattern-clipper::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+    width: clamp(200px, 30vw, 500px);
+    height: clamp(200px, 30vw, 500px);
+    background-image: url('{{ "back-pattern-white.svg" | asset_url }}');
+    background-repeat: no-repeat;
+    background-size: contain;
+    transition: none !important;
+    opacity: 1 !important;
+  }
+
+  /* Desktop Pattern Positions */
+  @media screen and (min-width: 991px) {
+    .header-pattern-clipper::before {
+      bottom: 0;
+      left: 0;
+      transform: translate(-50%, 50%);
+    }
+    .header-pattern-clipper::after {
+      top: 0;
+      right: 0;
+      transform: translate(50%, -50%) rotate(180deg);
+    }
+  }
+
+  /* Mobile Pattern Positions */
+  @media screen and (max-width: 990px) {
+    .header-pattern-clipper::before {
+      display: none !important;
+    }
+    .header-pattern-clipper::after {
+      top: auto !important;
+      left: auto !important;
+      bottom: 0 !important;
+      right: 0 !important;
+      width: 250px !important;
+      height: 250px !important;
+      transform: translate(50%, 50%) scaleX(-1);
+    }
+  }
+
+  /* Mega Menu Patterns */
   .mega-menu__content {
-    --mm-tile-size: clamp(6px, 4.0vw, 20px);
-    --mm-pattern-width: clamp(60px, 28vw, 160px);
-    --mm-fade-stop: 70%;
-    --mm-solid-edge-percent: 6%;
-  }
-}
-
-
-/* --------------------------
-   Mobile drawer: bottom-left pattern
-   -------------------------- */
-/* --------------------------
-   Mobile drawer: full-width bottom pattern (tiles across whole bottom)
-   -------------------------- */
-@media (max-width: 990px) {
-  .menu-drawer__navigation {
-    position: relative; /* container for pseudo */
-    --md-tile-size: clamp(6px, 4.0vw, 20px);      /* single SVG tile size */
-    --md-strip-height: clamp(48px, 12vw, 120px);  /* vertical size of the bottom strip */
-    --md-fade-stop: 20%;                          /* where solid becomes transparent */
-    --md-solid-edge: 0%;                          /* keep very bottom solid if desired */
+    position: relative;
     overflow: visible;
   }
 
-  .menu-drawer__navigation::before {
+  .mega-menu__pattern-tile-size { --mm-tile-size: clamp(10px, 2.6vw, 48px); }
+  .mega-menu__content {
+    --mm-tile-size: clamp(12px, 3.2vw, 56px);
+    --mm-pattern-width: clamp(90px, 16vw, 420px);
+    --mm-solid-edge-percent: 4%;
+    --mm-fade-stop: 56%;
+  }
+
+  .mega-menu__content::before,
+  .mega-menu__content::after {
     content: "";
     position: absolute;
-    left: 0;
-    right: 0;                 /* full width */
-    bottom: 0;                /* pinned to bottom */
-    height: var(--md-strip-height);
+    bottom: 0;
+    top: auto;
+    height: 100%;
+    width: var(--mm-pattern-width);
     pointer-events: none;
-    z-index: 0;               /* behind menu content inside navigation */
-    background-image: url('{{ "back-pattern.svg" | asset_url }}');
-    background-repeat: repeat; /* tiles repeat both axes */
-    background-position: left bottom;
-    background-size: var(--md-tile-size) var(--md-tile-size);
+    z-index: 1;
+    background-image: url('{{ "back-pattern-white.svg" | asset_url }}');
+    background-repeat: repeat;
+    background-size: var(--mm-tile-size) var(--mm-tile-size);
+    background-position-y: bottom;
+  }
 
-    /* fade upward from the top of the strip to transparent */
-    -webkit-mask-image: linear-gradient(
-      to top,
-      black 0%,
-      black calc(var(--md-fade-stop)),
-      rgba(0,0,0,0) 100%
-    );
-    mask-image: linear-gradient(
-      to top,
-      black 0%,
-      black calc(var(--md-fade-stop)),
-      rgba(0,0,0,0) 100%
-    );
+  .mega-menu__content::before {
+    left: 0;
+    background-position: left bottom;
+    -webkit-mask-image: linear-gradient(to top right, black 0%, black var(--mm-solid-edge-percent), rgba(0,0,0,0) var(--mm-fade-stop));
+    mask-image: linear-gradient(to top right, black 0%, black var(--mm-solid-edge-percent), rgba(0,0,0,0) var(--mm-fade-stop));
     -webkit-mask-repeat: no-repeat;
     mask-repeat: no-repeat;
   }
 
-  /* ensure menu content (links, localization, etc.) sits above the pattern */
-  .menu-drawer__navigation > * {
-    position: relative;
-    z-index: 1;
-    /* If any sub-elements need to overlap the strip, increase their z-index further */
+  .mega-menu__content::after {
+    right: 0;
+    background-position: right bottom;
+    -webkit-mask-image: linear-gradient(to top left, black 0%, black var(--mm-solid-edge-percent), rgba(0,0,0,0) var(--mm-fade-stop));
+    mask-image: linear-gradient(to top left, black 0%, black var(--mm-solid-edge-percent), rgba(0,0,0,0) var(--mm-fade-stop));
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
   }
-}
 
+  .mega-menu__content > * {
+    position: relative;
+    z-index: 2;
+  }
 
-/* if you need it behind header content, reduce z-index */
-.header--place-behind .corner-decoration { z-index: 0; }
-/* White text for all header elements with semi-bold font */
-.header__menu-item,
-.header__heading-link,
-.header__active-menu-item,
-.list-menu__item,
-.header h1,
-.header h2,
-.header span {
-  color: #ffffff !important;
-  font-weight: 600 !important;
-}
-.header a{
-  color: #273141 !important;
-  font-weight: 600 !important
-}
+  @media (max-width: 600px) {
+    .mega-menu__content {
+      --mm-tile-size: clamp(6px, 4.0vw, 20px);
+      --mm-pattern-width: clamp(60px, 28vw, 160px);
+      --mm-fade-stop: 70%;
+      --mm-solid-edge-percent: 6%;
+    }
+  }
 
-.mega-menu__li{
-  border: solid 1px red;
-}
-/* White icons */
-.header__icon svg,
-.header__icon path,
-.header__icon .svg-wrapper,
-.header__icon--menu svg,
-.header__icon--search svg,
-.header__icon--account svg,
-.header__icon--cart svg {
-  fill: #ffffff !important;
-  color: #ffffff !important;
-}
+  /* Mobile Drawer Patterns */
+  @media (max-width: 990px) {
+    .menu-drawer__navigation {
+      position: relative;
+      --md-tile-size: clamp(6px, 4.0vw, 20px);
+      --md-strip-height: clamp(48px, 12vw, 120px);
+      --md-fade-stop: 20%;
+      --md-solid-edge: 0%;
+      overflow: visible;
+    }
+    .menu-drawer__navigation::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: var(--md-strip-height);
+      pointer-events: none;
+      z-index: 0;
+      background-image: url('{{ "Background-big.svg" | asset_url }}');
+      background-repeat: no-repeat;
+      background-position: left bottom;
+      background-size: var(--md-tile-size) var(--md-tile-size);
+    }
+    .menu-drawer__navigation > * {
+      position: relative;
+      z-index: 1;
+    }
+  }
 
-.header__icon:hover svg ,
-.header__icon:hover path ,
-.header__icon:hover .svg-wrapper ,
-.header__icon--menu:hover svg ,
-.header__icon--search:hover svg ,
-.header__icon--account:hover svg ,
-.header__icon--cart:hover svg {
-  color: #25DA72 !important;
-  fill: #25DA72 !important;
-}
+  .header--place-behind .corner-decoration {
+    z-index: 0;
+  }
 
-/* White logo filter (if using a dark logo) */
-.header__heading-logo {
-  filter: brightness(0) invert(1);
-}
+  /* White text for all header elements with semi-bold font */
+  .header__menu-item,
+  .header__heading-link,
+  .header__active-menu-item,
+  .list-menu__item,
+  .header h1,
+  .header h2,
+  .header span {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+  }
 
-/* White cart count bubble */
-.cart-count-bubble {
-  background-color: #ffffff !important;
-  color: #810001 !important;
-  font-weight: 600 !important;
-}
+  .header a {
+    color: #273141 !important;
+    font-weight: 600 !important;
+  }
 
-/* Full-width dropdown menu */
-.header__inline-menu .mega-menu {
-  position: static;
-}
+  .mega-menu__li {
+    border: solid 1px red;
+  }
 
-details.mega-menu {
-  position: static;
-}
+  /* White icons */
+  .header__icon svg,
+  .header__icon path,
+  .header__icon .svg-wrapper,
+  .header__icon--menu svg,
+  .header__icon--search svg,
+  .header__icon--account svg,
+  .header__icon--cart svg {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+  }
 
-.mega-menu__content {
-  background-color: #f6f8f9 !important;
-  width: 100vw !important;
-  left: 50% !important;
-  right: 50% !important;
-  margin-left: -50vw !important;
-  margin-right: -50vw !important;
-  position: absolute !important;
-  border: 1px solid #dee2e6;
-}
+  /* Hover Effects */
+  .header__icon:hover svg,
+  .header__icon:hover path,
+  .header__icon:hover .svg-wrapper,
+  .header__icon--menu:hover svg,
+  .header__icon--search:hover svg,
+  .header__icon--account:hover svg,
+  .header__icon--cart:hover svg {
+    color: #25DA72 !important;
+    fill: #25DA72 !important;
+  }
 
-/* Center the content inside full-width dropdown */
-.mega-menu__list.page-width {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-}
+  .header__heading-logo {
+    filter: brightness(0) invert(1);
+  }
 
-/* Mobile menu drawer */
-.menu-drawer {
-  background-color: #ffffff !important;
-  
-}
+  .cart-count-bubble {
+    background-color: #0cc667 !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    text-align: center;
+   }
 
-.menu-drawer__submenu {
-  background-color: #ffffff !important;
-}
+  .header__inline-menu .mega-menu {
+    position: static;
+  }
+  details.mega-menu {
+    position: static;
+  }
+  .mega-menu__content {
+    background-color: #f6f8f9 !important;
+    width: 100vw !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-left: -50vw !important;
+    margin-right: -50vw !important;
+    position: absolute !important;
+    border: 1px solid #dee2e6;
+  }
+  .mega-menu__list.page-width {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
 
-.menu-drawer__menu-item,
-.menu-drawer__navigation a,
-.menu-drawer__navigation span {
-  color: #ffffff !important;
-  font-weight: 600 !important;
-}
+  .menu-drawer {
+    background-color: #ffffff !important;
+  }
+  .menu-drawer__submenu {
+    background-color: #ffffff !important;
+  }
+  .menu-drawer__menu-item,
+  .menu-drawer__navigation a,
+  .menu-drawer__navigation span {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+  }
 
-@media (max-width:990px){
- .header a{
-  color: #273141 !important;
-  font-weight: 600 !important
-}
-.header__menu-item,
-.header__heading-link,
-.header__active-menu-item,
-.list-menu__item,
-.header h1,
-.header h2,
-.header span {
-  color: #273141 !important;
-  font-weight: 600 !important;
-}
+  @media (max-width: 990px) {
+    .header a {
+      color: #ffffff !important;
+      font-weight: 600 !important;
+    }
+    .header__menu-item,
+    .header__heading-link,
+    .header__active-menu-item,
+    .list-menu__item,
+    .header h1,
+    .header h2,
+    .header span {
+      color: #ffffff !important;
+      font-weight: 600 !important;
+    }
+  }
 
-}
-.header .mega_menu_img .pictures > div { border-radius:20px; overflow:hidden; }
+  .header .mega_menu_img .pictures > div {
+    border-radius: 20px;
+    overflow: hidden;
+  }
 
+  .mega-menu__link:hover {
+    color: #25DA72 !important;
+    transition: color 0.3s ease;
+  }
+  .header__menu-item:hover {
+    transition: color 0.3s ease;
+  }
+  .header__menu-item:hover > span {
+    color: #25DA72 !important;
+  }
+  .header__active-menu-item:hover {
+    color: #25DA72 !important;
+  }
+  .menu-drawer__menu-item:hover,
+  .menu-drawer__navigation a:hover {
+    color: #25DA72 !important;
+    transition: color 0.3s ease;
+  }
+  .list-menu__item:hover > a,
+  .list-menu__item > a:hover {
+    color: #25DA72 !important;
+    transition: color 0.3s ease;
+  }
+  .menu-drawer__submenu .list-menu__item:hover > a,
+  .mega-menu__list li:hover > .mega-menu__link {
+    color: #25DA72 !important;
+  }
+  .mega_menu_img:hover .title {
+    color: #25DA72 !important;
+    transition: color 0.3s ease;
+  }
+  .header__menu-item:hover > svg {
+    fill: #25DA72 !important;
+    transition: fill 0.3s ease;
+  }
 
-/* Hover effect for dropdown menu items - #25DA72 */
-.mega-menu__link:hover {
-  color: #25DA72 !important;
-  transition: color 0.3s ease;
-}
-
-/* Only change color of the specific menu item being hovered */
-.header__menu-item:hover {
-  transition: color 0.3s ease;
-}
-
-.header__menu-item:hover > span {
-  color: #25DA72 !important;
-}
-
-.header__active-menu-item:hover {
-  color: #25DA72 !important;
-}
-
-.menu-drawer__menu-item:hover,
-.menu-drawer__navigation a:hover {
-  color: #25DA72 !important;
-  transition: color 0.3s ease;
-}
-
-/* Only hover the specific list item link */
-.list-menu__item:hover > a,
-.list-menu__item > a:hover {
-  color: #25DA72 !important;
-  transition: color 0.3s ease;
-}
-
-/* Only the specific submenu item being hovered */
-.menu-drawer__submenu .list-menu__item:hover > a,
-.mega-menu__list li:hover > .mega-menu__link {
-  color: #25DA72 !important;
-}
-
-.mega_menu_img:hover .title {
-  color: #25DA72 !important;
-  transition: color 0.3s ease;
-}
-
-/* Only change the icon of the specific menu item being hovered */
-.header__menu-item:hover > svg {
-  fill: #25DA72 !important;
-  transition: fill 0.3s ease;
-}
+  /* Restore Old Menu Style */
+  .menu-drawer__menu-item {
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    font-size: 1.5rem !important;
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+    justify-content: space-between !important;
+    border-bottom: none !important;
+    font-weight: 600 !important;
+  }
+  .menu-drawer__menu-item .svg-wrapper,
+  .menu-drawer__menu-item svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .menu-drawer__menu-item:hover {
+    text-decoration: none !important;
+  }
+  .menu-drawer__navigation {
+    padding: 2rem 1rem !important;
+  }
 </style>
 {%- style -%}
   .header {
@@ -686,6 +566,7 @@ details.mega-menu {
       assign localization_forms = true
     endif
   -%}
+  <div class="header-pattern-clipper"></div>
   <header class="header header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width{% if section.settings.menu_type_desktop == 'drawer' %} drawer-menu{% endif %}{% if section.settings.menu != blank %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if localization_forms %} header--has-localizations{% endif %}">
     <!-- decorative bottom-left SVG: replace 'your-image.svg' with the actual asset filename -->
 <img
