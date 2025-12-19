@@ -2643,7 +2643,7 @@ input[type="checkbox"] {
   );
   width: 100%;
   display: block;
-  position: fixed;
+  position: absolute;
   background: rgba(var(--color-foreground), 0.5);
 }
 
@@ -3734,16 +3734,10 @@ details-disclosure > details {
 
 @media screen and (max-width: 749px) {
     #menu-drawer {
-        width: 100%;
+        width: 80%;
     }
 }
 
-/* FORCE HEADER TO STAY ON TOP */
-.section-header,
-.shopify-section-group-header-group {
-  z-index: 999 !important; /* Higher than the menu's default z-index */
-  position: relative;
-}
 
 /* Default desktop */
 .whatsapp-float {
