@@ -121,7 +121,7 @@
   .missoma-popup-button{background:#0cc668;color:#ffffff;border:none;padding:12px 15px;font-size:14px;font-weight:500;cursor:pointer;transition:background .3s}
   .missoma-popup-button:hover{background:#ffffff ; color: #810001}
   .missoma-popup-disclaimer{font-size:12px;color:{{ section.settings.disclaimer_color }};margin-top:15px}
-  .missoma-popup-no-thanks{background:none;border:none;color:#0cc668;font-size:14px;text-decoration:underline;cursor:pointer;padding:0;margin-top:10px;align-self:center}
+  .missoma-popup-no-thanks{background:none;border:none;color:#ffffff;font-size:14px;text-decoration:underline;cursor:pointer;padding:0;margin-top:10px;align-self:center}
   @media screen and (max-width:767px){
     .missoma-popup-content{flex-direction:column}
     .missoma-popup-image,.missoma-popup-text{width:100%}
@@ -139,39 +139,32 @@
   --popup-pattern-size: clamp(60px, 14vw, 180px); /* width of the corner area */
   --popup-fade-stop: 55%; /* fade strength */
 }
+/* Popup text container */
+.missoma-popup-text {
+  position: relative;
+  overflow: hidden; /* CLIPS THE SVG */
+  background-color: #810001;
+  color: #ffffff;
+}
 
 .missoma-popup-text::after {
   content: "";
   position: absolute;
-  right: 0;
-  bottom: 0;
-  opacity: 0.3;
-  /* Make the pattern area wider and taller to avoid square feel */
-  width: calc(var(--popup-pattern-size) * 1.8);
-  height: calc(var(--popup-pattern-size) * 1.8);
-
-  background-image: url('{{ "back-pattern-white.svg" | asset_url }}');
-  background-repeat: repeat;
-  background-size: var(--popup-tile-size) var(--popup-tile-size);
-  background-position: right bottom;
   pointer-events: none;
   z-index: 0;
 
-  /* Much smoother, rounder mask */
-  -webkit-mask-image: radial-gradient(
-      circle at bottom right,
-      black 0%,
-      black 35%,
-      rgba(0,0,0,0) 75%
-  );
-  mask-image: radial-gradient(
-      circle at bottom right,
-      black 0%,
-      black 35%,
-      rgba(0,0,0,0) 75%
-  );
-}
+  width: clamp(420px, 70vw, 700px);
+  height: clamp(420px, 70vw, 700px);
 
+  background: url('{{ "back-pattern-white.svg" | asset_url }}') no-repeat;
+  background-size: contain;
+
+  /* 🔴 THIS IS THE KEY CHANGE */
+  right: -75%;
+  bottom: -75%;
+
+  opacity: 1;
+}
 
 /* ensure popup content stays above pattern */
 .missoma-popup-text > * {

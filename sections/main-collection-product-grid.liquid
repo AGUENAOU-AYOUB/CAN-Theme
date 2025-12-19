@@ -34,6 +34,56 @@
       padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
+
+
+
+
+
+  
+  /* ==============================
+   COLLECTION CORNER BACKGROUND SVG
+   (Top-right, quarter visible)
+   ============================== */
+
+.section-{{ section.id }}-padding {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Single corner decoration */
+.section-{{ section.id }}-padding::after {
+  content: "";
+  position: absolute;
+  top: -380px;          /* push up */
+  right: -380px;       /* push right */
+  width: 760px;        /* size of SVG */
+  height: 760px;
+  background-image: url('{{ "Background-big.svg" | asset_url }}');
+  background-repeat: no-repeat;
+  background-size: contain;
+  pointer-events: none;
+  opacity: 0.5;
+  z-index: 0;
+}
+
+/* Keep content above */
+.section-{{ section.id }}-padding > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Mobile refinement */
+@media screen and (max-width: 750px) {
+  .section-{{ section.id }}-padding::after {
+    width: 520px;
+    height: 520px;
+    top: -260px;
+    right: -260px;
+    opacity: 0.35;
+  }
+}
+
+
 {%- endstyle -%}
 
 <div class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}">

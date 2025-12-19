@@ -340,6 +340,7 @@
   padding: 0;
   height: 100%;
   font-size: 1.3rem;
+  
 }
 
 /* Image filter specific styles */
@@ -454,9 +455,11 @@
 .facets__label:hover,
 .facets__label.active,
 .facets__label:has(:focus-visible) {
-  color: rgba(var(--color-foreground), 1);
+  color: #0cc667;
 }
-
+.facets__label{
+  color: #000000;
+}
 /* Disabled state */
 .facets-layout .facets__label.disabled {
   pointer-events: none;
