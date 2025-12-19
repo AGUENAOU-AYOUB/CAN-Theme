@@ -87,9 +87,36 @@ details[open].menu-opening > .menu-drawer__submenu {
   display: grid;
   grid-template-rows: 1fr auto;
   align-content: space-between;
-  overflow-y: auto;
+  overflow-y: visible;
   height: 100%;
+}
+/* ==========================================================================
+   MOBILE DRAWER SUBMENU FIX - ADD THIS
+   ========================================================================== */
 
+@media (max-width: 990px) {
+  .menu-drawer__navigation-container {
+    overflow-y: visible !important;
+  }
+
+  .menu-drawer__inner-submenu {
+    overflow-y: visible !important;
+    overflow-x: visible !important;
+    height: auto !important;
+  }
+
+  .menu-drawer__submenu {
+    overflow: visible !important;
+  }
+
+  .menu-drawer__inner-container {
+    overflow: visible !important;
+  }
+
+  /* Allow swiper to be visible */
+  .menu-drawer .swiper {
+    overflow: visible !important;
+  }
 }
 
 .menu-drawer__navigation {
@@ -99,7 +126,7 @@ details[open].menu-opening > .menu-drawer__submenu {
 .menu-drawer__inner-submenu {
   height: 100%;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: visible;
 }
 
 .js .menu-drawer__menu li {
@@ -121,7 +148,9 @@ details[open].menu-opening > .menu-drawer__submenu {
 .menu-drawer__close-button:focus,
 .menu-drawer__menu-item:hover,
 .menu-drawer__close-button:hover {
-  color: rgb(var(--color-foreground));
+  color: #810001;
+  font-weight: 600 !important;
+  font-family: "poppins", sans-serif;
   background-color: rgba(var(--color-foreground), 0.04);
 }
 
