@@ -557,9 +557,6 @@
 
 
 
-.header-wrapper {
-  position: relative;
-  }
 /* New container specifically for clipping patterns */
 .header-patterns {
   position: absolute;
@@ -568,7 +565,7 @@
   width: 100%;
   bottom: 0;      /* <--- This forces it to fill the vertical space */
   overflow: hidden;
-  z-index: 1;     /* <--- Bump this to 1 just to be safe */
+  z-index: 0;     /* <--- Bump this to 1 just to be safe */
   pointer-events: none;
 }
 
@@ -603,7 +600,7 @@
 
 .header {
   position: relative;
-  z-index: 2;
+  
 }
 
 </style>

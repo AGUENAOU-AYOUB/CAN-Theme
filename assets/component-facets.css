@@ -1275,7 +1275,7 @@ input.mobile-facets__checkbox {
 
   /* Keep facets above everything */
   .mobile-facets {
-    z-index: 2000 !important;
+    z-index: 1000 !important;
   }
 }
 
