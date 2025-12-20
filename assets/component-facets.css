@@ -803,8 +803,14 @@ a.active-facets__button.focused .active-facets__button-inner {
   position: sticky;
   top: 0;
   z-index: 2;
+  background-color: #810001;
+ 
 }
-
+.mobile-facets__header h2, .mobile-facets__header p {
+   color: #ffffff !important;
+   
+  font-family: "poppins", sans-serif !important;
+}
 .mobile-facets__header-inner {
   flex-grow: 1;
   position: relative;
@@ -883,6 +889,8 @@ a.active-facets__button.focused .active-facets__button-inner {
   z-index: 101;
   opacity: 0;
   transition: opacity var(--duration-short) ease;
+  color: #810001;
+  z-index:99999;
 }
 
 .mobile-facets__close .svg-wrapper {
@@ -907,7 +915,7 @@ details.menu-opening .mobile-facets__close .svg-wrapper {
   margin-top: 1.5rem;
   padding: 1.2rem 2.6rem;
   text-decoration: none;
-
+  color: #810001;
   display: grid;
   grid-template-columns: min-content 1fr;
   text-align: start;
@@ -1255,3 +1263,31 @@ input.mobile-facets__checkbox {
     padding: 0 1rem 1rem;
   }
 }
+/* === FIX: Header overlay blocking mobile facets === */
+@media screen and (max-width: 749px) {
+
+  /* Disable header overlay when mobile filters are open */
+  body:has(.mobile-facets__disclosure[open])
+  .header__icon--menu::before {
+    display: none !important;
+  }
+
+
+  /* Keep facets above everything */
+  .mobile-facets {
+    z-index: 2000 !important;
+  }
+}
+
+
+
+.facets__price div{
+  border: 2px solid #810001;
+}
+
+.apply-button{
+  background-color: #810001;
+  color: #ffffff;
+}
+
+  

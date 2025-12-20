@@ -3739,6 +3739,7 @@ details-disclosure > details {
 }
 
 
+
 /* Default desktop */
 .whatsapp-float {
   position: fixed;
@@ -3855,3 +3856,31 @@ details-disclosure > details {
 .logo--white {
   filter: brightness(0) invert(1);
 }
+/* === FIX: Mobile facets above EVERYTHING === */
+@media screen and (max-width: 749px) {
+
+  /* Fullscreen dark overlay */
+  .mobile-facets {
+    z-index: 9999 !important;
+    pointer-events: auto;
+  }
+
+  /* Actual drawer panel */
+  .mobile-facets__inner {
+    z-index: 10000 !important;
+  }
+
+  /* Header & announcement bar go under */
+  .section-header,
+  .shopify-section-group-header-group  {
+    z-index: 1 !important;
+  }
+
+  /* Kill header menu backdrop if present */
+  .header__icon--menu::before {
+    display: none !important;
+  }
+}
+
+
+
