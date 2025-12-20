@@ -333,7 +333,9 @@
 .facets-layout-grid > * {
   align-items: flex-start;
 }
-
+.facets__label{
+  color: #810001;
+}
 .facets-layout-grid .facets__label {
   display: flex;
   flex-direction: column;

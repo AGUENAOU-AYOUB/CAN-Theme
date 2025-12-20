@@ -496,7 +496,7 @@ h6:empty {
 }
 
 .link--text {
-  color: rgb(var(--color-foreground));
+  color: #810001;
 }
 
 .link--text:hover {
@@ -2801,7 +2801,7 @@ details[open] > .header__submenu {
 }
 
 .header__menu-item:hover {
-  color: rgb(var(--color-foreground));
+  color: #0cc667;
 }
 
 .header__menu-item span {
@@ -3670,27 +3670,3 @@ details-disclosure > details {
 .cg-btn-secondary { background: #f3f3f3; color: #111; border-color: #ddd; }
 
 
-/* === FIX: Mobile facets above EVERYTHING === */
-@media screen and (max-width: 749px) {
-
-  /* Fullscreen dark overlay */
-  .mobile-facets {
-    z-index: 9999 !important;
-    pointer-events: auto;
-  }
-
-  /* Actual drawer panel */
-  .mobile-facets__inner {
-    z-index: 10000 !important;
-  }
-
-  /* Header & announcement bar go under */
-  .section-header,
-  .shopify-section-group-header-group  {
-    z-index: 1 !important;
-  }
-
-  /* Kill header menu backdrop if present */
-  .header__icon--menu::before {
-    display: none !important;
-  }
