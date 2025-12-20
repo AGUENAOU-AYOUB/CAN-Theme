@@ -559,17 +559,26 @@
 
 .header-wrapper {
   position: relative;
-  overflow: hidden; /* ✅ CLIPS PATTERNS, NOT MENUS */
+  }
+/* New container specifically for clipping patterns */
+.header-patterns {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  bottom: 0;      /* <--- This forces it to fill the vertical space */
+  overflow: hidden;
+  z-index: 1;     /* <--- Bump this to 1 just to be safe */
+  pointer-events: none;
 }
 
-/* Header patterns */
-.header-wrapper::before,
-.header-wrapper::after {
+/* Header patterns applied to the new container */
+.header-patterns::before,
+.header-patterns::after {
   content: "";
   position: absolute;
   pointer-events: none;
   z-index: 0;
-
   width: clamp(240px, 35vw, 520px);
   height: clamp(240px, 35vw, 520px);
 
@@ -579,14 +588,14 @@
 }
 
 /* Bottom-left */
-.header-wrapper::before {
+.header-patterns::before {
   bottom: 0;
   left: 0;
   transform: translate(-50%, 50%);
 }
 
 /* Top-right */
-.header-wrapper::after {
+.header-patterns::after {
   top: 0;
   right: 0;
   transform: translate(50%, -50%) rotate(180deg);
@@ -645,7 +654,7 @@
       assign localization_forms = true
     endif
   -%}
-  
+  <div class="header-patterns">.</div>
   <header class="header header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width{% if section.settings.menu_type_desktop == 'drawer' %} drawer-menu{% endif %}{% if section.settings.menu != blank %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if localization_forms %} header--has-localizations{% endif %}">
   
 

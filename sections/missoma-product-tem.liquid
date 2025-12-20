@@ -1047,61 +1047,49 @@
   .missoma-product-form__submit {
     display: none !important;
 }
-/* Full-width bottom pattern for variant drawer body */
+/* Modified pattern for variant drawer body - bottom-right quarter only, no fade */
 .missoma-variant-drawer__body {
-  position: relative;    /* container for pseudo-element */
-  overflow: visible;
-  --vd-tile-size: clamp(10px, 2.6vw, 48px);     /* size of each SVG tile */
-  --vd-pattern-height: clamp(40px, 6vw, 120px);  /* height of bottom strip */
-  --vd-fade-stop: 60%;                            /* where the pattern fades to transparent */
+  position: relative;
+  overflow: hidden; /* CRITICAL: clips the pattern at container edges */
+  --vd-pattern-size: clamp(300px, 40vw, 600px); /* size of the full SVG */
 }
 
 .missoma-variant-drawer__body::before {
   content: "";
   position: absolute;
-  left: 0;
-  right: 0;
+  /* Position for bottom-right corner - showing top-left quarter of SVG */
   bottom: 0;
-  height: var(--vd-pattern-height);
+  right: 0;
+  width: var(--vd-pattern-size);
+  height: var(--vd-pattern-size);
+  
+  /* Move it so only 1/4 is visible (top-left quarter of the SVG shows in bottom-right corner) */
+  transform: translate(50%, 50%);
+  
   pointer-events: none;
-  z-index: 0; /* sits under drawer content */
-  background-image: url('{{ "back-pattern.svg" | asset_url }}');
-  background-repeat: repeat;
-  background-size: var(--vd-tile-size) var(--vd-tile-size);
-  background-position: center bottom;
-
-  /* fade upward so pattern disappears toward the top of the strip */
-  -webkit-mask-image: linear-gradient(
-    to top,
-    black 0%,
-    black calc(var(--vd-fade-stop)),
-    rgba(0,0,0,0) 100%
-  );
-  mask-image: linear-gradient(
-    to top,
-    black 0%,
-    black calc(var(--vd-fade-stop)),
-    rgba(0,0,0,0) 100%
-  );
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
+  z-index: 0;
+  
+  background-image: url('{{ "back-pattern-white.svg" | asset_url }}');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  
+  /* NO FADE - removed all mask properties */
+  opacity: 1; /* Optional: adjust overall transparency */
 }
 
-/* ensure drawer content renders above the pattern */
+/* Ensure drawer content renders above the pattern */
 .missoma-variant-drawer__body > * {
   position: relative;
   z-index: 1;
 }
 
-/* tweak for very small screens */
+/* Adjust size for smaller screens */
 @media (max-width: 600px) {
   .missoma-variant-drawer__body {
-    --vd-tile-size: clamp(6px, 4.0vw, 20px);
-    --vd-pattern-height: clamp(30px, 10vw, 80px);
-    --vd-fade-stop: 75%;
+    --vd-pattern-size: clamp(200px, 50vw, 400px);
   }
 }
-
 </style>
 
 <script>
