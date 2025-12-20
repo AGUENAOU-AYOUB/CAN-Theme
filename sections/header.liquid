@@ -559,12 +559,23 @@
 
 .header-wrapper {
   position: relative;
-  overflow: hidden; /* ✅ CLIPS PATTERNS, NOT MENUS */
+  /* overflow: hidden; Removed to allow menu to show */
 }
 
-/* Header patterns */
-.header-wrapper::before,
-.header-wrapper::after {
+.header-patterns {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Header patterns moved to .header-patterns */
+.header-patterns::before,
+.header-patterns::after {
   content: "";
   position: absolute;
   pointer-events: none;
@@ -579,14 +590,14 @@
 }
 
 /* Bottom-left */
-.header-wrapper::before {
+.header-patterns::before {
   bottom: 0;
   left: 0;
   transform: translate(-50%, 50%);
 }
 
 /* Top-right */
-.header-wrapper::after {
+.header-patterns::after {
   top: 0;
   right: 0;
   transform: translate(50%, -50%) rotate(180deg);
@@ -633,6 +644,7 @@
 -%}
 
 <{% if section.settings.sticky_header_type != 'none' %}sticky-header data-sticky-type="{{ section.settings.sticky_header_type }}"{% else %}div{% endif %} class="header-wrapper color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}">
+  <div class="header-patterns"></div>
   {%- liquid
     assign social_links = false
     assign localization_forms = false
