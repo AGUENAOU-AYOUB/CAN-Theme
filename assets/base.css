@@ -496,7 +496,7 @@ h6:empty {
 }
 
 .link--text {
-  color: #810001;
+  color: rgb(var(--color-foreground));
 }
 
 .link--text:hover {
@@ -2801,7 +2801,7 @@ details[open] > .header__submenu {
 }
 
 .header__menu-item:hover {
-  color: #0cc667;
+  color: #0cc667 !important;
 }
 
 .header__menu-item span {
@@ -3668,5 +3668,3 @@ details-disclosure > details {
 .cg-btn-primary { background: #111; color: #fff; }
 .cg-btn-primary[disabled] { opacity: .5; cursor: not-allowed; }
 .cg-btn-secondary { background: #f3f3f3; color: #111; border-color: #ddd; }
-
-

@@ -22,6 +22,7 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer="defer"></script>
 {%- endif -%}
 <style>
+
   /* ==========================================================================
      BASE HEADER DRAWER STYLES
      ========================================================================== */
@@ -300,7 +301,6 @@
     background-color: #810001 !important;
     box-shadow: 0px 20px 20px -5px #2020205b;
     position: relative;
-
   }
 
 
@@ -358,16 +358,12 @@
   .header__active-menu-item,
   .list-menu__item,
   .header h1,
-  .header h2,
-  .header span {
+  .header h2 {
     color: #ffffff !important;
     font-weight: 600 !important;
   }
 
-  .header a {
-    color: #810001 !important;
-    font-weight: 600 !important;
-  }
+
 
   /* Mobile Override */
   @media (max-width: 990px) {
@@ -380,11 +376,12 @@
     .header__active-menu-item,
     .list-menu__item,
     .header h1,
-    .header h2,
-    .header span {
-      color: #ffffffff !important;
+    .header h2
+     {
+      color: #ffffff !important;
       font-weight: 600 !important;
     }
+    
   }
 
   /* ==========================================================================
@@ -612,6 +609,7 @@
   .section-header {
     position: sticky; /* This is for fixing a Safari z-index issue. PR #2147 */
     margin-bottom: {{ section.settings.margin_bottom | times: 0.75 | round: 0 }}px;
+    z-index : 10;
   }
 
   @media screen and (min-width: 750px) {
