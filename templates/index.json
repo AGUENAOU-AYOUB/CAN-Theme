@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "video_banner_kmj3bh": {
@@ -6,7 +15,7 @@
         "heading_zByMdk": {
           "type": "heading",
           "settings": {
-            "heading_text": "Amazigh",
+            "heading_text": "CAN 2025",
             "desktop_width": 1000,
             "mobile_width": 180,
             "desktop_heading_size": 50,
@@ -28,10 +37,13 @@
           }
         }
       },
-      "block_order": ["heading_zByMdk", "button_TTzcEd"],
+      "block_order": [
+        "heading_zByMdk",
+        "button_TTzcEd"
+      ],
       "name": "Video Banner",
       "settings": {
-        "video": "shopify://files/videos/video-output-07AFEC21-8139-4F0B-8289-15C4391C0CDB-1.mov",
+        "video": "shopify://files/videos/IAR61503_1.mp4",
         "video_mobile": "shopify://files/videos/video-output-07AFEC21-8139-4F0B-8289-15C4391C0CDB-1.mov",
         "video_url": "",
         "video-alt": "",
@@ -252,7 +264,10 @@
           }
         }
       },
-      "block_order": ["heading_fyGyUg", "button_rVKEwD"],
+      "block_order": [
+        "heading_fyGyUg",
+        "button_rVKEwD"
+      ],
       "name": "Video Banner",
       "settings": {
         "video": "shopify://files/videos/InShot_20250730_163658623.mp4",
@@ -308,7 +323,11 @@
           }
         }
       },
-      "block_order": ["category_at7Eq7", "category_yGGxT8", "category_jH7iwT"],
+      "block_order": [
+        "category_at7Eq7",
+        "category_yGGxT8",
+        "category_jH7iwT"
+      ],
       "disabled": true,
       "settings": {
         "max_width": 1600,
@@ -464,7 +483,11 @@
           }
         }
       },
-      "block_order": ["service_6UYy3D", "service_rB7cjx", "service_6KYTh7"],
+      "block_order": [
+        "service_6UYy3D",
+        "service_rB7cjx",
+        "service_6KYTh7"
+      ],
       "disabled": true,
       "settings": {
         "max_width": 1200,
@@ -885,7 +908,10 @@
           }
         }
       },
-      "block_order": ["heading_jbWqTA", "button_AFqTrX"],
+      "block_order": [
+        "heading_jbWqTA",
+        "button_AFqTrX"
+      ],
       "name": "Video Banner",
       "settings": {
         "video": "shopify://files/videos/video-output-9B84A5F2-985D-407E-86B7-D2DBD56AF35E-2.mov",
