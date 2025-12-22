@@ -271,6 +271,7 @@
       "name": "Video Banner",
       "settings": {
         "video": "shopify://files/videos/InShot_20250730_163658623.mp4",
+        "video_mobile": "shopify://files/videos/Azor2.mp4",
         "video_url": "",
         "video-alt": "",
         "content_position": "bottom-center",
@@ -915,6 +916,7 @@
       "name": "Video Banner",
       "settings": {
         "video": "shopify://files/videos/video-output-9B84A5F2-985D-407E-86B7-D2DBD56AF35E-2.mov",
+        "video_mobile": "shopify://files/videos/Azor3.mp4",
         "video_url": "",
         "video-alt": "",
         "content_position": "bottom-center",
