@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "t:sections.header.name",
   "type": "header",
@@ -149,18 +158,18 @@
           "type": "menu-image",
           "settings": {
             "link_name": "COLLECTIONS",
-            "link_image": "shopify://shop_images/Screenshot_2025-08-11_at_2.47.50_PM.png",
-            "link_title": "NOUVEAUTÉ",
-            "link_url": "shopify://collections/nouveautes"
+            "link_image": "shopify://shop_images/unnamed_74dccf41-152f-4af5-ba54-9aa3a01dbe83.jpg",
+            "link_title": "CAN 2025",
+            "link_url": "shopify://collections/can-2025"
           }
         },
         "menu_image_iq9yDH": {
           "type": "menu-image",
           "settings": {
             "link_name": "COLLECTIONS",
-            "link_image": "shopify://shop_images/Screenshot_2025-08-11_at_2.53.13_PM.png",
-            "link_title": "AMAZIGH",
-            "link_url": "shopify://collections/amazigh"
+            "link_image": "shopify://shop_images/poster.jpg",
+            "link_title": "INVESTISSEMENT",
+            "link_url": "shopify://collections/investment"
           }
         }
       },
@@ -182,7 +191,9 @@
         "menu_image_fU9mjk",
         "menu_image_iq9yDH"
       ],
-      "custom_css": [".mega_menu_img img {height: 270px;}"],
+      "custom_css": [
+        ".mega_menu_img img {height: 270px;}"
+      ],
       "settings": {
         "logo_position": "top-center",
         "menu": "home-page-menu-t5",
@@ -215,5 +226,9 @@
       }
     }
   },
-  "order": ["custom_liquid_83kjKU", "header", "missoma_header1_3H6CQh"]
+  "order": [
+    "custom_liquid_83kjKU",
+    "header",
+    "missoma_header1_3H6CQh"
+  ]
 }
