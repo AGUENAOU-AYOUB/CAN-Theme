@@ -220,6 +220,7 @@
           </div>
         </div>
 {% comment %} Extra drawer: Conditions générales (metafield + fallback) {% endcomment %}
+ {% comment %} 
 <div class="missoma-product-tab" data-tab="conditions">
   <button class="missoma-product-tab__header">
     <span class="missoma-product-tab__title">
@@ -237,7 +238,7 @@
   </div>
 </div>
 
-
+{% endcomment %}
         <div class="missoma-product-tab" data-tab="sustainability">
           <button class="missoma-product-tab__header">
             <span class="missoma-product-tab__title">{{ section.settings.sustainability_title }}</span>
@@ -629,7 +630,7 @@
     justify-content: center;
     background-color: {{ section.settings.button_background_color }};
     opacity: 0;
-    visibility: hidden;
+    visibility: visible;
     transition: opacity 0.3s, visibility 0.3s;
   }
 
