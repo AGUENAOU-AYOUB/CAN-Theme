@@ -470,53 +470,54 @@
 
 
 
-<!-- GLOBAL CG TEXT POPUP -->
-<div id="cg-text-popup" style="
-  display:none;
-  position:fixed;
-  top:0;
-  left:0;
-  width:100vw;
-  height:100vh;
-  background:rgba(0,0,0,0.75);
-  z-index:99999999999;
+<!-- CG POPUP USING DIALOG (ALWAYS ON TOP) -->
+<dialog id="cg-dialog" style="
+  border:none;
+  border-radius:10px;
+  width:90%;
+  max-width:700px;
+  max-height:80vh;
+  padding:0;
 ">
   <div style="
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%, -50%);
-    background:#fff;
-    width:90%;
-    max-width:700px;
-    max-height:80vh;
-    overflow:auto;
     padding:24px;
-    border-radius:10px;
+    overflow:auto;
+    max-height:80vh;
+    font-size:14px;
+    line-height:1.6;
   ">
-    <button onclick="closeCGPopup()"
-      style="position:absolute;top:10px;right:14px;border:none;background:none;font-size:22px;cursor:pointer;">
-      ✕
-    </button>
+    <button onclick="closeCGDialog()" style="
+      position:sticky;
+      top:0;
+      float:right;
+      border:none;
+      background:none;
+      font-size:22px;
+      cursor:pointer;
+    ">✕</button>
 
     <h3>Conditions générales</h3>
 
     <p>
-      👉 PASTE YOUR TEXT HERE.<br><br>
-      This popup is guaranteed to appear ABOVE EasySell.
+      👉 PASTE YOUR CONDITIONS GÉNÉRALES TEXT HERE.<br><br>
+      This dialog is rendered in the browser top layer and
+      CANNOT appear under EasySell.
     </p>
   </div>
-</div>
+</dialog>
 
 <script>
 function openCGPopup() {
-  document.getElementById('cg-text-popup').style.display = 'block';
-  document.body.style.overflow = 'hidden';
+  const d = document.getElementById('cg-dialog');
+  if (typeof d.showModal === "function") {
+    d.showModal();
+  } else {
+    alert("Votre navigateur ne supporte pas l'affichage des conditions.");
+  }
 }
 
-function closeCGPopup() {
-  document.getElementById('cg-text-popup').style.display = 'none';
-  document.body.style.overflow = '';
+function closeCGDialog() {
+  document.getElementById('cg-dialog').close();
 }
 </script>
 
