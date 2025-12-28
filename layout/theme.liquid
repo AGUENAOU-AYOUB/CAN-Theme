@@ -471,13 +471,13 @@
 
 
 
-<!-- CG POPUP -->
+<!-- CONDITIONS GÉNÉRALES POPUP -->
 <div id="cg-popup" style="
   display:none;
   position:fixed;
   inset:0;
   background:rgba(0,0,0,0.6);
-  z-index:9999;
+  z-index:2147483647;
   align-items:center;
   justify-content:center;
 ">
@@ -486,14 +486,14 @@
     width:90%;
     max-width:900px;
     height:80vh;
-    border-radius:8px;
+    border-radius:10px;
     overflow:hidden;
     position:relative;
   ">
     <button id="cg-close" style="
       position:absolute;
-      top:10px;
-      right:14px;
+      top:12px;
+      right:16px;
       border:none;
       background:none;
       font-size:22px;
@@ -511,15 +511,17 @@
 
 <script>
 document.addEventListener("click", function(e) {
-  const link = e.target.closest(".open-cg-popup");
-  if (!link) return;
+  const trigger = e.target.closest(".open-cg-popup");
+  if (!trigger) return;
 
   e.preventDefault();
   document.getElementById("cg-popup").style.display = "flex";
+  document.body.style.overflow = "hidden";
 });
 
 document.getElementById("cg-close").addEventListener("click", function() {
   document.getElementById("cg-popup").style.display = "none";
+  document.body.style.overflow = "";
 });
 </script>
 
