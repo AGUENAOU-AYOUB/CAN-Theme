@@ -470,17 +470,22 @@
 
 
 
-<!-- SIMPLE TEXT POPUP -->
-<div id="simple-popup" style="
+<!-- GLOBAL CG TEXT POPUP -->
+<div id="cg-text-popup" style="
   display:none;
   position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.7);
-  z-index:9999999999;
-  align-items:center;
-  justify-content:center;
+  top:0;
+  left:0;
+  width:100vw;
+  height:100vh;
+  background:rgba(0,0,0,0.75);
+  z-index:99999999999;
 ">
   <div style="
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
     background:#fff;
     width:90%;
     max-width:700px;
@@ -488,43 +493,30 @@
     overflow:auto;
     padding:24px;
     border-radius:10px;
-    position:relative;
-    font-size:14px;
-    line-height:1.6;
   ">
-    <button onclick="document.getElementById('simple-popup').style.display='none'; document.body.style.overflow='';"
-      style="
-        position:absolute;
-        top:12px;
-        right:14px;
-        border:none;
-        background:none;
-        font-size:22px;
-        cursor:pointer;
-      ">
+    <button onclick="closeCGPopup()"
+      style="position:absolute;top:10px;right:14px;border:none;background:none;font-size:22px;cursor:pointer;">
       ✕
     </button>
 
     <h3>Conditions générales</h3>
 
     <p>
-      <!-- 👉 PASTE YOUR TEXT HERE 👇 -->
-      Les présentes Conditions Générales régissent l’ensemble des ventes réalisées par AZOR JEWELRY SARL.
-      Toute commande implique l’acceptation pleine et entière des présentes conditions.
+      👉 PASTE YOUR TEXT HERE.<br><br>
+      This popup is guaranteed to appear ABOVE EasySell.
     </p>
-
-    <p>
-      Les bijoux sont en or 18 carats. Les prix sont exprimés en dirhams marocains.
-      La livraison et le paiement sont soumis aux conditions affichées lors de la commande.
-    </p>
-
   </div>
 </div>
 
 <script>
-function openSimplePopup() {
-  document.getElementById("simple-popup").style.display = "flex";
-  document.body.style.overflow = "hidden";
+function openCGPopup() {
+  document.getElementById('cg-text-popup').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCGPopup() {
+  document.getElementById('cg-text-popup').style.display = 'none';
+  document.body.style.overflow = '';
 }
 </script>
 
