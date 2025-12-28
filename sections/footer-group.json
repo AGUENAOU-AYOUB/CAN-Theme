@@ -122,6 +122,7 @@
     },
     "missoma_popup_wNFpMq": {
       "type": "missoma-popup",
+      "disabled": true,
       "settings": {
         "show_popup": false,
         "popup_type": "newsletter",
