@@ -123,7 +123,7 @@
     "missoma_popup_wNFpMq": {
       "type": "missoma-popup",
       "settings": {
-        "show_popup": true,
+        "show_popup": false,
         "popup_type": "newsletter",
         "trigger_type": "delay",
         "popup_delay": 2,
