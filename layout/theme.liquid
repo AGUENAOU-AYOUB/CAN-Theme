@@ -470,22 +470,25 @@
 
 
 
-<!-- CG POPUP USING DIALOG (ALWAYS ON TOP) -->
+<!-- CONDITIONS GÉNÉRALES POPUP (ALWAYS ABOVE EASYSELL) -->
 <dialog id="cg-dialog" style="
   border:none;
-  border-radius:10px;
+  border-radius:12px;
   width:90%;
-  max-width:700px;
-  max-height:80vh;
+  max-width:900px;
+  max-height:85vh;
   padding:0;
 ">
+
   <div style="
     padding:24px;
     overflow:auto;
-    max-height:80vh;
+    max-height:85vh;
     font-size:14px;
-    line-height:1.6;
+    line-height:1.7;
+    color:#000;
   ">
+
     <button onclick="closeCGDialog()" style="
       position:sticky;
       top:0;
@@ -496,28 +499,53 @@
       cursor:pointer;
     ">✕</button>
 
-    <h3>Conditions générales</h3>
+    <h3>Conditions Générales de Vente</h3>
 
-    <p>
-      👉 PASTE YOUR CONDITIONS GÉNÉRALES TEXT HERE.<br><br>
-      This dialog is rendered in the browser top layer and
-      CANNOT appear under EasySell.
-    </p>
+    <p><strong>1. Objet</strong><br>
+    Les présentes Conditions Générales régissent l’ensemble des ventes réalisées par AZOR JEWELRY SARL, société marocaine immatriculée au Registre du Commerce de Casablanca sous le numéro 442029, dont le siège social est situé au 5, 1er étage, 31 Rue Libourne, Casablanca, Maroc, exploitant le site www.azorjewelry.com. Elles définissent les droits et obligations respectifs de la société et du client dans le cadre de la vente en ligne de bijoux en or 18 carats. Toute commande effectuée sur le site implique l’acceptation totale et sans réserve des présentes Conditions Générales.</p>
+
+    <p><strong>2. Nature des produits</strong><br>
+    Les bijoux proposés par AZOR Jewelry sont fabriqués en Or 18 Carats (750/1000), éventuellement associés à des pierres naturelles ou autres matériaux précieux. Tout bijou dont le poids dépasse 1,1 g est contrôlé et poinçonné conformément aux normes établies par le Ministère de l’Industrie et du Commerce – Direction du Contrôle des Métaux Précieux. Chaque bijou est soumis à un contrôle qualité rigoureux avant expédition.</p>
+
+    <p><strong>3. Commande</strong><br>
+    Les commandes peuvent être passées exclusivement sur le site www.azorjewelry.com ou via les canaux officiels de la marque (Instagram, WhatsApp, Facebook). La commande est considérée confirmée dès finalisation en ligne, réception du paiement et validation écrite par l’un de nos agents. En l’absence de contact sous 24 heures ouvrables, le client doit contacter le service client. Aucune annulation n’est possible après validation, sauf accord écrit d’AZOR Jewelry. Une politique commerciale de rachat volontaire est prévue à l’article 7.</p>
+
+    <p><strong>4. Prix et Paiement</strong><br>
+    Les prix sont exprimés en dirhams marocains. Les créations sur mesure peuvent faire l’objet d’un ajustement maximal de 20 %. Une fois la commande payée et validée, elle n’est plus affectée par l’évolution du cours de l’or. Paiement sécurisé via CMI ou virement bancaire. Aucune donnée bancaire n’est conservée.</p>
+
+    <p><strong>5. Livraison</strong><br>
+    Livraison dans tout le Maroc. Offerte dès 1200 MAD, hors promotions. Frais de 50 MAD le cas échéant. Délais variables selon la nature du bijou. Aucun retard ne donne lieu à annulation ou indemnisation.</p>
+
+    <p><strong>6. Réception du colis</strong><br>
+    Le client doit vérifier le colis à réception. Toute réclamation doit être effectuée dans les 24 heures suivant la réception à Azorjewelry@gmail.com.</p>
+
+    <p><strong>7. Politique de rachat</strong><br>
+    Les bijoux en or ne sont pas soumis au droit de rétractation. AZOR Jewelry propose un rachat volontaire partiel selon l’état et le niveau de personnalisation du bijou, avec retenues applicables.</p>
+
+    <p><strong>8. Garantie</strong><br>
+    Garantie légale de 10 ans couvrant les défauts de fabrication. Ne couvre pas l’usure normale ni les dommages accidentels.</p>
+
+    <p><strong>9. Données personnelles</strong><br>
+    Les données sont traitées conformément à la loi 09-08. Le client peut demander leur modification ou suppression.</p>
+
+    <p><strong>10. Droit applicable</strong><br>
+    Les présentes conditions sont régies par le droit marocain. Juridiction compétente : Casablanca.</p>
+
+    <p><strong>Informations légales</strong><br>
+    AZOR JEWELRY SARL – RC 442029 – ICE 002296214000063<br>
+    Siège social : Casablanca – Maroc<br>
+    Email : Azorjewelry@gmail.com</p>
+
   </div>
 </dialog>
 
 <script>
 function openCGPopup() {
-  const d = document.getElementById('cg-dialog');
-  if (typeof d.showModal === "function") {
-    d.showModal();
-  } else {
-    alert("Votre navigateur ne supporte pas l'affichage des conditions.");
-  }
+  const d = document.getElementById("cg-dialog");
+  if (d && d.showModal) d.showModal();
 }
-
 function closeCGDialog() {
-  document.getElementById('cg-dialog').close();
+  document.getElementById("cg-dialog").close();
 }
 </script>
 
