@@ -271,7 +271,7 @@
       "name": "Video Banner",
       "settings": {
         "video": "shopify://files/videos/InShot_20250730_163658623.mp4",
-        "video_mobile": "shopify://files/videos/Azor2.mp4",
+        "video_mobile": "shopify://files/videos/InShot_20250730_163658623.mp4",
         "video_url": "",
         "video-alt": "",
         "content_position": "bottom-center",
