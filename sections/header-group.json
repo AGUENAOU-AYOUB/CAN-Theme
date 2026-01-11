@@ -154,6 +154,15 @@
             "link_url": "shopify://collections/tendances"
           }
         },
+        "menu_image_iRjLHa": {
+          "type": "menu-image",
+          "settings": {
+            "link_name": "COLLECTIONS",
+            "link_image": "shopify://shop_images/2-ai_43a6a0a6-8401-4021-8977-3e1947d24e4c.png",
+            "link_title": "Amazigh",
+            "link_url": "shopify://collections/amazigh"
+          }
+        },
         "menu_image_fU9mjk": {
           "type": "menu-image",
           "settings": {
@@ -188,6 +197,7 @@
         "menu_image_XGQVMd",
         "menu_image_qzdQqF",
         "menu_image_fjT8MG",
+        "menu_image_iRjLHa",
         "menu_image_fU9mjk",
         "menu_image_iq9yDH"
       ],
