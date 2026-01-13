@@ -323,6 +323,10 @@
     {%- endif -%}
 
     {% sections 'header-group' %}
+
+    {% comment %}
+      
+   
     
     <!-- Global maintenance banner (header) -->
   <div id="dev-banner" class="dev-banner" role="status" aria-live="polite">
@@ -364,7 +368,7 @@
       .dev-banner{ font-size:13px; }
     }
   </style>
-
+ {% endcomment %}
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
       {{ content_for_layout }}
     </main>
