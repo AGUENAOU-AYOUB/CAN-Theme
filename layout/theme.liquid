@@ -39,6 +39,19 @@
     {% endif %}
 
     {% render 'meta-tags' %}
+    <!-- Removing the banner desmission from the LS -->
+      <script>
+        (function () {
+          try {
+            if (localStorage.getItem('dev_banner_dismissed') === '1') {
+              localStorage.removeItem('dev_banner_dismissed');
+              sessionStorage.removeItem('dev_banner_dismissed');
+            }
+          } catch (e) {}
+        })();
+      </script>
+      <!-- end of it -->
+
 
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
@@ -326,46 +339,70 @@
 
    
     
-    <!-- Global maintenance banner (header) -->
-  <div id="dev-banner" class="dev-banner" role="status" aria-live="polite">
-    <div class="dev-banner__inner">
-      <span class="dev-banner__icon" aria-hidden="true">⚠️</span>
-      <span class="dev-banner__text">
-        <strong>Site en maintenance :</strong>
-        certaines informations, notamment les prix, peuvent être inexactes.
-        Merci de confirmer le tarif via
-        <a class="dev-banner__link" href="https://wa.me/212656260117" target="_blank" rel="noopener">WhatsApp</a>
-        avant toute commande.
-      </span>
-      <button class="dev-banner__close" type="button" aria-label="Fermer l’avis">&times;</button>
-    </div>
+   
+<!-- GLOBAL MAINTENANCE ANNOUNCEMENT (NOT CLOSABLE) -->
+<div id="dev-banner" role="status" aria-live="polite">
+  <div class="dev-banner__inner">
+    <span class="dev-banner__icon" aria-hidden="true">⚠️</span>
+    <span class="dev-banner__text">
+      <strong>Site en maintenance :</strong>
+      certaines informations, notamment les prix, peuvent être inexactes.
+      Merci de confirmer le tarif via
+      <a href="https://wa.me/212656260117" target="_blank" rel="noopener">
+        WhatsApp
+      </a>
+      avant toute commande.
+    </span>
   </div>
+</div>
 
-  {% comment %} Styling of the warning {% endcomment %}
-  <style>
-    /* Global header maintenance banner */
-    .dev-banner{
-      width:100%;
-      background:#fff3cd; color:#5c4700; border-bottom:1px solid #ffe8a1;
-      font-size:14px;
+<style>
+  #dev-banner {
+    width: 100%;
+    background: #fff3cd;
+    color: #5c4700;
+    border-bottom: 1px solid #ffe8a1;
+    font-size: 14px;
+    display: block;
+    position: relative;
+    z-index: 100000;
+  }
+
+  .dev-banner__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .dev-banner__icon {
+    font-size: 16px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .dev-banner__text {
+    line-height: 1.5;
+  }
+
+  #dev-banner a {
+    color: inherit;
+    text-decoration: underline;
+    font-weight: 600;
+  }
+
+  @media (max-width: 480px) {
+    #dev-banner {
+      font-size: 13px;
     }
-    .dev-banner__inner{
-      max-width: var(--page-width, 1200px);
-      margin:0 auto; padding:10px 16px;
-      display:flex; align-items:center; gap:10px;
+    .dev-banner__inner {
+      padding: 8px 12px;
     }
-    .dev-banner__icon{ font-size:16px; line-height:1; }
-    .dev-banner__text{ line-height:1.5; }
-    .dev-banner__link{ color:inherit; text-decoration:underline; }
-    .dev-banner__close{
-      margin-left:auto; background:transparent; border:0;
-      font-size:20px; line-height:1; cursor:pointer; color:inherit;
-    }
-    @media (max-width:480px){
-      .dev-banner__inner{ padding:8px 12px; }
-      .dev-banner{ font-size:13px; }
-    }
-  </style>
+  }
+</style>
+
 
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
       {{ content_for_layout }}
@@ -381,28 +418,6 @@
     <script>
 
 
-      /* warning script */
-
-
-        (function(){
-    var b = document.getElementById('dev-banner');
-    if (!b) return;
-
-    // Hide if previously dismissed
-    try {
-      if (localStorage.getItem('dev_banner_dismissed') === '1') { b.remove(); return; }
-    } catch(e){}
-
-    var closeBtn = b.querySelector('.dev-banner__close');
-    if (closeBtn) {
-      closeBtn.addEventListener('click', function(){
-        try { localStorage.setItem('dev_banner_dismissed', '1'); } catch(e){}
-        b.remove();
-      });
-    }
-  })();
-
-  /* End of warning script */
 
       window.shopUrl = '{{ request.origin }}';
       window.routes = {
