@@ -324,119 +324,48 @@
 
     {% sections 'header-group' %}
 
-
-<!-- Global maintenance banner (PERMANENT / NOT CLOSABLE) -->
-<div
-  id="dev-banner"
-  class="dev-banner"
-  role="status"
-  aria-live="polite"
-  data-permanent="true"
->
-  <div class="dev-banner__inner">
-    <span class="dev-banner__icon" aria-hidden="true">⚠️</span>
-    <span class="dev-banner__text">
-      <strong>Site en maintenance :</strong>
-      certaines informations, notamment les prix, peuvent être inexactes.
-      Merci de confirmer le tarif via
-      <a
-        class="dev-banner__link"
-        href="https://wa.me/212656260117"
-        target="_blank"
-        rel="noopener"
-      >
-        WhatsApp
-      </a>
-      avant toute commande.
-    </span>
+   
+    
+    <!-- Global maintenance banner (header) -->
+  <div id="dev-banner" class="dev-banner" role="status" aria-live="polite">
+    <div class="dev-banner__inner">
+      <span class="dev-banner__icon" aria-hidden="true">⚠️</span>
+      <span class="dev-banner__text">
+        <strong>Site en maintenance :</strong>
+        certaines informations, notamment les prix, peuvent être inexactes.
+        Merci de confirmer le tarif via
+        <a class="dev-banner__link" href="https://wa.me/212656260117" target="_blank" rel="noopener">WhatsApp</a>
+        avant toute commande.
+      </span>
+      <button class="dev-banner__close" type="button" aria-label="Fermer l’avis">&times;</button>
+    </div>
   </div>
-</div>
 
-<style>
-  /* ===== PERMANENT MAINTENANCE BANNER ===== */
-  #dev-banner,
-  #dev-banner[data-permanent="true"] {
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    height: auto !important;
-    max-height: none !important;
-  }
-
-  .dev-banner {
-    width: 100%;
-    background: #fff3cd;
-    color: #5c4700;
-    border-bottom: 1px solid #ffe8a1;
-    font-size: 14px;
-    position: relative;
-    z-index: 9999;
-  }
-
-  .dev-banner__inner {
-    max-width: var(--page-width, 1200px);
-    margin: 0 auto;
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .dev-banner__icon {
-    font-size: 16px;
-    line-height: 1;
-    flex-shrink: 0;
-  }
-
-  .dev-banner__text {
-    line-height: 1.5;
-  }
-
-  .dev-banner__link {
-    color: inherit;
-    text-decoration: underline;
-    font-weight: 600;
-  }
-
-  @media (max-width: 480px) {
-    .dev-banner {
-      font-size: 13px;
+  {% comment %} Styling of the warning {% endcomment %}
+  <style>
+    /* Global header maintenance banner */
+    .dev-banner{
+      width:100%;
+      background:#fff3cd; color:#5c4700; border-bottom:1px solid #ffe8a1;
+      font-size:14px;
     }
-    .dev-banner__inner {
-      padding: 8px 12px;
+    .dev-banner__inner{
+      max-width: var(--page-width, 1200px);
+      margin:0 auto; padding:10px 16px;
+      display:flex; align-items:center; gap:10px;
     }
-  }
-</style>
-
-<script>
-  /* ===== FORCE SHOW + CLEAN OLD STATE ===== */
-  (function () {
-    try {
-      localStorage.removeItem('dev-banner');
-      localStorage.removeItem('maintenance-banner');
-      localStorage.removeItem('announcement-bar');
-    } catch (e) {}
-
-    try {
-      document.cookie.split(';').forEach(function (c) {
-        if (c.toLowerCase().includes('banner')) {
-          document.cookie = c
-            .replace(/^ +/, '')
-            .replace(/=.*/, '=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/');
-        }
-      });
-    } catch (e) {}
-
-    var banner = document.getElementById('dev-banner');
-    if (banner) {
-      banner.style.display = 'block';
-      banner.style.visibility = 'visible';
-      banner.style.opacity = '1';
+    .dev-banner__icon{ font-size:16px; line-height:1; }
+    .dev-banner__text{ line-height:1.5; }
+    .dev-banner__link{ color:inherit; text-decoration:underline; }
+    .dev-banner__close{
+      margin-left:auto; background:transparent; border:0;
+      font-size:20px; line-height:1; cursor:pointer; color:inherit;
     }
-  })();
-</script>
-
-
+    @media (max-width:480px){
+      .dev-banner__inner{ padding:8px 12px; }
+      .dev-banner{ font-size:13px; }
+    }
+  </style>
 
     <main id="MainContent" class="content-for-layout focus-none" role="main" tabindex="-1">
       {{ content_for_layout }}
