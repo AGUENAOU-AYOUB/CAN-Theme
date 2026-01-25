@@ -14,7 +14,7 @@
     "custom_liquid_83kjKU": {
       "type": "custom-liquid",
       "settings": {
-        "custom_liquid": "<script src=\"https://cdn.jsdelivr.net/npm/node-marquee@3.0.6/build/cdn/index.min.js\"></script>\n<div id=\"node-marquee\">\n  <span>Des bijoux qui racontent une histoire, la vôtre - En Or 18K - Des pierres naturelles et précieuses\n    </span>\n</div>\n<style>\n    #node-marquee {\n        background-color: #F2AAB7;\n        color: #ffffff;\n        font-size: 18px;\n        overflow: hidden;\n\n    }\n    #node-marquee span {\n        display: inline-block;\n        white-space: nowrap; \n    }\n</style>\n<script>\n    nodeMarquee({\n        parent: '#node-marquee',\n        speed: 0.5\n    });\n</script>",
+        "custom_liquid": "<script src=\"https://cdn.jsdelivr.net/npm/node-marquee@3.0.6/build/cdn/index.min.js\"></script>\n<div id=\"node-marquee\">\n  <span>Des bijoux qui racontent une histoire, la vôtre - En Or 18K - Des pierres naturelles et précieuses\n    </span>\n</div>\n<style>\n    #node-marquee {\n        background-color: #F2AAB7;\n        color: #ffffff;\n        font-size: 18px;\n   font-family: 'Love Valentine', sans-serif;\n  font-weight:300px;\n      overflow: hidden;\n\n    }\n    #node-marquee span {\n        display: inline-block;\n        white-space: nowrap; \n    }\n</style>\n<script>\n    nodeMarquee({\n        parent: '#node-marquee',\n        speed: 0.5\n    });\n</script>",
         "color_scheme": "",
         "padding_top": 0,
         "padding_bottom": 0

@@ -18,13 +18,16 @@
   opacity: 0;
   visibility: hidden;
   z-index: 2;
-  transition: opacity 0s, visibility 0s;
+  transition:
+    opacity 0s,
+    visibility 0s;
 }
 
 menu-drawer > details[open] > summary::before {
   visibility: visible;
   opacity: 1;
-  transition: opacity var(--duration-default) ease,
+  transition:
+    opacity var(--duration-default) ease,
     visibility var(--duration-default) ease;
 }
 
@@ -55,7 +58,8 @@ menu-drawer > details[open] > summary::before {
 
 .js details[open] > .menu-drawer,
 .js details[open] > .menu-drawer__submenu {
-  transition: transform var(--duration-default) ease,
+  transition:
+    transform var(--duration-default) ease,
     visibility var(--duration-default) ease;
 }
 
@@ -121,6 +125,7 @@ details[open].menu-opening > .menu-drawer__submenu {
 
 .menu-drawer__navigation {
   padding: 3rem 0;
+  font-family: 'Love Like This', sans-serif !important;
 }
 
 .menu-drawer__inner-submenu {
@@ -148,9 +153,10 @@ details[open].menu-opening > .menu-drawer__submenu {
 .menu-drawer__close-button:focus,
 .menu-drawer__menu-item:hover,
 .menu-drawer__close-button:hover {
-  color: #05728E;
+  color: #05728e;
   font-weight: 600 !important;
-  font-family: "poppins", sans-serif;
+  font-family: 'Love Like This', sans-serif !important;
+
   background-color: rgba(var(--color-foreground), 0.04);
 }
 
@@ -195,7 +201,7 @@ details[open].menu-opening > .menu-drawer__submenu {
   font-size: 1.4rem;
   width: 100%;
   background-color: transparent;
-  font-family: var(--font-body-family);
+  color: #05728e;
   font-style: var(--font-body-style);
   text-align: left;
 }
