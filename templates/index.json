@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "video_banner_kmj3bh": {
@@ -6,7 +15,7 @@
         "heading_zByMdk": {
           "type": "heading",
           "settings": {
-            "heading_text": "Amazigh",
+            "heading_text": "Rouh Al Maghrib",
             "desktop_width": 1000,
             "mobile_width": 180,
             "desktop_heading_size": 50,
@@ -18,7 +27,7 @@
           "type": "button",
           "settings": {
             "button_text": "Découvrir",
-            "button_link": "shopify://collections/amazigh",
+            "button_link": "shopify://collections/can-2025",
             "button_text_color": "#ffffff",
             "button_bg_color": "#ffffff",
             "button_bg_hover": "#e3e2df",
@@ -28,11 +37,14 @@
           }
         }
       },
-      "block_order": ["heading_zByMdk", "button_TTzcEd"],
+      "block_order": [
+        "heading_zByMdk",
+        "button_TTzcEd"
+      ],
       "name": "Video Banner",
       "settings": {
-        "video": "shopify://files/videos/video-output-07AFEC21-8139-4F0B-8289-15C4391C0CDB-1.mov",
-        "video_mobile": "shopify://files/videos/video-output-07AFEC21-8139-4F0B-8289-15C4391C0CDB-1.mov",
+        "video": "shopify://files/videos/IAR61503_1.mp4",
+        "video_mobile": "shopify://files/videos/IMG_3547.MOV",
         "video_url": "",
         "video-alt": "",
         "content_position": "bottom-center",
@@ -230,7 +242,7 @@
         "heading_fyGyUg": {
           "type": "heading",
           "settings": {
-            "heading_text": "PETITS TRÉSORS",
+            "heading_text": "Amazigh",
             "desktop_width": 1000,
             "mobile_width": 180,
             "desktop_heading_size": 50,
@@ -242,7 +254,7 @@
           "type": "button",
           "settings": {
             "button_text": "Découvrir",
-            "button_link": "shopify://collections/enfant",
+            "button_link": "shopify://collections/amazigh",
             "button_text_color": "#ffffff",
             "button_bg_color": "#ffffff",
             "button_bg_hover": "#e3e2df",
@@ -252,10 +264,14 @@
           }
         }
       },
-      "block_order": ["heading_fyGyUg", "button_rVKEwD"],
+      "block_order": [
+        "heading_fyGyUg",
+        "button_rVKEwD"
+      ],
       "name": "Video Banner",
       "settings": {
-        "video": "shopify://files/videos/InShot_20250730_163658623.mp4",
+        "video": "shopify://files/videos/video-output-07AFEC21-8139-4F0B-8289-15C4391C0CDB-1.mov",
+        "video_mobile": "shopify://files/videos/Mobile-amazigh.mp4",
         "video_url": "",
         "video-alt": "",
         "content_position": "bottom-center",
@@ -308,7 +324,11 @@
           }
         }
       },
-      "block_order": ["category_at7Eq7", "category_yGGxT8", "category_jH7iwT"],
+      "block_order": [
+        "category_at7Eq7",
+        "category_yGGxT8",
+        "category_jH7iwT"
+      ],
       "disabled": true,
       "settings": {
         "max_width": 1600,
@@ -464,7 +484,11 @@
           }
         }
       },
-      "block_order": ["service_6UYy3D", "service_rB7cjx", "service_6KYTh7"],
+      "block_order": [
+        "service_6UYy3D",
+        "service_rB7cjx",
+        "service_6KYTh7"
+      ],
       "disabled": true,
       "settings": {
         "max_width": 1200,
@@ -832,8 +856,8 @@
         "collection": "haute-joaillerie",
         "products_to_show": 4,
         "show_title": true,
-        "collection_title": "BAGUE DE FIANCAILLE",
-        "collection_description": "Tantôt discrètes, tantôt affirmées, elles subliment chaque mouvement, capturent la lumière et reflètent l’âme de celle qui les porte.",
+        "collection_title": "Éclats Précieux",
+        "collection_description": "Une collection de colliers en or 18 carats où chaque création exprime une identité unique. Des lignes délicates, des pierres soigneusement sélectionnées et un éclat maîtrisé pour sublimer le quotidien comme les instants d’exception.",
         "heading_size": "medium",
         "heading_alignment": "center",
         "horizontal_padding": 5,
@@ -885,10 +909,14 @@
           }
         }
       },
-      "block_order": ["heading_jbWqTA", "button_AFqTrX"],
+      "block_order": [
+        "heading_jbWqTA",
+        "button_AFqTrX"
+      ],
       "name": "Video Banner",
       "settings": {
         "video": "shopify://files/videos/video-output-9B84A5F2-985D-407E-86B7-D2DBD56AF35E-2.mov",
+        "video_mobile": "shopify://files/videos/Azor3.mp4",
         "video_url": "",
         "video-alt": "",
         "content_position": "bottom-center",

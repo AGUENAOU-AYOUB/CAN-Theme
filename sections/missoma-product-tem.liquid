@@ -167,21 +167,29 @@
             {% unless product.available %}
               disabled="disabled"
             {% endunless %}
-          >
-            <span class="missoma-product-form__submit-text">
-              {% if product.available %}
-                {{ section.settings.add_to_cart_text | default: 'Add To Bag' }}
-              {% else %}
-                {{ 'products.product.sold_out' | t }}
-              {% endif %}
-            </span>
+          ><span class="missoma-product-form__submit-content">
+  <span class="missoma-product-form__submit-icon" aria-hidden="true">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+      <path d="M256 144C256 108.7 284.7 80 320 80C355.3 80 384 108.7 384 144L384 192L256 192L256 144zM208 192L144 192C117.5 192 96 213.5 96 240L96 448C96 501 139 544 192 544L448 544C501 544 544 501 544 448L544 240C544 213.5 522.5 192 496 192L432 192L432 144C432 82.1 381.9 32 320 32C258.1 32 208 82.1 208 144L208 192zM232 240C245.3 240 256 250.7 256 264C256 277.3 245.3 288 232 288C218.7 288 208 277.3 208 264C208 250.7 218.7 240 232 240zM384 264C384 250.7 394.7 240 408 240C421.3 240 432 250.7 432 264C432 277.3 421.3 288 408 288C394.7 288 384 277.3 384 264z"/>
+    </svg>
+  </span>
+
+  <span class="missoma-product-form__submit-text">
+    {% if product.available %}
+      {{ section.settings.add_to_cart_text | default: 'Add to bag' }}
+    {% else %}
+      {{ 'products.product.sold_out' | t }}
+    {% endif %}
+  </span>
+</span>
+
             <span class="missoma-product-form__submit-loading">
               <svg class="missoma-product-form__loading-icon" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg">
                 <path d="M15.542 1.487A21.507 21.507 0 00.5 22c0 11.874 9.626 21.5 21.5 21.5 9.847 0 18.364-6.675 20.809-16.072a1.5 1.5 0 00-2.904-.756C37.803 34.755 30.473 40.5 22 40.5 11.783 40.5 3.5 32.217 3.5 22c0-8.137 5.3-15.247 12.942-17.65a1.5 1.5 0 10-.9-2.863z" fill="currentColor"/>
               </svg>
             </span>
           </button>
-          {% comment %}
+          
                   <!-- Maintenance notice under the Add to Cart button -->
           <div class="dev-notice dev-notice--product" role="status" aria-live="polite">
             <span class="dev-notice__icon" aria-hidden="true">⚠️</span>
@@ -189,11 +197,11 @@
               <strong>Site en maintenance :</strong>
               certaines informations, notamment les prix, peuvent être inexactes.
               Merci de confirmer le tarif via
-              <a class="dev-notice__link" href="https://wa.me/212656260117" target="_blank" rel="noopener">WhatsApp</a>
+              <a class="dev-notice__link" href="https://wa.me/212665050694" target="_blank" rel="noopener">WhatsApp</a>
               avant toute commande.
             </span>
           </div>
-          {% endcomment %}
+          
         </form>
       </div>
 
@@ -220,6 +228,7 @@
           </div>
         </div>
 {% comment %} Extra drawer: Conditions générales (metafield + fallback) {% endcomment %}
+ {% comment %} 
 <div class="missoma-product-tab" data-tab="conditions">
   <button class="missoma-product-tab__header">
     <span class="missoma-product-tab__title">
@@ -237,7 +246,7 @@
   </div>
 </div>
 
-
+{% endcomment %}
         <div class="missoma-product-tab" data-tab="sustainability">
           <button class="missoma-product-tab__header">
             <span class="missoma-product-tab__title">{{ section.settings.sustainability_title }}</span>
@@ -477,7 +486,7 @@
   /* Product Details */
   .missoma-product-title {
     font-size: 24px;
-    font-weight: 600;
+    font-weight: 400;
     margin: 0 0 15px;
     letter-spacing: 0.5px;
     color: {{ section.settings.title_color }};
@@ -490,7 +499,7 @@
 
   .missoma-product-price__amount {
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 400;
     color: #810001;
     font-family: "poppins", sans-serif;
   }
@@ -596,7 +605,7 @@
 
   .missoma-product-form__submit {
     width: 100%;
-    background-color: {{ section.settings.button_background_color }};
+    background-color: #c10016;
     color: {{ section.settings.button_text_color }};
     border: none;
     padding: 15px;
@@ -607,10 +616,11 @@
     transition: background-color 0.2s;
     position: relative;
     overflow: hidden;
+    font-family: "poppins",sans-serif;
   }
 
   .missoma-product-form__submit:hover {
-    background-color: {{ section.settings.button_hover_color }};
+    background-color: #810001;
   }
 
   .missoma-product-form__submit:disabled {
@@ -1047,7 +1057,7 @@
     }
   }
   .missoma-product-form__submit {
-    display: none !important;
+    display: visible !important;
 }
 /* Modified pattern for variant drawer body - bottom-right quarter only, no fade */
 .missoma-variant-drawer__body {
@@ -1092,6 +1102,27 @@
     --vd-pattern-size: clamp(200px, 50vw, 400px);
   }
 }
+
+.missoma-product-form__submit-content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.missoma-product-form__submit-icon svg {
+  width: 18px;   /* icon size */
+  height: 18px;
+  fill: #ffffff; /* white color */
+  display: block;
+}
+
+/* Hide icon when loading */
+.missoma-product-form__submit--loading
+.missoma-product-form__submit-content {
+  opacity: 0;
+}
+
 </style>
 
 <script>
@@ -1526,6 +1557,65 @@
     // No need to handle window resize differently - we'll use the same carousel on both mobile and desktop
   });
   
+
+
+
+  (function () {
+  const overlay = document.getElementById('cg-consent-overlay');
+  const checkbox = document.getElementById('cg-consent-checkbox');
+  const acceptBtn = document.getElementById('cg-consent-accept');
+  const cancelBtn = document.getElementById('cg-consent-cancel');
+
+  if (!overlay) return;
+
+  let pendingClick = null;
+
+  // Enable button when checkbox is checked
+  checkbox.addEventListener('change', () => {
+    acceptBtn.disabled = !checkbox.checked;
+  });
+
+  // Cancel = close modal
+  cancelBtn.addEventListener('click', () => {
+    overlay.style.display = 'none';
+    overlay.setAttribute('aria-hidden', 'true');
+    checkbox.checked = false;
+    acceptBtn.disabled = true;
+    pendingClick = null;
+  });
+
+  // Accept = continue original action
+  acceptBtn.addEventListener('click', () => {
+    overlay.style.display = 'none';
+    overlay.setAttribute('aria-hidden', 'true');
+
+    if (pendingClick) {
+      pendingClick.click();
+      pendingClick = null;
+    }
+  });
+
+  // Intercept EasySell / Commander button
+  document.addEventListener('click', function (e) {
+    const commanderBtn = e.target.closest(
+      '.easysell-btn, .es-btn, [data-easysell], button[name="checkout"]'
+    );
+
+    if (!commanderBtn) return;
+
+    // If already accepted, allow
+    if (commanderBtn.dataset.cgAccepted === 'true') return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    pendingClick = commanderBtn;
+    commanderBtn.dataset.cgAccepted = 'true';
+
+    overlay.style.display = 'block';
+    overlay.setAttribute('aria-hidden', 'false');
+  }, true);
+})();
 </script>
 
 {% schema %}

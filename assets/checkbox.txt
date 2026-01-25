@@ -1,0 +1,454 @@
+
+
+
+<script>
+/*
+  ES-GATE Fix: ensure EasySell form opens.
+  Replace previous script with this one (paste once before </body>).
+  Behavior:
+   - delegation capture to intercept "Commander"
+   - shows FR consent modal ("Continuer")
+   - on confirm: remove capture, dispatch gesture to pending trigger FIRST,
+     then try multiple reveal strategies, and hide modal only after reveal (or after attempts)
+   - keeps Conditions link to https://www.azorjewelry.com/pages/conditions-generales
+*/
+(function () {
+  if (window.__es_consent_gate_final_fix) { console.info('[ES-GATE] final_fix already installed'); return; }
+  window.__es_consent_gate_final_fix = true;
+
+  const TERMS_URL = 'https://www.azorjewelry.com/pages/conditions-generales';
+  const SELECTORS = [
+    '#es-popup-button',
+    '.es-popup-button-product',
+    '.es-popup-button',
+    '.cg-consent-hitbox',
+    '.es-cta',
+    '.es-checkout-btn',
+    '#es-checkout',
+    '#es-form-button'
+  ];
+  const isIOS = typeof navigator !== 'undefined' && /iP(ad|hone|od)/.test(navigator.userAgent);
+
+  // FR texts
+  const TEXTS = {
+    title: 'Confirmation de commande',
+    intro: "Avant de poursuivre, merci de lire et d'accepter nos Conditions générales.",
+    checkboxHtml: `J'accepte les <a href="${TERMS_URL}" target="_blank" rel="noopener noreferrer" id="es-modal-conditions-link">Conditions générales</a>.`,
+    confirm: 'Continuer',
+    cancel: 'Annuler',
+    error: "Vous devez accepter les Conditions générales pour poursuivre.",
+    closeAria: 'Fermer la fenêtre de confirmation'
+  };
+
+  // -- helpers --
+  function el(id){ return document.getElementById(id); }
+  function hasClosest(el, sel){ try { return el && el.closest && el.closest(sel); } catch(e) { return null; } }
+  function escapeHtml(s){ return String(s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+  // inject minimal scoped CSS
+  if (!el('es-gate-fix-css')) {
+    const css = `
+      #es-consent-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:220000;display:none;align-items:center;justify-content:center;padding:20px;-webkit-overflow-scrolling:touch;}
+      #es-consent-modal{width:100%;max-width:560px;background:#fff;border-radius:12px;padding:18px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;color:#111;position:relative;box-shadow:0 12px 40px rgba(0,0,0,.28);}
+      #es-consent-modal h3{margin:0 0 8px;font-size:18px;font-weight:600;}
+      #es-consent-modal .es-body{font-size:14px;line-height:1.45;color:#222;}
+      #es-consent-modal .es-row{display:flex;gap:10px;align-items:flex-start;margin-top:14px;}
+      #es-consent-modal .es-row input[type="checkbox"]{width:18px;height:18px;margin-top:3px;}
+      #es-consent-modal .es-row label{font-size:14px;}
+      #es-consent-modal .es-error{margin-top:12px;background:#fff3cd;color:#5c4700;border:1px solid #ffe8a1;padding:10px;border-radius:8px;display:none;}
+      #es-consent-modal .es-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:18px;}
+      #es-consent-modal .es-btn{padding:10px 14px;border-radius:8px;border:none;cursor:pointer;font-weight:600;}
+      #es-consent-modal .es-btn-primary{background:#000;color:#fff;}
+      #es-consent-modal .es-btn-ghost{background:transparent;border:1px solid #ddd;color:#111;}
+      #es-consent-modal .modal-close{position:absolute;right:12px;top:10px;background:transparent;border:none;font-size:18px;cursor:pointer;}
+      #es-form.force-show{display:block !important; visibility:visible !important; opacity:1 !important;}
+      @media(max-width:420px){ #es-consent-modal{padding:14px;} #es-consent-modal h3{font-size:16px;} }
+    `;
+    const st = document.createElement('style'); st.id = 'es-gate-fix-css'; st.appendChild(document.createTextNode(css)); document.head.appendChild(st);
+  }
+
+  // build modal if missing
+  if (!el('es-consent-overlay')) {
+    const overlay = document.createElement('div');
+    overlay.id = 'es-consent-overlay';
+    overlay.setAttribute('aria-hidden','true');
+    overlay.innerHTML = `
+      <div id="es-consent-modal" role="dialog" aria-modal="true" aria-labelledby="es-consent-title">
+        <button class="modal-close" id="es-consent-close" aria-label="${escapeHtml(TEXTS.closeAria)}">✕</button>
+        <h3 id="es-consent-title">${escapeHtml(TEXTS.title)}</h3>
+        <div class="es-body">${escapeHtml(TEXTS.intro)}</div>
+        <div class="es-row" style="align-items:flex-start;">
+          <input id="es-consent-checkbox" type="checkbox" aria-describedby="es-consent-error" />
+          <label for="es-consent-checkbox">${TEXTS.checkboxHtml}</label>
+        </div>
+        <div id="es-consent-error" class="es-error" role="alert">${escapeHtml(TEXTS.error)}</div>
+        <div class="es-actions">
+          <button type="button" class="es-btn es-btn-ghost" id="es-consent-cancel">${escapeHtml(TEXTS.cancel)}</button>
+          <button type="button" class="es-btn es-btn-primary" id="es-consent-confirm">${escapeHtml(TEXTS.confirm)}</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+  }
+
+  // modal refs
+  const overlay = el('es-consent-overlay');
+  const modal = el('es-consent-modal');
+  const closeBtn = el('es-consent-close');
+  const cancelBtn = el('es-consent-cancel');
+  const confirmBtn = el('es-consent-confirm');
+  const checkbox = el('es-consent-checkbox');
+  const errBox = el('es-consent-error');
+
+  function showModal(){ if(!overlay) return; overlay.style.display='flex'; overlay.setAttribute('aria-hidden','false'); if(checkbox){ checkbox.checked=false; checkbox.focus(); } if(errBox) errBox.style.display='none'; try{ document.body.style.overflow='hidden'; }catch(e){} }
+  function hideModal(){ if(!overlay) return; overlay.style.display='none'; overlay.setAttribute('aria-hidden','true'); if(errBox) errBox.style.display='none'; try{ document.body.style.overflow=''; }catch(e){} }
+
+  // modal basic controls
+  closeBtn && closeBtn.addEventListener('click', hideModal);
+  cancelBtn && cancelBtn.addEventListener('click', hideModal);
+  overlay && overlay.addEventListener('click', function(e){ if(e.target===overlay) hideModal(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && overlay && overlay.style.display==='flex') hideModal(); });
+
+  // ensure initial hidden
+  function ensureFormHidden() {
+    try {
+      const f = document.getElementById('es-form');
+      if (!f) return;
+      if (!f.dataset.esInitiallyHidden) {
+        const cs = window.getComputedStyle(f);
+        if (cs && cs.display !== 'none') {
+          f.dataset.esInitiallyHidden='true';
+          try { f.style.setProperty('display','none',''); } catch(e){ f.style.display='none'; }
+        }
+      }
+    } catch(e){}
+  }
+  ensureFormHidden();
+
+  // find same-origin iframe containing es-form
+  function findEsFormInIframes(){
+    try {
+      const iframes = Array.from(document.getElementsByTagName('iframe'));
+      for (const iframe of iframes){
+        try {
+          const doc = iframe.contentDocument || iframe.contentWindow.document;
+          if(!doc) continue;
+          const f = doc.getElementById('es-form');
+          if(f) return { iframe, doc, form: f };
+        } catch(e){ /* ignore cross-origin */ }
+      }
+    } catch(e){}
+    return null;
+  }
+
+  // reveal helper - adds hidden attribute, hides modal when visible, sets up lifecycle monitor
+  function revealEsFormOnce(){
+    try {
+      const f = document.getElementById('es-form');
+      if (f) {
+        if (f.dataset.esInitiallyHidden === 'true') delete f.dataset.esInitiallyHidden;
+        try { f.style.removeProperty('display'); } catch(e){ f.style.display=''; }
+        if (!f.classList.contains('force-show')) f.classList.add('force-show');
+        try {
+          let hidden = f.querySelector('input[name="attributes[agreed_to_conditions]"]');
+          if (!hidden) { hidden = document.createElement('input'); hidden.type='hidden'; hidden.name='attributes[agreed_to_conditions]'; f.appendChild(hidden); }
+          hidden.value='oui';
+        } catch(e){}
+        hideModal(); // only hide once form visible
+        monitorEsFormLifecycle(f, document);
+        console.info('[ES-GATE] revealed es-form (host)');
+        return { ok:true, where:'host', form:f, doc:document };
+      }
+
+      const found = findEsFormInIframes();
+      if (found) {
+        const fi = found.form;
+        if (fi.dataset.esInitiallyHidden === 'true') delete fi.dataset.esInitiallyHidden;
+        try { fi.style.removeProperty('display'); } catch(e) { fi.style.display=''; }
+        if (!fi.classList.contains('force-show')) fi.classList.add('force-show');
+        try {
+          let hidden = fi.querySelector('input[name="attributes[agreed_to_conditions]"]');
+          if (!hidden) { hidden = found.doc.createElement('input'); hidden.type='hidden'; hidden.name='attributes[agreed_to_conditions]'; fi.appendChild(hidden); }
+          hidden.value='oui';
+        } catch(e){}
+        hideModal();
+        monitorEsFormLifecycle(fi, found.doc, found.iframe);
+        console.info('[ES-GATE] revealed es-form (iframe)');
+        return { ok:true, where:'iframe', form:fi, doc:found.doc, iframe:found.iframe };
+      }
+
+      return { ok:false };
+    } catch(e){ console.warn('[ES-GATE] revealEsFormOnce', e); return { ok:false }; }
+  }
+
+  // monitor lifecycle so when es-form closes we ensure modal stays closed
+  function monitorEsFormLifecycle(formNode, docContext, iframeNode){
+    try {
+      if (!formNode || formNode._es_monitored) return;
+      formNode._es_monitored = true;
+
+      const closeSelectors = ['.close-icon', '.es-close', '.close', '.text-black-50.close-icon'];
+
+      // attach click handlers on existing close buttons
+      closeSelectors.forEach(sel => {
+        try {
+          const nodes = Array.from(docContext.querySelectorAll(sel||''));
+          nodes.forEach(n => n.addEventListener('click', function(){ try{ hideModal(); }catch(e){} }));
+        } catch(e){}
+      });
+
+      // global click to catch dynamically added close buttons
+      const docClick = function(ev){
+        try {
+          const tgt = ev.target;
+          if (!tgt) return;
+          const isClose = closeSelectors.some(sel => tgt.closest && tgt.closest(sel));
+          if (isClose) hideModal();
+        } catch(e){}
+      };
+      docContext.addEventListener('click', docClick, true);
+      formNode._es_docClickHandler = docClick;
+
+      // observe form for removal or attribute changes
+      try {
+        const mo = new (window.MutationObserver || window.WebKitMutationObserver)(function(mutations){
+          try {
+            for (const m of mutations) {
+              if (m.type === 'childList') {
+                const still = (formNode.ownerDocument || document).contains(formNode);
+                if (!still) { hideModal(); disconnect(); return; }
+              }
+              if (m.type === 'attributes' && (m.attributeName === 'style' || m.attributeName === 'class')) {
+                try {
+                  const cs = (formNode.ownerDocument || document).defaultView.getComputedStyle(formNode);
+                  if (!cs || cs.display === 'none' || cs.visibility === 'hidden' || Number(cs.opacity) === 0) {
+                    hideModal();
+                    // keep observing in case it's re-opened
+                  }
+                } catch(e){}
+              }
+            }
+          } catch(e){}
+        });
+        mo.observe(formNode, { attributes:true, childList:true, subtree:false, attributeFilter:['style','class'] });
+        formNode._es_mo = mo;
+
+        // parent observer in case parent is swapped
+        let parent = formNode.parentNode;
+        if (parent) {
+          const pmo = new (window.MutationObserver || window.WebKitMutationObserver)(function(mutations){
+            try {
+              const still = (formNode.ownerDocument || document).contains(formNode);
+              if (!still) { hideModal(); disconnect(); return; }
+            } catch(e){}
+          });
+          pmo.observe(parent, { childList:true });
+          formNode._es_parentMo = pmo;
+        }
+
+        function disconnect(){
+          try {
+            if (formNode._es_mo) { formNode._es_mo.disconnect(); formNode._es_mo = null; }
+            if (formNode._es_parentMo) { formNode._es_parentMo.disconnect(); formNode._es_parentMo = null; }
+            if (formNode._es_docClickHandler) { docContext.removeEventListener('click', formNode._es_docClickHandler, true); formNode._es_docClickHandler = null; }
+            try { delete formNode._es_monitored; } catch(e){}
+          } catch(e){}
+        }
+      } catch(e){}
+    } catch(e){ console.warn('[ES-GATE] monitorEsFormLifecycle', e); }
+  }
+
+  // synthetic gesture dispatcher
+  function dispatchUserGestureOn(el){
+    if (!el) return false;
+    try {
+      try { el.dispatchEvent(new PointerEvent('pointerdown', { bubbles:true, cancelable:true })); } catch(e){}
+      try { el.dispatchEvent(new PointerEvent('pointerup', { bubbles:true, cancelable:true })); } catch(e){}
+      try { el.dispatchEvent(new MouseEvent('mousedown', { bubbles:true, cancelable:true })); } catch(e){}
+      try { el.dispatchEvent(new MouseEvent('mouseup', { bubbles:true, cancelable:true })); } catch(e){}
+      try { el.dispatchEvent(new MouseEvent('click', { bubbles:true, cancelable:true })); } catch(e){}
+      try { if (typeof el.click === 'function') el.click(); } catch(e){}
+      return true;
+    } catch(e){ console.warn('[ES-GATE] dispatchUserGestureOn', e); return false; }
+  }
+
+  // find same-origin iframe's likely trigger inside it
+  function dispatchInsideIframe(found){
+    try {
+      if (!found || !found.iframe || !found.doc) return false;
+      const btn = found.doc.getElementById('es-popup-button') || found.doc.querySelector('.es-popup-button') || found.doc.querySelector('.es-cta') || found.doc.querySelector('#es-checkout');
+      if (btn) {
+        try { btn.dispatchEvent(new MouseEvent('click', { bubbles:true, cancelable:true, view: found.iframe.contentWindow })); } catch(e){ try{ btn.click(); }catch(e2){} }
+        return true;
+      }
+    } catch(e){ console.warn('[ES-GATE] dispatchInsideIframe', e); }
+    return false;
+  }
+
+  // main opener after consent - critical ordering fixed:
+  // 1) remove capture from pending and dispatch to it (so library receives user gesture)
+  // 2) attempt reveal immediately and via other strategies
+  async function openEasySellAfterConsent(pendingElement) {
+    try {
+      // Step A: If we have a pending element intercepted earlier, remove any capture handlers (if attached)
+      try {
+        if (pendingElement && pendingElement._es_capture_handler) {
+          try {
+            ['pointerdown','pointerup','touchstart','touchend','click'].forEach(type => {
+              try { pendingElement.removeEventListener(type, pendingElement._es_capture_handler, { capture:true, passive:false }); } catch(e) {}
+            });
+          } catch(e){}
+          // also clear flag so future interactions are not blocked
+          pendingElement._es_capture_handler = null;
+          pendingElement._es_capture_added = false;
+        }
+      } catch(e){}
+
+      // Step B: dispatch user gesture to pendingElement first (most stores require the gesture)
+      if (pendingElement) {
+        try {
+          const dispatched = dispatchUserGestureOn(pendingElement);
+          await new Promise(r => setTimeout(r, dispatched ? (isIOS ? 140 : 40) : (isIOS ? 180 : 80)));
+        } catch(e){}
+      }
+
+      // Step C: try to reveal immediately (maybe EasySell created the form now)
+      let r = revealEsFormOnce();
+      if (r.ok) return;
+
+      // Step D: try calling global EasySell open APIs
+      try {
+        if (window.ESPopup && typeof window.ESPopup.open === 'function') { window.ESPopup.open(); await new Promise(r=>setTimeout(r, isIOS ? 140 : 40)); r = revealEsFormOnce(); if (r.ok) return; }
+        if (window.easysell && typeof window.easysell.open === 'function') { window.easysell.open(); await new Promise(r=>setTimeout(r, isIOS ? 140 : 40)); r = revealEsFormOnce(); if (r.ok) return; }
+      } catch(e){}
+
+      // Step E: dispatch to known selectors on host
+      const hostCandidates = ['#es-form-button','#es-checkout','.es-popup-button','.es-popup-button-product','.es-cta','.es-checkout-btn','.cg-consent-hitbox'];
+      for (const sel of hostCandidates) {
+        try {
+          const el = document.querySelector(sel);
+          if (el) {
+            dispatchUserGestureOn(el);
+            await new Promise(r => setTimeout(r, isIOS ? 140 : 40));
+            r = revealEsFormOnce();
+            if (r.ok) return;
+          }
+        } catch(e){}
+      }
+
+      // Step F: try same-origin iframe dispatch (maybe EasySell is inside iframe)
+      const found = findEsFormInIframes();
+      if (found) {
+        const insideDispatched = dispatchInsideIframe(found);
+        if (insideDispatched) {
+          await new Promise(r => setTimeout(r, isIOS ? 160 : 60));
+          r = revealEsFormOnce();
+          if (r.ok) return;
+        }
+      }
+
+      // Step G: retry loop for async mount
+      const RETRY_MAX = 8;
+      const RETRY_DELAY = isIOS ? 300 : 120;
+      for (let i=0;i<RETRY_MAX;i++){
+        await new Promise(r => setTimeout(r, RETRY_DELAY));
+        r = revealEsFormOnce();
+        if (r.ok) return;
+      }
+
+      // Step H: final forced reveal fallback (host)
+      const finalForm = document.getElementById('es-form');
+      if (finalForm) {
+        try {
+          finalForm.classList.add('force-show');
+          finalForm.style.display = 'block';
+          finalForm.style.opacity = '1';
+          try {
+            let h = finalForm.querySelector('input[name="attributes[agreed_to_conditions]"]');
+            if (!h) { h = document.createElement('input'); h.type='hidden'; h.name='attributes[agreed_to_conditions]'; finalForm.appendChild(h); }
+            h.value='oui';
+          } catch(e){}
+          hideModal();
+          monitorEsFormLifecycle(finalForm, document);
+          return;
+        } catch(e){}
+      }
+
+      // last: if we failed, and pending exists, dispatch to pending again as a last-chance
+      if (pendingElement) {
+        try { dispatchUserGestureOn(pendingElement); } catch(e){}
+      }
+      console.warn('[ES-GATE] openEasySellAfterConsent: could not reveal es-form');
+    } catch(e) { console.error('[ES-GATE] openEasySellAfterConsent error', e); }
+  }
+
+  // Delegation capture: listen at document level and open modal for target clicks
+  let lastPending = null;
+  function globalCaptureHandler(ev) {
+    try {
+      if (overlay && overlay.style.display === 'flex') return; // modal already open
+      if (ev.button && ev.button !== 0) return; // only primary
+      const target = ev.target;
+      if (!target) return;
+      // find closest matching selector
+      let matched = null;
+      for (const s of SELECTORS) {
+        try {
+          const found = target.closest && target.closest(s);
+          if (found) { matched = found; break; }
+        } catch(e){}
+      }
+      if (!matched) return;
+      // intercept and store pending
+      try { ev.stopImmediatePropagation(); } catch(e){}
+      try { ev.preventDefault(); } catch(e){}
+      lastPending = matched;
+      showModal();
+    } catch(e){}
+  }
+  document.addEventListener('pointerdown', globalCaptureHandler, true);
+  document.addEventListener('touchstart', globalCaptureHandler, true);
+  document.addEventListener('click', globalCaptureHandler, true);
+
+  // keep initial form hidden if app re-renders
+  try {
+    const mo = new MutationObserver(() => { ensureFormHidden(); });
+    mo.observe(document.body, { childList:true, subtree:true });
+  } catch(e){}
+
+  // Confirm click: validate checkbox, then critical ordering:
+  // dispatch to pending first, then run reveal strategies, hide modal after reveal
+  confirmBtn && confirmBtn.addEventListener('click', function () {
+    try {
+      if (!checkbox || !checkbox.checked) {
+        if (errBox) errBox.style.display='block';
+        if (checkbox) checkbox.focus();
+        return;
+      }
+      if (errBox) errBox.style.display='none';
+      // Run opener with lastPending
+      openEasySellAfterConsent(lastPending).then(()=> { lastPending = null; });
+    } catch(e){ console.warn('[ES-GATE] confirm handler', e); hideModal(); }
+  });
+
+  // safe click for conditions link (should open in new tab by default)
+  document.addEventListener('click', function(e){
+    try {
+      const a = e.target.closest && e.target.closest('#es-modal-conditions-link');
+      if (!a) return;
+      // allow default (target=_blank exists)
+    } catch(e){}
+  });
+
+  // expose debug helpers
+  try {
+    window.__es_gate_fix = window.__es_gate_fix || {};
+    window.__es_gate_fix.openAfterConsent = openEasySellAfterConsent;
+    window.__es_gate_fix.reveal = revealEsFormOnce;
+    window.__es_gate_fix.pending = () => lastPending;
+  } catch(e){}
+
+  console.info('[ES-GATE] final_fix installed. On confirm the script will dispatch to pending then reveal es-form.');
+})();
+</script>
+

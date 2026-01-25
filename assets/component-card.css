@@ -303,6 +303,7 @@
 .card__heading {
   margin-top: 0;
   margin-bottom: 0;
+  font-size:1.5rem;
 }
 
 .card__heading:last-child {
