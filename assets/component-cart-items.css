@@ -307,7 +307,7 @@ cart-remove-button .icon-remove {
   }
 
   .cart-item__price-wrapper > *:only-child:not(.cart-item__discounted-prices) {
-    color: #810001;
+    color: #05728E;
     margin-top: 1rem;
   }
 

@@ -6,7 +6,7 @@
   border-width: var(--popup-border-width);
   border-style: solid;
   border-color: rgba(var(--color-foreground), var(--popup-border-opacity));
-  background-color: #810001;
+  background-color: #05728E;
   z-index: 3;
   border-bottom-right-radius: var(--popup-corner-radius);
   border-bottom-left-radius: var(--popup-corner-radius);
@@ -104,7 +104,7 @@ predictive-search[loading] .predictive-search {
   color: #ffffff ;
 }
 .predictive-search__heading :hover {
-  color: #0cc667;
+  color: #f2aab7;
 }
 predictive-search .spinner {
   width: 1.5rem;

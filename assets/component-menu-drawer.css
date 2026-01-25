@@ -148,7 +148,7 @@ details[open].menu-opening > .menu-drawer__submenu {
 .menu-drawer__close-button:focus,
 .menu-drawer__menu-item:hover,
 .menu-drawer__close-button:hover {
-  color: #810001;
+  color: #05728E;
   font-weight: 600 !important;
   font-family: "poppins", sans-serif;
   background-color: rgba(var(--color-foreground), 0.04);
