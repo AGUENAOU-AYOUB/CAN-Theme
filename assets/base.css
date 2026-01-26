@@ -2766,6 +2766,7 @@ details[open] > .header__submenu {
   margin-left: -1.2rem;
   grid-area: navigation;
   display: none;
+   font-family: 'Love Like This', sans-serif !important;
 }
 
 .header--top-center .header__inline-menu,
@@ -2799,7 +2800,6 @@ details[open] > .header__submenu {
   padding: 1.2rem;
   text-decoration: none;
   color: rgba(var(--color-foreground), 0.75);
-  font-family: 'Love Like This', sans-serif !important;
 }
 
 .header__menu-item:hover {

@@ -14,8 +14,10 @@
   position: absolute;
   right: 0;
   top: 100%;
-  font-family: 'Love Like This', sans-serif !important;
 }
+
+
+
 
 .shopify-section-header-sticky .mega-menu__content {
   max-height: calc(100vh - var(--header-bottom-position-desktop, 20rem) - 4rem);
