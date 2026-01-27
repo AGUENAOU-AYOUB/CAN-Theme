@@ -15,7 +15,7 @@
         "heading_zByMdk": {
           "type": "heading",
           "settings": {
-            "heading_text": "Amazigh",
+            "heading_text": "Valentine",
             "desktop_width": 1000,
             "mobile_width": 180,
             "desktop_heading_size": 50,
@@ -27,7 +27,7 @@
           "type": "button",
           "settings": {
             "button_text": "Découvrir",
-            "button_link": "shopify://collections/amazigh",
+            "button_link": "shopify://collections/vaentine",
             "button_text_color": "#ffffff",
             "button_bg_color": "#ffffff",
             "button_bg_hover": "#e3e2df",
@@ -43,7 +43,7 @@
       ],
       "name": "Video Banner",
       "settings": {
-        "video": "shopify://files/videos/video-output-07AFEC21-8139-4F0B-8289-15C4391C0CDB-1.mov",
+        "video": "shopify://files/videos/Elegance in Love_ A Luxury Valentine's Jewelry Showcase-1769520750159.mp4",
         "video_mobile": "shopify://files/videos/Mobile-amazigh.mp4",
         "video_url": "",
         "video-alt": "",
