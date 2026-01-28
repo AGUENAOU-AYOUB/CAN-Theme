@@ -22,11 +22,11 @@
 }
 
 .totals__total {
-  margin-top: .5rem;
+  margin-top: 0.5rem;
 }
 
 .totals__total-value {
-  color: #05728E;
+  color: #47363e;
   font-size: 1.8rem;
 }
 

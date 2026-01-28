@@ -2043,6 +2043,10 @@ input[type='checkbox'] {
   height: 4.4rem;
   width: 4.4rem;
   background-color: transparent;
+  color:#D2CCD2;
+}
+.modal__close-button.link:hover{
+  color: #C9A14A;
 }
 
 .modal__close-button .icon {
@@ -2665,7 +2669,7 @@ details[open] .modal-overlay::after {
   border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
   min-height: calc(100% + var(--inputs-margin-offset) + (2 * var(--inputs-border-width)));
   height: 100%;
-  background-color: #a84c64 !important;
+  background-color: #47363E !important;
 }
 
 .search-modal__content {
@@ -2766,7 +2770,7 @@ details[open] > .header__submenu {
   margin-left: -1.2rem;
   grid-area: navigation;
   display: none;
-   font-family: 'Love Like This', sans-serif !important;
+   font-family: 'Poppins', sans-serif !important;
 }
 
 .header--top-center .header__inline-menu,
@@ -2803,7 +2807,7 @@ details[open] > .header__submenu {
 }
 
 .header__menu-item:hover {
-  color: #F2AAB7 !important;
+  color: #C9A14A !important;
 }
 
 .header__menu-item span {

@@ -147,7 +147,7 @@
   }
 
   .mega_menu_img:hover .title {
-    color: #f2aab7 !important;
+    color: #C9A14A !important;
     transition: color 0.3s ease;
   }
 
@@ -250,20 +250,29 @@
    MEGA MENU PATTERN DECORATIONS
    ========================================================================== */
 
-.mega-menu__content::before,
-.mega-menu__content::after {
+/*
+.mega-menu__content::before {
   content: "";
   position: absolute;
+  inset: 0;
   pointer-events: none;
-  z-index: 1;
-  width: clamp(200px, 30vw, 500px);
-  height: clamp(200px, 30vw, 500px);
-  background-image: url('{{ "Background-big.svg" | asset_url }}');
-  background-repeat: no-repeat;
-  background-size: contain;
-  opacity: 1;
-}
+  z-index: 0;
 
+  background-image: url('{{ "Background-big.svg" | asset_url }}');
+  background-repeat: repeat;
+  background-size: 90px 90px;
+
+  opacity: 0.08;
+
+  /* Luxury look */
+  filter: blur(0.3px);
+  transform: rotate(-6deg);
+
+  /* Soft fade */
+  mask-image: radial-gradient(circle at top left, black 40%, transparent 75%);
+  -webkit-mask-image: radial-gradient(circle at top left, black 40%, transparent 75%);
+}
+*/
 /* Bottom-left corner - show top-right quarter of SVG */
 .mega-menu__content::before {
   bottom: 0;
@@ -298,7 +307,7 @@
   /* Main Wrapper: Red background */
   .header-wrapper.color-scheme-2,
   .header-wrapper {
-    background-color: #0A94A6 !important;
+    background-color: #47363E !important;
     box-shadow: 0px 20px 20px -5px #2020205b;
     position: relative;
   }
@@ -320,9 +329,9 @@
       --md-fade-stop: 20%;
       --md-solid-edge: 0%;
       overflow: visible;
-      color: #05728E;
+      color: #ffffff;
     }
-     
+    /* 
     .menu-drawer__navigation::before {
       content: "";
       position: absolute;
@@ -337,7 +346,7 @@
       background-position: left bottom;
       background-size: var(--md-tile-size) var(--md-tile-size);
     }
-    
+    */
     .menu-drawer__navigation > * {
       position: relative;
       z-index: 1;
@@ -357,18 +366,19 @@
   .header__heading-link,
   .header__active-menu-item,
   .list-menu__item,
-  .header h1,
-  .header h2 {
+  .header h1{
     color: #ffffff !important;
     font-weight: 600 !important;
   }
 
-
+ .header h2{
+    color: #C9A14A !important;
+ }
 
   /* Mobile Override */
   @media (max-width: 990px) {
     .header a {
-      color: #05728E !important;
+      color: #47363E !important;
       font-weight: 600 !important;
     }
     .header__menu-item,
@@ -394,8 +404,8 @@
   }
 
   .header__menu-item:hover svg {
-    color: #F2AAB7;
-    fill: #F2AAB7 !important;
+    color: #C9A14A;
+    fill: #C9A14A !important;
     transition: fill 0.3s ease;
   }
 
@@ -421,8 +431,8 @@
   .header__icon--search:hover svg,
   .header__icon--account:hover svg,
   .header__icon--cart:hover svg {
-    color: #F2AAB7 !important;
-    fill: #F2AAB7 !important;
+    color: #C9A14A !important;
+    fill: #C9A14A !important;
   }
 
   .header__heading-logo {
@@ -434,14 +444,14 @@
      ========================================================================== */
 
   .cart-count-bubble {
-    background-color: #F2AAB7 !important;
+    background-color: #C9A14A !important;
     color: #ffffff !important;
     font-weight: 600 !important;
     text-align: center;
   }
 
   .search__button {
-    color: #05728E;
+    color: #D2CCD2;
   }
 
   /* Kill Dawn focus ring on search input */
@@ -458,7 +468,7 @@
   .field__input:focus-visible {
     box-shadow: none !important;
     outline: none !important;
-    border-color: #05728E !important;
+    border-color: #47363E !important;
   }
 
   /* Prevent Safari / Chrome inner highlight */
@@ -490,7 +500,7 @@
   .menu-drawer__menu-item,
   .menu-drawer__navigation a,
   .menu-drawer__navigation span {
-    color: #05728E !important;
+    color: #47363E !important;
     font-weight: 600 !important;
   }
 
@@ -501,6 +511,7 @@
     justify-content: space-between !important;
     border-bottom: none !important;
     font-weight: 600 !important;
+    font-family: 'poppins', !important;
   }
 
   .menu-drawer__menu-item .svg-wrapper,
@@ -518,7 +529,7 @@
      ========================================================================== */
 
   .mega-menu__link:hover {
-    color: #f2aab7 !important;
+    color: #C9A14A !important;
     transition: color 0.3s ease;
   }
 
@@ -527,24 +538,24 @@
   }
 
   .header__active-menu-item:hover {
-    color: #f2aab7 !important;
+    color: #C9A14A !important;
   }
 
   .menu-drawer__menu-item:hover,
   .menu-drawer__navigation a:hover {
-    color: #f2aab7 !important;
+    color: #C9A14A!important;
     transition: color 0.3s ease;
   }
 
   .list-menu__item:hover > a,
   .list-menu__item > a:hover {
-    color: #f2aab7 !important;
+    color: #C9A14A !important;
     transition: color 0.3s ease;
   }
 
   .menu-drawer__submenu .list-menu__item:hover > a,
   .mega-menu__list li:hover > .mega-menu__link {
-    color: #f2aab7 !important;
+    color: #C9A14A !important;
   }
 
 
@@ -566,35 +577,31 @@
   pointer-events: none;
 }
 
-/* Header patterns applied to the new container */
-.header-patterns::before,
-.header-patterns::after {
+/* Header soft floating pattern */
+/*
+.header-patterns::before {
   content: "";
   position: absolute;
+  top: 0;
+  left: 0;
+  width: 420px;
+  height: 320px;
   pointer-events: none;
   z-index: 0;
-  width: clamp(240px, 35vw, 520px);
-  height: clamp(240px, 35vw, 520px);
 
   background-image: url('{{ "back-pattern-white.svg" | asset_url }}');
-  background-repeat: no-repeat;
-  background-size: contain;
-}
+  background-repeat: repeat;
+  background-size: 90px 90px; /* smaller pattern */
+  opacity: 0.18;
 
-/* Bottom-left */
-.header-patterns::before {
-  bottom: 0;
-  left: 0;
-  transform: translate(-50%, 50%);
+  /* Wind-like movement */
+  transform: translate(-20%, -20%) rotate(-6deg);
+  
+  /* Soft fade effect */
+  mask-image: radial-gradient(circle at top left, black 40%, transparent 75%);
+  -webkit-mask-image: radial-gradient(circle at top left, black 40%, transparent 75%);
 }
-
-/* Top-right */
-.header-patterns::after {
-  top: 0;
-  right: 0;
-  transform: translate(50%, -50%);
-}
-
+*/
 .header {
   position: relative;
   
