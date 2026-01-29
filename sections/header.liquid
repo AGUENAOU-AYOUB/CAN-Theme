@@ -578,7 +578,6 @@
 }
 
 /* Header soft floating pattern */
-/*
 .header-patterns::before {
   content: "";
   position: absolute;
@@ -591,17 +590,35 @@
 
   background-image: url('{{ "back-pattern-white.svg" | asset_url }}');
   background-repeat: repeat;
-  background-size: 90px 90px; /* smaller pattern */
-  opacity: 0.18;
+  background-size: 85px 85px;
 
-  /* Wind-like movement */
-  transform: translate(-20%, -20%) rotate(-6deg);
-  
-  /* Soft fade effect */
-  mask-image: radial-gradient(circle at top left, black 40%, transparent 75%);
-  -webkit-mask-image: radial-gradient(circle at top left, black 40%, transparent 75%);
+  /* Valentine luxury tone */
+  opacity: 0.35;
+
+  /* Soft drifting look */
+  transform: translate(-18%, -18%) rotate(-7deg);
+
+  /* Elegant fade */
+  mask-image: radial-gradient(circle at top left, black 45%, transparent 78%);
+  -webkit-mask-image: radial-gradient(circle at top left, black 45%, transparent 78%);
+
+  /* Premium blending */
+  mix-blend-mode: soft-light;
+
+  /* Motion */
+  animation: floatHearts 35s ease-in-out infinite alternate;
 }
-*/
+
+@keyframes floatHearts {
+  0% {
+    transform: translate(-18%, -18%) rotate(-7deg);
+  }
+  100% {
+    transform: translate(-24%, -12%) rotate(-4deg);
+  }
+}
+
+
 .header {
   position: relative;
   
