@@ -24,7 +24,7 @@
 }
 
 .pagination__item {
-  color: #47363e;
+  color: #a94f4f;
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -35,7 +35,7 @@
   text-decoration: none;
 }
 .pagination__item:hover {
-  color: #D2CCD2;
+  color: #d2ccd2;
 }
 
 a.pagination__item:hover::after {

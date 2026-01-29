@@ -6,7 +6,7 @@
   border-width: var(--popup-border-width);
   border-style: solid;
   border-color: rgba(var(--color-foreground), var(--popup-border-opacity));
-  background-color: #D2CCD2;
+  background-color: #d2ccd2;
   z-index: 3;
   border-bottom-right-radius: var(--popup-corner-radius);
   border-bottom-left-radius: var(--popup-corner-radius);
@@ -40,8 +40,8 @@
   }
 
   .predictive-search__results-groups-wrapper:not(
-      .predictive-search__results-groups-wrapper--no-suggestions
-    ) {
+    .predictive-search__results-groups-wrapper--no-suggestions
+  ) {
     /* On mobile, when there are no suggestions the first .predictive-search__results-groups-wrapper
      * is virtually empty due to a display: hidden on the predictive-search__pages-wrapper child.
      * This causes the gap to render and look like a big top margin */
@@ -98,13 +98,13 @@ predictive-search[loading] .predictive-search {
 }
 
 .predictive-search__heading {
-  border-bottom: 0.1rem solid #7D6F77;
+  border-bottom: 0.1rem solid #7d6f77;
   margin: 0 2rem;
   padding: 1.5rem 0 0.75rem;
-  color: #47363E !important ;
+  color: #a94f4f !important ;
 }
 .predictive-search__heading :hover {
-  color: #7D6F77;
+  color: #7d6f77;
 }
 predictive-search .spinner {
   width: 1.5rem;
@@ -143,11 +143,11 @@ predictive-search[loading]
 .predictive-search__list-item:hover > *,
 .predictive-search__item[aria-selected="true"],
 .predictive-search__item:hover {
-  color: #47363E;
+  color: #a94f4f;
   background-color: rgba(var(--color-foreground), 0.04);
 }
-.predictive-search__item{
-  color: #47363E;
+.predictive-search__item {
+  color: #a94f4f;
 }
 
 .predictive-search__list-item[aria-selected="true"]
@@ -188,7 +188,7 @@ predictive-search[loading]
 
 .predictive-search__item-heading {
   margin: 0;
-  color: #47363E;
+  color: #a94f4f;
 }
 
 .predictive-search__item-query-result *:not(mark) {
@@ -196,7 +196,7 @@ predictive-search[loading]
 }
 
 .predictive-search__item-query-result mark {
-  color: #47363E;
+  color: #a94f4f;
 }
 
 .predictive-search__item-query-result mark {
@@ -233,7 +233,7 @@ predictive-search[loading]
   height: calc(var(--font-heading-scale) * 1.4rem);
   flex-shrink: 0;
   margin-left: calc(var(--font-heading-scale) * 2rem);
-  color: #47363E;
+  color: #a94f4f;
 }
 
 .predictive-search__image {

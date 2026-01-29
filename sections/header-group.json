@@ -14,7 +14,7 @@
     "custom_liquid_83kjKU": {
       "type": "custom-liquid",
       "settings": {
-        "custom_liquid": "<script src=\"https://cdn.jsdelivr.net/npm/node-marquee@3.0.6/build/cdn/index.min.js\"></script>\n<div id=\"node-marquee\">\n  <span>Des bijoux qui racontent une histoire, la vôtre - En Or 18K - Des pierres naturelles et précieuses\n    </span>\n</div>\n<style>\n    #node-marquee {\n        background-color: #D2CCD2;\n        color: #47363E;\n        font-size: 18px;\n          font-family: 'poppins', sans-serif;\n       overflow: hidden;\n\n    }\n    #node-marquee span {\n        display: inline-block;\n        white-space: nowrap; \n    }\n</style>\n<script>\n    nodeMarquee({\n        parent: '#node-marquee',\n        speed: 0.5\n    });\n</script>",
+        "custom_liquid": "<script src=\"https://cdn.jsdelivr.net/npm/node-marquee@3.0.6/build/cdn/index.min.js\"></script>\n<div id=\"node-marquee\">\n  <span>Des bijoux qui racontent une histoire, la vôtre - En Or 18K - Des pierres naturelles et précieuses\n    </span>\n</div>\n<style>\n    #node-marquee {\n        background-color: #D2CCD2;\n        color: #A94F4F;\n        font-size: 18px;\n          font-family: 'poppins', sans-serif;\n       overflow: hidden;\n\n    }\n    #node-marquee span {\n        display: inline-block;\n        white-space: nowrap; \n    }\n</style>\n<script>\n    nodeMarquee({\n        parent: '#node-marquee',\n        speed: 0.5\n    });\n</script>",
         "color_scheme": "",
         "padding_top": 0,
         "padding_bottom": 0
@@ -201,9 +201,7 @@
         "menu_image_fU9mjk",
         "menu_image_iq9yDH"
       ],
-      "custom_css": [
-        ".mega_menu_img img {height: 270px;}"
-      ],
+      "custom_css": [".mega_menu_img img {height: 270px;}"],
       "settings": {
         "logo_position": "top-center",
         "menu": "home-page-menu-t5",
@@ -236,9 +234,5 @@
       }
     }
   },
-  "order": [
-    "custom_liquid_83kjKU",
-    "header",
-    "missoma_header1_3H6CQh"
-  ]
+  "order": ["custom_liquid_83kjKU", "header", "missoma_header1_3H6CQh"]
 }
