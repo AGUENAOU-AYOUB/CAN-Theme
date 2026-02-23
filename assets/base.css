@@ -2046,7 +2046,7 @@ input[type='checkbox'] {
   color:#D2CCD2;
 }
 .modal__close-button.link:hover{
-  color: #C9A14A;
+  color: #FF9700;
 }
 
 .modal__close-button .icon {
@@ -2669,7 +2669,7 @@ details[open] .modal-overlay::after {
   border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
   min-height: calc(100% + var(--inputs-margin-offset) + (2 * var(--inputs-border-width)));
   height: 100%;
-  background-color: #A94F4F !important;
+  background-color: #121028  !important;
 }
 
 .search-modal__content {
@@ -2807,7 +2807,7 @@ details[open] > .header__submenu {
 }
 
 .header__menu-item:hover {
-  color: #C9A14A !important;
+  color: #FF9700 !important;
 }
 
 .header__menu-item span {

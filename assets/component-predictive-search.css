@@ -6,7 +6,7 @@
   border-width: var(--popup-border-width);
   border-style: solid;
   border-color: rgba(var(--color-foreground), var(--popup-border-opacity));
-  background-color: #B85C5C;
+  background-color: #04233A;
   z-index: 3;
   border-bottom-right-radius: var(--popup-corner-radius);
   border-bottom-left-radius: var(--popup-corner-radius);
