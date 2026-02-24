@@ -2046,7 +2046,7 @@ input[type='checkbox'] {
   color:#D2CCD2;
 }
 .modal__close-button.link:hover{
-  color: #FF9700;
+  color: #BE965C;
 }
 
 .modal__close-button .icon {
@@ -2807,7 +2807,7 @@ details[open] > .header__submenu {
 }
 
 .header__menu-item:hover {
-  color: #FF9700 !important;
+  color: #BE965C !important;
 }
 
 .header__menu-item span {
