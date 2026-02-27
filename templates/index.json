@@ -27,7 +27,7 @@
           "type": "button",
           "settings": {
             "button_text": "Découvrir",
-            "button_link": "shopify://collections/vaentine",
+            "button_link": "shopify://collections/ramadan",
             "button_text_color": "#ffffff",
             "button_bg_color": "#ffffff",
             "button_bg_hover": "#e3e2df",
