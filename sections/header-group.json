@@ -45,7 +45,6 @@
         },
         "menu_image_kz7N4c": {
           "type": "menu-image",
-          "disabled": true,
           "settings": {
             "link_name": "LA MAISON",
             "link_image": "shopify://shop_images/0016.jpg",
@@ -174,11 +173,12 @@
         },
         "menu_image_iq9yDH": {
           "type": "menu-image",
+          "disabled": true,
           "settings": {
             "link_name": "COLLECTIONS",
-            "link_image": "shopify://shop_images/WhatsApp_Image_2025-12-22_at_20.48.53.jpg",
-            "link_title": "INVESTISSEMENT",
-            "link_url": "shopify://collections/investment"
+            "link_image": "shopify://shop_images/silver.png",
+            "link_title": "Argent Massif",
+            "link_url": "shopify://collections/argent"
           }
         }
       },
@@ -201,7 +201,9 @@
         "menu_image_fU9mjk",
         "menu_image_iq9yDH"
       ],
-      "custom_css": [".mega_menu_img img {height: 270px;}"],
+      "custom_css": [
+        ".mega_menu_img img {height: 270px;}"
+      ],
       "settings": {
         "logo_position": "top-center",
         "menu": "home-page-menu-t5",
@@ -234,5 +236,9 @@
       }
     }
   },
-  "order": ["custom_liquid_83kjKU", "header", "missoma_header1_3H6CQh"]
+  "order": [
+    "custom_liquid_83kjKU",
+    "header",
+    "missoma_header1_3H6CQh"
+  ]
 }
