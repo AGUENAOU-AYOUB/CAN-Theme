@@ -173,7 +173,6 @@
         },
         "menu_image_iq9yDH": {
           "type": "menu-image",
-          "disabled": true,
           "settings": {
             "link_name": "COLLECTIONS",
             "link_image": "shopify://shop_images/silver.png",
