@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -9,9 +18,20 @@
         "columns_desktop": 3,
         "columns_mobile": "2"
       }
+    },
+    "custom_liquid_CjbJMU": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "custom_liquid": "<style>\n  img {\n    -webkit-user-drag: none;\n    -khtml-user-drag: none;\n    -moz-user-drag: none;\n    -o-user-drag: none;\n    user-drag: none;\n    -webkit-tap-highlight-color: transparent; \n  }\n</style>\n\n<script>\n  (function() {\n    document.addEventListener('contextmenu', function(e) {\n      e.preventDefault();\n    }, false);\n\n    const protectImages = () => {\n      document.querySelectorAll('img').forEach(img => {\n        img.addEventListener('dragstart', e => e.preventDefault());\n        \n        img.addEventListener('dblclick', e => e.preventDefault());\n      });\n    };\n\n    protectImages();\n\n    const observer = new MutationObserver(protectImages);\n    observer.observe(document.body, { childList: true, subtree: true });\n  })();\n</script>",
+        "color_scheme": "",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "custom_liquid_CjbJMU"
   ]
 }
