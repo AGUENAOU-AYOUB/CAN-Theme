@@ -87,12 +87,12 @@
   {%- assign attempt_image = '' -%}
 
   {%- comment -%} If it's an image object with width/height or src accessible, try img_url -> absolute_url {%- endcomment -%}
-  {%- if og_image_candidate | img_url: og_image_size -%}
+  {%- if og_image_candidate -%}
     {%- assign attempt_image = og_image_candidate | img_url: og_image_size | absolute_url -%}
   {%- endif -%}
 
   {%- unless attempt_image -%}
-    {%- if og_image_candidate | img_url: '1024x1024' -%}
+    {%- if og_image_candidate -%}
       {%- assign attempt_image = og_image_candidate | img_url: '1024x1024' | absolute_url -%}
     {%- endif -%}
   {%- endunless -%}
@@ -140,6 +140,24 @@
   {%- if settings.social_twitter_link != blank -%}
   "sameAs": [ {{ settings.social_twitter_link | json }} ],
   {%- endif -%}
-  "logo": {{ (settings.social_sharing_image | default: shop.logo) | img_url: '600x600' | absolute_url | json }}
+  "logo": {{ settings.social_sharing_image | default: shop.logo | img_url: '600x600' | absolute_url | json }}
 }
 </script>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- if og_image_candidate | img_url: og_image_size -%}"
+  to: "{%- if og_image_candidate -%}"
+  position: 3591..3620
+- from: "{%- if og_image_candidate | img_url: '1024x1024' -%}"
+  to: "{%- if og_image_candidate -%}"
+  position: 3767..3796
+- from: "{{ (settings.social_sharing_image | default: shop.logo) | img_url: '600x600'
+    | absolute_url | json }}"
+  to: "{{ settings.social_sharing_image | default: shop.logo | img_url: '600x600'
+    | absolute_url | json }}"
+  position: 6000..6099
+{% endcomment %}
